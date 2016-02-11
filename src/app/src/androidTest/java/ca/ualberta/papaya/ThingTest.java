@@ -99,7 +99,6 @@ public class ThingTest extends ActivityInstrumentationTestCase2 {
         try {
             Bid bid2 = new Bid(thing, new User(), 15000);
             thing.placeBid(bid2);
-            thing.acceptBid(bid2);
         } catch (ThingUnavailableException e) {
             // ok!
         }
@@ -125,6 +124,8 @@ public class ThingTest extends ActivityInstrumentationTestCase2 {
             // ok!
         }
     }
+
+
 
 
 }
