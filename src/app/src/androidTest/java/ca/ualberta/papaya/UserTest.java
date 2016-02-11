@@ -44,7 +44,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         assertEquals("123 Fake Street", user.getAddress1());
 
         user.setAddress2("Penthouse Suite");
-        assertEquals("Penthouse Suite", user.getAddress2())
+        assertEquals("Penthouse Suite", user.getAddress2());
 
         user.setCountry(Country.CANADA);
         assertEquals(Country.CANADA, user.getCountry());
