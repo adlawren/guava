@@ -5,6 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import java.util.List;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
+import ca.ualberta.papaya.exceptions.UserInvalidPostalException;
 import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
 import ca.ualberta.papaya.models.Bid;
@@ -34,22 +35,39 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         User user = new User();
 
         user.setFirstName("Daddy").setLastName("Cool");
-        assertEquals(user.getFullName(), "Daddy Cool");
+        assertEquals("Daddy Cool", user.getFullName());
+
+        user.setEmail("abc@example.com");
+        assertEquals("abc@example.com", user.getEmail());
 
         user.setAddress1("123 Fake Street");
-        assertEquals(user.getAddress1(), "123 Fake Street");
+        assertEquals("123 Fake Street", user.getAddress1());
 
         user.setAddress2("Penthouse Suite");
-        assertEquals(user.getAddress2(), "Penthouse Suite");
+        assertEquals("Penthouse Suite", user.getAddress2())
 
         user.setCountry(Country.CANADA);
-        assertEquals(user.getCountry(), Country.CANADA);
+        assertEquals(Country.CANADA, user.getCountry());
 
         user.setProvince(Province.ALBERTA);
-        assertEquals(user.getProvince(), Province.ALBERTA);
+        assertEquals(Province.ALBERTA, user.getProvince());
 
-        user.setPostal("T8A 5H8");
-        assertEquals(user.getPostal(), "T8A 5H8");
+        try {
+            user.setPostal("T8A 5H8");
+            assertEquals("T8A 5H8", user.getPostal());
+        } catch (UserInvalidPostalException e){
+            fail();
+        }
+    }
+
+    public void testBadPostal(){
+        User user = new User();
+        try {
+            user.setPostal("BAD POSTAL CODE");
+            fail();
+        } catch (UserInvalidPostalException e) {
+            // ok!
+        }
     }
 
     public void testUserThings(){
@@ -60,7 +78,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
         List<Thing> things = owner.getThings();
 
-        assertEquals(owner.getThings().size(), 2);
+        assertEquals(2, owner.getThings().size());
 
     }
 
@@ -70,7 +88,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
         User borrower = new User();
 
-        assertEquals(borrower.getBids().size(), 0);
+        assertEquals(0, borrower.getBids().size());
 
         Bid bid = new Bid(thing, borrower, 800);
 
@@ -80,7 +98,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
 
-        assertEquals(borrower.getBids().size(), 1);
+        assertEquals(1, borrower.getBids().size());
 
     }
 

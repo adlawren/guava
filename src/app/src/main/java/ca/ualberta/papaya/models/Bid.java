@@ -1,6 +1,10 @@
 package ca.ualberta.papaya.models;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 /**
+ * Model class representing a Bid on a Thing owned by a User
  * Created by martin on 10/02/16.
  */
 public class Bid extends ElasticModel {
@@ -9,19 +13,39 @@ public class Bid extends ElasticModel {
     protected static final String type = "bid";
     protected static final Class<?> kind = Bid.class;
 
-    private String bidderName;
-    private int bidderId;
-    private int amount; // in cents
-    private Per per = Per.FLAT;
-    private int thingId;
+    private String bidderName;       // Denormalized User.getName()
+    private int bidderId;            // the bidder's .getId()
+    private int amount; // in cents  // Amount of the bid (in cents)
+    private Per per = Per.FLAT;      // Choice of rate plan. (flat rate, hourly, etc)
+    private int thingId;             // the thing being bid on's .getId()
 
 
-
+    /**
+     * Construct a new Bid on an item
+     * @param thing the Thing being bid on
+     * @param bidder the User performing making the Bid.
+     * @param amount how much is being bid. (in cents)
+     */
     public Bid(Thing thing, User bidder, int amount){
         super();
         setThing(thing);
         setBidder(bidder);
         setAmount(amount);
+    }
+
+    /**
+     * Construct a new Bid on an item at a time-based rate.
+     * @param thing the Thing being bid on
+     * @param bidder the User performing making the Bid.
+     * @param amount how much is being bid. (in cents)
+     * @param per the time per amount cost (hours, days, etc)
+     */
+    public Bid(Thing thing, User bidder, int amount, Per per){
+        super();
+        setThing(thing);
+        setBidder(bidder);
+        setAmount(amount);
+        setPer(per);
     }
 
     public User getBidder(){ return (User) User.getById(bidderId); }
@@ -47,7 +71,10 @@ public class Bid extends ElasticModel {
     }
 
     public Per getPer(){ return per; }
-    public Bid setPer(Per per){
+    public Bid setPer(Per per) throws NullPointerException {
+        if(per == null){
+            throw new NullPointerException();
+        }
         this.per = per;
         changed();
         return this;
@@ -55,7 +82,8 @@ public class Bid extends ElasticModel {
 
 
     public String valueOf(){
-        return (amount/100) + "." + (amount%100);
+        DecimalFormat formatter = new DecimalFormat("0.00");
+        return formatter.format(((double)amount)/100);
     }
 
     public String toString(){

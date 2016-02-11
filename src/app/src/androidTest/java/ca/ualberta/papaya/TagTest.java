@@ -35,7 +35,7 @@ public class TagTest extends ActivityInstrumentationTestCase2 {
         Tag tag = new Tag();
         tag.setLabel(label);
 
-        assertEquals(tag.getLabel(), label);
+        assertEquals(label, tag.getLabel());
 
     }
 
@@ -47,7 +47,7 @@ public class TagTest extends ActivityInstrumentationTestCase2 {
         Tag tag = new Tag();
         tag.setLabel(label);
 
-        assertEquals(tag.getLabel(), expected);
+        assertEquals(expected, tag.getLabel());
 
     }
 
@@ -56,7 +56,7 @@ public class TagTest extends ActivityInstrumentationTestCase2 {
 
         List<Tag> tags = Tag.parseString(tagsString);
 
-        assertEquals(tags.size(), 3);
+        assertEquals(3, tags.size());
 
         for(Tag tag : tags){
             switch(tag.getLabel()){
@@ -75,7 +75,7 @@ public class TagTest extends ActivityInstrumentationTestCase2 {
 
         List<Tag> tags = Tag.parseString(tagsString);
 
-        assertEquals(tags.size(), 3);
+        assertEquals(3, tags.size());
 
         for(Tag tag : tags){
             switch(tag.getLabel()){
@@ -94,7 +94,7 @@ public class TagTest extends ActivityInstrumentationTestCase2 {
 
         List<Tag> tags = Tag.parseString(tagsString);
 
-        assertEquals(tags.size(), 0);
+        assertEquals(0, tags.size());
     }
 
     public void testTagStringify(){
@@ -107,7 +107,7 @@ public class TagTest extends ActivityInstrumentationTestCase2 {
         tags.add(tag2);
         tags.add(tag3);
 
-        assertEquals(Tag.stringify(tags), "cappuccino, steamer, frother");
+        assertEquals("cappuccino, steamer, frother", Tag.stringify(tags));
     }
 
 

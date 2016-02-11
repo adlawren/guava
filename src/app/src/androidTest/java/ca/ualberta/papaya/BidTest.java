@@ -33,10 +33,10 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
 
         Bid bid = new Bid(thing, borrower, 800);
 
-        assertEquals(bid.getAmount(), 800);
-        assertEquals(bid.getPer(), Bid.Per.FLAT);
-        assertEquals(bid.valueOf(), "8.00");
-        assertEquals(bid.toString(), "$8.00");
+        assertEquals(800, bid.getAmount());
+        assertEquals(Bid.Per.FLAT, bid.getPer());
+        assertEquals("8.00", bid.valueOf());
+        assertEquals("$8.00", bid.toString());
 
     }
 
@@ -49,9 +49,8 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
 
         Bid bid = new Bid(thing, new User(), 200);
 
-        assertEquals(
-                bid.getThing().getTitle(),
-                "Fine Art");
+        assertNotNull(bid.getThing());
+        assertEquals("Fine Art", bid.getThing().getTitle());
     }
 
     public void testBidOwner(){
@@ -62,12 +61,37 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
 
         Bid bid = new Bid(thing, new User(), 900);
 
-        assertEquals(
-                bid.getThing().getOwner().getFullName(),
-                "Bonnie Jones");
+        assertNotNull(bid.getThing());
+        assertNotNull(bid.getThing().getOwner());
+        assertEquals("Bonnie Jones", bid.getThing().getOwner().getFullName());
 
     }
 
+    public void testBidPer(){
+        Bid bid = new Bid(new Thing(new User()), new User(), 100);
 
+        bid.setPer(Bid.Per.FLAT);
+        assertEquals(Bid.Per.FLAT, bid.getPer());
+
+        bid.setPer(Bid.Per.HOUR);
+        assertEquals(Bid.Per.HOUR, bid.getPer());
+
+        bid.setPer(Bid.Per.DAY);
+        assertEquals(Bid.Per.DAY, bid.getPer());
+
+        bid.setPer(Bid.Per.WEEK);
+        assertEquals(Bid.Per.WEEK, bid.getPer());
+
+        bid.setPer(Bid.Per.MONTH);
+        assertEquals(Bid.Per.MONTH, bid.getPer());
+
+        try {
+            bid.setPer(null);
+            fail();
+        } catch (NullPointerException e){
+            // ok!
+        }
+
+    }
 
 }

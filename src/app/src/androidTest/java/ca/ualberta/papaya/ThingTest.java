@@ -47,7 +47,7 @@ public class ThingTest extends ActivityInstrumentationTestCase2 {
         Thing thing = new Thing(owner);
         thing.setTitle(title).setDescription(description);
 
-        assertEquals(thing.getStatus(), Thing.Status.AVAILABLE);
+        assertEquals(Thing.Status.AVAILABLE, thing.getStatus());
         assertEquals(title, thing.getTitle());
         assertEquals(description, thing.getDescription());
         assertEquals(owner.getName(), thing.getOwnerName());
@@ -79,9 +79,9 @@ public class ThingTest extends ActivityInstrumentationTestCase2 {
             }
         }
 
-        assertEquals(found, true);
+        assertEquals(true, found);
 
-        assertEquals(thing.getBids().size(), 2);
+        assertEquals(2, thing.getBids().size());
 
     }
 

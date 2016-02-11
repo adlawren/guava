@@ -3,6 +3,7 @@ package ca.ualberta.papaya.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualberta.papaya.exceptions.UserInvalidPostalException;
 import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
 
@@ -18,6 +19,7 @@ public class User extends ElasticModel {
 
     private String firstName = "";
     private String lastName = "";
+    private String email = "";
 
     private String address1 = "";
     private String address2 = "";
@@ -43,8 +45,15 @@ public class User extends ElasticModel {
         return this;
     }
 
-    public String getFullName(){ return firstName + " " + lastName; }
+    public String getFullName(){ return getFirstName() + " " + getLastName(); }
     public String getName(){ return getFullName(); } // in case we want to switch to first names
+
+    public String getEmail(){ return email; }
+    public User setEmail(String email){
+        this.email = email;
+        changed();
+        return this;
+    }
 
     public String getAddress1(){ return address1; }
     public User setAddress1(String address){
@@ -61,21 +70,27 @@ public class User extends ElasticModel {
     }
 
     public Province getProvince(){ return province; }
-    public User setProvince(Province province){
+    public User setProvince(Province province) throws NullPointerException{
+        if (province == null){
+            throw new NullPointerException();
+        }
         this.province = province;
         changed();
         return this;
     }
 
     public Country getCountry(){ return country; }
-    public User setCountry(Country country){
+    public User setCountry(Country country) throws NullPointerException{
+        if (country == null){
+            throw new NullPointerException();
+        }
         this.country = country;
         changed();
         return this;
     }
 
     public String getPostal(){ return postal; }
-    public User setPostal(String postal){
+    public User setPostal(String postal) throws UserInvalidPostalException {
         // todo: verify
         this.postal = postal;
         changed();
