@@ -2,6 +2,7 @@ package ca.ualberta.papaya;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import ca.ualberta.papaya.exceptions.BidNegativeException;
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
@@ -40,6 +41,22 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
 
     }
 
+    public void testZeroBid(){
+        Bid bid = new Bid(new Thing(new User()), new User(), 0);
+        assertEquals(0, bid.getAmount());
+        assertEquals("0.00", bid.valueOf());
+        assertEquals("$0.00", bid.toString());
+    }
+
+    public void testNegativeBid(){
+        try {
+            Bid bid = new Bid(new Thing(new User()), new User(), -20);
+            fail();
+        } catch (BidNegativeException e){
+            // ok!
+        }
+
+    }
 
     public void testBidThing(){
 

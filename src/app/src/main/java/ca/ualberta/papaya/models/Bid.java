@@ -3,6 +3,8 @@ package ca.ualberta.papaya.models;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import ca.ualberta.papaya.exceptions.BidNegativeException;
+
 /**
  * Model class representing a Bid on a Thing owned by a User
  * Created by martin on 10/02/16.
@@ -28,9 +30,9 @@ public class Bid extends ElasticModel {
      */
     public Bid(Thing thing, User bidder, int amount){
         super();
+        setAmount(amount);
         setThing(thing);
         setBidder(bidder);
-        setAmount(amount);
     }
 
     /**
@@ -64,7 +66,10 @@ public class Bid extends ElasticModel {
     }
 
     public int getAmount(){ return amount; }
-    public Bid setAmount(int amount){
+    public Bid setAmount(int amount) throws BidNegativeException {
+        if(amount < 0){
+            throw new BidNegativeException();
+        }
         this.amount = amount;
         changed();
         return this;
