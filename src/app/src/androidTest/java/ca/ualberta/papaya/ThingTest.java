@@ -41,7 +41,9 @@ public class ThingTest extends ActivityInstrumentationTestCase2 {
         // clean up if needed once on live DB.
     }
 
-
+    /*
+    Use Case: US 01.01.01 - AddItem
+     */
     public void testNewThing() {
 
         Thing thing = new Thing(owner);

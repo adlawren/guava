@@ -27,6 +27,9 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         // clean up if needed once on live DB.
     }
 
+    /*
+    Use Case: US 05.01.01 - Bid
+     */
     public void testNewBid(){
 
         Thing thing = new Thing(new User());
@@ -41,6 +44,9 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
 
     }
 
+    /*
+    Tests making a new Bid with value 0
+     */
     public void testZeroBid(){
         Bid bid = new Bid(new Thing(new User()), new User(), 0);
         assertEquals(0, bid.getAmount());
@@ -48,6 +54,9 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         assertEquals("$0.00", bid.toString());
     }
 
+    /*
+    Tests placing a Bid with negative value
+     */
     public void testNegativeBid(){
         try {
             Bid bid = new Bid(new Thing(new User()), new User(), -20);
@@ -58,6 +67,9 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
 
     }
 
+    /*
+    Tests title of Thing in a new Bid
+     */
     public void testBidThing(){
 
         Thing thing = new Thing(new User());
@@ -70,6 +82,9 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         assertEquals("Fine Art", bid.getThing().getTitle());
     }
 
+    /*
+    Tests name of (Owner of Thing) of Bid
+     */
     public void testBidOwner(){
         User owner = new User();
         owner.setFirstName("Bonnie").setLastName("Jones");
@@ -84,6 +99,8 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
 
     }
 
+    /*
+     */
     public void testBidPer(){
         Bid bid = new Bid(new Thing(new User()), new User(), 100);
 
@@ -110,5 +127,6 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         }
 
     }
+
 
 }
