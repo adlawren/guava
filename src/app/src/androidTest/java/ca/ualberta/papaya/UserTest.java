@@ -2,6 +2,7 @@ package ca.ualberta.papaya;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
@@ -118,6 +119,33 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
     }
 
     /*
+    Use Case: US 03.03.01 - ViewUserContactInfo
+     */
+    public void testViewUserInfo(){
+        User user = new User();
+        Thing thing = new Thing(user);
+        User retrivedUser = thing.getOwnerOf();
+
+        user.setFirstName("Daddy").setLastName("Cool");
+        assertEquals(retrivedUser.getFullName(), user.getFullName());
+
+        user.setEmail("abc@example.com");
+        assertEquals(retrivedUser.getEmail(), user.getEmail());
+
+        user.setAddress1("123 Fake Street");
+        assertEquals(retrivedUser.getAddress1(), user.getAddress1());
+
+        user.setAddress2("Penthouse Suite");
+        assertEquals(retrivedUser.getAddress2(), user.getAddress2());
+
+        user.setCountry(Country.CANADA);
+        assertEquals(retrivedUser.getCountry(), user.getCountry());
+
+        user.setProvince(Province.ALBERTA);
+        assertEquals(retrivedUser.getProvince(), user.getProvince());
+    }
+
+    /*
     Tests for bad entry to Postal code
      */
     public void testBadPostal(){
@@ -143,6 +171,62 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
         assertEquals(2, owner.getThings().size());
 
+    }
+
+    /*
+    Use Case: US 01.03.01 - ViewItem
+     */
+    public void testUserIndexThing(){
+        User owner = new User();
+        Thing thing = new Thing(owner);
+        String title = "Coffee Maker";
+        String description = "Makes great coffee.\nOnce served the queen of England.";
+        thing.setTitle(title).setDescription(description);
+
+        ArrayList<Thing> things = user.getThings();
+
+        assertEquals(Thing.Status.AVAILABLE, thing[0].getStatus());
+        assertEquals(title, thing[0].getTitle());
+        assertEquals(description, thing[0].getDescription());
+        assertEquals(owner.getName(), thing[0].getOwnerName());
+    }
+
+    /*
+    Use Case: US 01.04.01 - EditItem
+     */
+    public void testUserEditItem(){
+        User owner = new User();
+        Thing thing = new Thing(owner);
+        String title = "Coffee Maker";
+        String description = "Makes great coffee.\nOnce served the queen of England.";
+        thing.setTitle(title).setDescription(description);
+
+        assertEquals(title, thing.getTitle());
+        assertEquals(description, thing.getDescription());
+
+        thing.editTitle("New Coffee Maker");
+        thing.editDescription("New");
+
+        assertEquals("New Coffee Maker", thing.getTitle());
+        assertEquals("New", thing.getDescription());
+    }
+
+    /*
+    Use Case: US 01.05.01 - DeleteItem
+     */
+    public void testUserDeleteItem(){
+        User owner = new User();
+        assertEquals(0, owner.getThings.size());
+        Thing thing = new Thing(owner);
+        assertEquals(1, owner.getThings.size());
+        Thing thing2 = new Thing(owner);
+        assertEquals(2, owner.getThings());
+
+        owner.deleteItemAtIndex[1];
+        assertEquals(1, owner.getThings.size());
+
+        owner.deleteItemAtIndex[0];
+        assertEquals(0,owner.getThings.size());
     }
 
     /*
@@ -218,6 +302,65 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         assertEquals(1, bids.size());
         assertEquals(bids[0].getThing(), thing1);
         assertEquals(bids[0].getAmount(), 800);
+
+    }
+
+    /*
+    Use Case: US 05.06.01 - AcceptBid
+    */
+    public void testAcceptBid(){
+        User owner = new User();
+        Thing thing1 = new Thing(owner);
+
+        User borrower = new User();
+        Bid bid = new Bid(thing1, borrower, 800);
+        User borrower2 = new User();
+        Bid bid2 = new Bid(thing1, borrower2, 700);
+
+        try {
+            thing.placeBid(bid);
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+        try {
+            thing.placeBid(bid2);
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+
+        owner.acceptBid(thing1, bid);
+        assertEquals(Bid.STATUS.ACCEPTED, bid.getStatus());
+        assertEquals(Bid.STATUS.DECLINED, bid2.getStatus());
+
+    }
+
+    /*
+    Use Case: US 05.07.01 - DeclineBid
+    */
+    public void testDeclineBid()
+    {
+        User owner = new User();
+        Thing thing1 = new Thing(owner);
+
+        User borrower = new User();
+        Bid bid = new Bid(thing1, borrower, 800);
+        User borrower2 = new User();
+        Bid bid2 = new Bid(thing1, borrower2, 700);
+
+        try {
+            thing.placeBid(bid);
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+        try {
+            thing.placeBid(bid2);
+        } catch (ThingUnavailableException e) {
+            fail();
+        }
+
+        assertEquals(2, thing1.getBids().size());
+        owner.declineBid(thing1, bid);
+        assertEquals(1, thing1.getBids().size());
 
     }
 }
