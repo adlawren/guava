@@ -8,10 +8,7 @@ import java.util.List;
  * Created by martin on 10/02/16.
  */
 public abstract class ElasticModel {
-
-    // index name of the database
-    protected final static String index = "papaya";
-
+    
     // Elastic search "type" of object. Override.
     protected static String type;
 

@@ -1,9 +1,13 @@
 package ca.ualberta.papaya.models;
 
+import java.io.InvalidClassException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.ualberta.papaya.exceptions.BidNegativeException;
+import ca.ualberta.papaya.exceptions.InvalidLocationException;
 
 /**
  * Model class representing a Bid on a Thing owned by a User
@@ -20,6 +24,7 @@ public class Bid extends ElasticModel {
     private int amount; // in cents  // Amount of the bid (in cents)
     private Per per = Per.FLAT;      // Choice of rate plan. (flat rate, hourly, etc)
     private int thingId;             // the thing being bid on's .getId()
+    private List<Number> location;      // Location [Longitude, Latitude]
 
 
     /**
@@ -82,6 +87,16 @@ public class Bid extends ElasticModel {
         }
         this.per = per;
         changed();
+        return this;
+    }
+
+    public List getLocation(){ return location; }
+    public Bid setLocation(List<Number> location){
+        if (location.size() == 2){
+            this.location = location;
+        } else {
+            throw new InvalidLocationException();
+        }
         return this;
     }
 
