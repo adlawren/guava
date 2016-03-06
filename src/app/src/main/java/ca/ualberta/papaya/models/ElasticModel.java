@@ -1,13 +1,27 @@
 package ca.ualberta.papaya.models;
 
+import com.searchly.jestdroid.DroidClientConfig;
+import com.searchly.jestdroid.JestClientFactory;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.searchbox.annotations.JestId;
+import io.searchbox.client.JestClient;
+import io.searchbox.client.JestResult;
+import io.searchbox.core.Get;
 
 /**
  * Abstract class to help deal with the ElasticSearch communication.
  * Created by martin on 10/02/16.
  */
 public abstract class ElasticModel {
+
+    private static JestClient client = null;
+
+    // Elastic Search url
+    private static final String elasticUrl = "http://cmput301.softwareprocess.es:8080/";
 
     // Elastic search index.
     protected static final String index = "papaya";
@@ -19,7 +33,25 @@ public abstract class ElasticModel {
     protected static Class<?> kind;
 
     // the id of this object.
-    protected int id;
+    @JestId
+    protected String id;
+
+    /**
+     * Construct (if necessary) and return a jest client to
+     * talk to the ElasticSearch database.
+     * @return the jest client
+     */
+    protected static JestClient getClient(){
+        if (ElasticModel.client == null){
+            JestClientFactory factory = new JestClientFactory();
+            factory.setDroidClientConfig(new DroidClientConfig
+                    .Builder(elasticUrl)
+                    .multiThreaded(true)
+                    .build());
+            ElasticModel.client = factory.getObject();
+        }
+        return ElasticModel.client;
+    }
 
     /**
      * Depending on the the "type" and "kind" of the subcless,
@@ -28,11 +60,15 @@ public abstract class ElasticModel {
      * @param id the id to find.
      * @return the object with the given id. null on failure.
      */
-    public static ElasticModel getById(int id){
+    public static ElasticModel getById(String id){
+        Get get = new Get.Builder(ElasticModel.index, id).type(kind.getName()).build();
         try {
-            ElasticModel model = (ElasticModel) kind.newInstance();
+            JestResult result = ElasticModel.getClient().execute(get);
+            ElasticModel model = (ElasticModel) result.getSourceAsObject(kind);
             return model;
-        } catch (Exception e){
+        } catch (IOException e){
+            // TODO: make more robust
+            e.printStackTrace();
             return null;
         }
     }
@@ -41,7 +77,7 @@ public abstract class ElasticModel {
      * Return the integer id of this object.
      * @return this object's unique id. Null if not yet committed.
      */
-    public int getId(){
+    public String getId(){
         return id;
     }
 
@@ -49,6 +85,7 @@ public abstract class ElasticModel {
         if(!ElasticChangeSet.contains(this)) {
             ElasticChangeSet.add(this);
         }
+        ElasticChangeSet.commit();
     }
 
     private static class ElasticChangeSet {
