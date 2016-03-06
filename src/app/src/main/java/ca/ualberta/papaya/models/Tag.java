@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
  * Created by martin on 10/02/16.
  */
 public class Tag extends ElasticModel {

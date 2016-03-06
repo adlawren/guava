@@ -8,6 +8,7 @@ import java.util.List;
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 
 /**
+ *
  * Created by martin on 10/02/16.
  */
 public class Thing extends ElasticModel {
@@ -15,10 +16,10 @@ public class Thing extends ElasticModel {
     protected static final String type = "thing";
     protected static final Class<?> kind = Thing.class;
 
-    private int ownerId;
+    private String ownerId;
     private String ownerName;
 
-    private int borrowerId;
+    private String borrowerId;
     private String borrowerName;
 
     private String title = "";

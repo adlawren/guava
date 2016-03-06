@@ -10,7 +10,11 @@ import java.util.List;
 import io.searchbox.annotations.JestId;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.Get;
+import io.searchbox.core.Index;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
 
 /**
  * Abstract class to help deal with the ElasticSearch communication.
@@ -35,6 +39,9 @@ public abstract class ElasticModel {
     // the id of this object.
     @JestId
     protected String id;
+
+    // is this model supposed to be pushed to database?
+    protected boolean publish = false;
 
     /**
      * Construct (if necessary) and return a jest client to
@@ -74,7 +81,50 @@ public abstract class ElasticModel {
     }
 
     /**
-     * Return the integer id of this object.
+     * Get a list of model objects corresponding to the given search query
+     * @param search
+     * @return List of model objects
+     */
+    public static List<?> search(Search search){
+        try {
+            SearchResult result = ElasticModel.client.execute(search);
+            return result.getHits(kind);
+        } catch (IOException e){
+            // todo: make more robust
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void delete(ElasticModel model){
+        try {
+            getClient().execute(new Delete.Builder(model.getId())
+                    .index(ElasticModel.index)
+                    .type(kind.getName())
+                    .build());
+        } catch (IOException e){
+            // todo: make more robust
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Constructor.
+     */
+    public ElasticModel(){
+
+    }
+
+    /**
+     * publish this model object to database.
+     */
+    public void publish(){
+        publish = true;
+        changed();
+    }
+
+    /**
+     * Return the id of this object.
      * @return this object's unique id. Null if not yet committed.
      */
     public String getId(){
@@ -82,29 +132,47 @@ public abstract class ElasticModel {
     }
 
     protected void changed(){
-        if(!ElasticChangeSet.contains(this)) {
+        if (publish) {
             ElasticChangeSet.add(this);
         }
-        ElasticChangeSet.commit();
     }
 
     private static class ElasticChangeSet {
-        private static List<ElasticModel> changeList = new ArrayList<>();
+        private static List<ElasticModel> changeList = new ArrayList<ElasticModel>();
 
         public static Boolean contains(ElasticModel model){
             return changeList.contains(model);
         }
 
         public static void add(ElasticModel model){
-            changeList.add(model);
+            if (!changeList.contains(model)) {
+                changeList.add(model);
+            }
+            commit();
         }
 
         public static void commit(){
-
+            for (ElasticModel model : changeList){
+                if (model.id == null){
+                    //insert
+                    // todo: offline storage
+                    Index index = new Index.Builder(model)
+                            .index(ElasticModel.index)
+                            .type(model.kind.getName()).build();
+                    try {
+                        ElasticModel.getClient().execute(index);
+                        changeList.remove(model);
+                    } catch (IOException e){
+                        // todo: make more robust
+                        e.printStackTrace();
+                    }
+                } else {
+                    // update
+                    // OMG PANIC. :j No "updates" allowed. k?
+                }
+            }
         }
-        public static void cancel(){
 
-        }
     }
 
 }
