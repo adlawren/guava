@@ -20,11 +20,11 @@ public class Bid extends ElasticModel {
     protected static final Class<?> kind = Bid.class;
 
     private String bidderName;       // Denormalized User.getName()
-    private int bidderId;            // the bidder's .getId()
-    private int amount; // in cents  // Amount of the bid (in cents)
+    private String bidderId;         // the bidder's .getId()
+    private int amount;              // Amount of the bid (in cents)
     private Per per = Per.FLAT;      // Choice of rate plan. (flat rate, hourly, etc)
-    private int thingId;             // the thing being bid on's .getId()
-    private List<Number> location;      // Location [Longitude, Latitude]
+    private String thingId;          // the thing being bid on's .getId()
+    private List<Number> location;   // Location [Longitude, Latitude]
 
 
     /**
