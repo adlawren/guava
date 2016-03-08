@@ -1,5 +1,6 @@
 package ca.ualberta.papaya.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
@@ -28,6 +29,11 @@ public class UserEditProfileController {
         }
     }
 
+    private void transitionToActivity(Context context, Class activityClass) {
+        Intent intent = new Intent(context, activityClass);
+        context.startActivity(intent);
+    }
+
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
@@ -45,9 +51,6 @@ public class UserEditProfileController {
             String text = textView.getText().toString();
 
             // ...
-
-//            Intent intent = new Intent(context, ItemInformationA.class);
-//            startActivity();
         }
     }
 

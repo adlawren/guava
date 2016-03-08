@@ -30,7 +30,8 @@
 
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-        <activity android:name=".UserEditProfileActivity"></activity>
+        <activity android:name=".UserEditProfileActivity" />
+        <activity android:name=".UserProfileActivity"></activity>
     </application>
 
 </manifest>
