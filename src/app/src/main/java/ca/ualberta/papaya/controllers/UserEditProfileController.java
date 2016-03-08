@@ -18,9 +18,13 @@ public class UserEditProfileController {
 
     private ArrayList<Observer> observers;
 
+    private void updateObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
+
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
-
-    // ...
 }
