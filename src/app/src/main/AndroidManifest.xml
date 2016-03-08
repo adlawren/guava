@@ -27,7 +27,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
+
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+        <activity android:name=".UserEditProfile"></activity>
     </application>
 
 </manifest>
