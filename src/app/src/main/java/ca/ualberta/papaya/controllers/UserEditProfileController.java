@@ -1,5 +1,6 @@
 package ca.ualberta.papaya.controllers;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -45,7 +46,8 @@ public class UserEditProfileController {
 
             // ...
 
-            
+//            Intent intent = new Intent(context, ItemInformationA.class);
+//            startActivity();
         }
     }
 

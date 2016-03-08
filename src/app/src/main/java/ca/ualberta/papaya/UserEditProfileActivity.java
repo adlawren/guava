@@ -8,7 +8,7 @@ import android.widget.EditText;
 import ca.ualberta.papaya.controllers.UserEditProfileController;
 import ca.ualberta.papaya.interfaces.Observer;
 
-public class UserEditProfile extends AppCompatActivity implements Observer {
+public class UserEditProfileActivity extends AppCompatActivity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
