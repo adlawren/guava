@@ -35,7 +35,9 @@ public class UserEditProfileController {
 
         private TextView textView;
 
-        public SaveOnClickListener(TextView textView) {}
+        public SaveOnClickListener(TextView textView) {
+            this.textView = textView;
+        }
 
         @Override
         public void onClick(View view) {
@@ -54,7 +56,9 @@ public class UserEditProfileController {
         public CancelOnClickListener() {}
 
         @Override
-        public void onClick(View view) {}
+        public void onClick(View view) {
+            // ...
+        }
     }
 
     public CancelOnClickListener getCancelOnClickListener() {
