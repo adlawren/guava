@@ -23,21 +23,21 @@ public class UserProfileActivity extends AppCompatActivity {
         userNameTextView.setText(user.getName());
 
         TextView userEmailTextView = (TextView) findViewById(R.id.user_profile_user_email);
-        userNameTextView.setText(user.getEmail());
+        userEmailTextView.setText(user.getEmail());
 
         TextView userAddress1TextView = (TextView) findViewById(R.id.user_profile_user_address1);
-        userNameTextView.setText(user.getAddress1());
+        userAddress1TextView.setText(user.getAddress1());
 
         TextView userAddress2TextView = (TextView) findViewById(R.id.user_profile_user_address2);
-        userNameTextView.setText(user.getAddress2());
+        userAddress2TextView.setText(user.getAddress2());
 
         TextView userProvinceTextView = (TextView) findViewById(R.id.user_profile_user_province);
-        userNameTextView.setText(user.getProvince().toString());
+        userProvinceTextView.setText(user.getProvince().toString());
 
         TextView userCountryTextView = (TextView) findViewById(R.id.user_profile_user_country);
-        userNameTextView.setText(user.getCountry().toString());
+        userCountryTextView.setText(user.getCountry().toString());
 
         TextView userPostalTextView = (TextView) findViewById(R.id.user_profile_user_postal);
-        userNameTextView.setText(user.getPostal());
+        userPostalTextView.setText(user.getPostal());
     }
 }
