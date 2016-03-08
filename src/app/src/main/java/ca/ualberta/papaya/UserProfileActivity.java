@@ -9,13 +9,15 @@ import ca.ualberta.papaya.models.User;
 
 public class UserProfileActivity extends AppCompatActivity {
 
+    public static final String USER_EXTRA = "com.papaya.user.profile.user.extra";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
         Intent intent = getIntent();
-        User user = (User) intent.getSerializableExtra(""); // TODO: establish public identifier
+        User user = (User) intent.getSerializableExtra(USER_EXTRA); // TODO: establish public identifier
 
         TextView userNameTextView = (TextView) findViewById(R.id.user_profile_user_name);
         userNameTextView.setText(user.getName());
