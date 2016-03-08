@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class UserEditProfile extends AppCompatActivity {
+import ca.ualberta.papaya.interfaces.Observer;
+
+public class UserEditProfile extends AppCompatActivity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,5 +32,10 @@ public class UserEditProfile extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void update() {
+
     }
 }
