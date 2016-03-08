@@ -1,5 +1,7 @@
 package ca.ualberta.papaya.controllers;
 
+import android.view.View;
+
 import java.util.ArrayList;
 
 import ca.ualberta.papaya.interfaces.Observer;
@@ -26,5 +28,29 @@ public class UserEditProfileController {
 
     public void addObserver(Observer observer) {
         observers.add(observer);
+    }
+
+    private class SaveOnClickListener implements View.OnClickListener {
+
+        public SaveOnClickListener() {}
+
+        @Override
+        public void onClick(View view) {}
+    }
+
+    public SaveOnClickListener getSaveOnClickListener() {
+        return new SaveOnClickListener();
+    }
+
+    private class CancelOnClickListener implements View.OnClickListener {
+
+        public CancelOnClickListener() {}
+
+        @Override
+        public void onClick(View view) {}
+    }
+
+    public CancelOnClickListener getCancelOnClickListener() {
+        return new CancelOnClickListener();
     }
 }
