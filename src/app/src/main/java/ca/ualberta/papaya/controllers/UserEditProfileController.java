@@ -1,6 +1,7 @@
 package ca.ualberta.papaya.controllers;
 
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -32,14 +33,20 @@ public class UserEditProfileController {
 
     private class SaveOnClickListener implements View.OnClickListener {
 
-        public SaveOnClickListener() {}
+        private TextView textView;
+
+        public SaveOnClickListener(TextView textView) {}
 
         @Override
-        public void onClick(View view) {}
+        public void onClick(View view) {
+            String text = textView.getText().toString();
+
+            // ...
+        }
     }
 
-    public SaveOnClickListener getSaveOnClickListener() {
-        return new SaveOnClickListener();
+    public SaveOnClickListener getSaveOnClickListener(TextView textView) {
+        return new SaveOnClickListener(textView);
     }
 
     private class CancelOnClickListener implements View.OnClickListener {
