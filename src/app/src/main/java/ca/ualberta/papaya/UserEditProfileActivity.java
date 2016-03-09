@@ -21,9 +21,29 @@ public class UserEditProfileActivity extends AppCompatActivity implements Observ
 
         User user = (User) getIntent().getSerializableExtra(USER_EXTRA);
 
-        // TODO: Modify this; this screen requires a more complex UI
-        EditText userInfoEditText = (EditText) findViewById(R.id.edit_user_profile_edit_contact_information);
-        userInfoEditText.setText(user.getEmail());
+        EditText userFirstNameEditText = (EditText) findViewById(R.id.edit_user_profile_edit_first_name);
+        userFirstNameEditText.setText(user.getFirstName());
+
+        EditText userLastNameEditText = (EditText) findViewById(R.id.edit_user_profile_edit_last_name);
+        userLastNameEditText.setText(user.getFirstName());
+
+        EditText userEmailEditText = (EditText) findViewById(R.id.edit_user_profile_edit_email);
+        userEmailEditText.setText(user.getFirstName());
+
+        EditText userAddress1EditText = (EditText) findViewById(R.id.edit_user_profile_edit_address1);
+        userEmailEditText.setText(user.getAddress1());
+
+        EditText userAddress2EditText = (EditText) findViewById(R.id.edit_user_profile_edit_address2);
+        userEmailEditText.setText(user.getAddress2());
+
+        EditText userProvinceEditText = (EditText) findViewById(R.id.edit_user_profile_edit_province);
+        userEmailEditText.setText(user.getProvince().toString());
+
+        EditText userCountryEditText = (EditText) findViewById(R.id.edit_user_profile_edit_country);
+        userEmailEditText.setText(user.getCountry().toString());
+
+        EditText userPostalEditText = (EditText) findViewById(R.id.edit_user_profile_edit_postal);
+        userEmailEditText.setText(user.getPostal());
 
         Button saveButton = (Button) findViewById(R.id.edit_user_profile_save);
         saveButton.setOnClickListener(UserEditProfileController.getInstance().getSaveOnClickListener(this));

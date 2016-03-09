@@ -3,6 +3,7 @@ package ca.ualberta.papaya.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,6 +44,15 @@ public class UserEditProfileController {
 
         private Context context;
 
+        private EditText firstNameEditText;
+        private EditText lastNameEditText;
+        private EditText emailEditText;
+        private EditText address1EditText;
+        private EditText address2EditText;
+        private EditText provinceEditText;
+        private EditText countryEditText;
+        private EditText postalEditText;
+
         public SaveOnClickListener(Context initialContext) {
             context = initialContext;
         }
@@ -51,7 +61,14 @@ public class UserEditProfileController {
         public void onClick(View view) {
             TextView textView = (TextView) view;
 
-            String text = textView.toString();
+            String firstName = firstNameEditText.getText().toString();
+            String lastName = lastNameEditText.getText().toString();
+            String email = emailEditText.getText().toString();
+            String address1 = address1EditText.getText().toString();
+            String address2 = address2EditText.getText().toString();
+            String province = provinceEditText.getText().toString();
+            String country = countryEditText.getText().toString();
+            String postal = postalEditText.getText().toString();
 
             // TODO: Save the profile updates
             // ...

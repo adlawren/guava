@@ -10,7 +10,49 @@
     tools:context=".UserEditProfileActivity">
 
     <EditText
-        android:id="@+id/edit_user_profile_edit_contact_information"
+        android:id="@+id/edit_user_profile_edit_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <EditText
+        android:id="@+id/edit_user_profile_edit_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <EditText
+        android:id="@+id/edit_user_profile_edit_email"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <EditText
+        android:id="@+id/edit_user_profile_edit_address1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <EditText
+        android:id="@+id/edit_user_profile_edit_address2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <EditText
+        android:id="@+id/edit_user_profile_edit_province"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <EditText
+        android:id="@+id/edit_user_profile_edit_country"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <EditText
+        android:id="@+id/edit_user_profile_edit_postal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
