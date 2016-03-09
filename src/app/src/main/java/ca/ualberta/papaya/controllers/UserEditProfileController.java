@@ -53,8 +53,25 @@ public class UserEditProfileController {
         private EditText countryEditText;
         private EditText postalEditText;
 
-        public SaveOnClickListener(Context initialContext) {
+        public SaveOnClickListener(Context initialContext,
+                                   EditText initialFirstNameEditText,
+                                   EditText initialLastNameEditText,
+                                   EditText initialEmailEditText,
+                                   EditText initialAddress1EditText,
+                                   EditText initialAddress2EditText,
+                                   EditText initialProvinceEditText,
+                                   EditText initialCountryEditText,
+                                   EditText initialPostalEditText) {
             context = initialContext;
+
+            firstNameEditText = initialFirstNameEditText;
+            lastNameEditText = initialLastNameEditText;
+            emailEditText = initialEmailEditText;
+            address1EditText = initialAddress1EditText;
+            address2EditText = initialAddress2EditText;
+            provinceEditText = initialProvinceEditText;
+            countryEditText = initialCountryEditText;
+            postalEditText = initialPostalEditText;
         }
 
         @Override
@@ -77,8 +94,24 @@ public class UserEditProfileController {
         }
     }
 
-    public SaveOnClickListener getSaveOnClickListener(Context initialContext) {
-        return new SaveOnClickListener(initialContext);
+    public SaveOnClickListener getSaveOnClickListener(Context initialContext,
+                                                      EditText initialFirstNameEditText,
+                                                      EditText initialLastNameEditText,
+                                                      EditText initialEmailEditText,
+                                                      EditText initialAddress1EditText,
+                                                      EditText initialAddress2EditText,
+                                                      EditText initialProvinceEditText,
+                                                      EditText initialCountryEditText,
+                                                      EditText initialPostalEditText) {
+        return new SaveOnClickListener(initialContext,
+                                        initialFirstNameEditText,
+                                        initialLastNameEditText,
+                                        initialEmailEditText,
+                                        initialAddress1EditText,
+                                        initialAddress2EditText,
+                                        initialProvinceEditText,
+                                        initialCountryEditText,
+                                        initialPostalEditText);
     }
 
     private class CancelOnClickListener implements View.OnClickListener {

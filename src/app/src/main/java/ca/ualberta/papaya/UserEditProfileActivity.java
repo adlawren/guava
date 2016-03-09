@@ -46,7 +46,15 @@ public class UserEditProfileActivity extends AppCompatActivity implements Observ
         userEmailEditText.setText(user.getPostal());
 
         Button saveButton = (Button) findViewById(R.id.edit_user_profile_save);
-        saveButton.setOnClickListener(UserEditProfileController.getInstance().getSaveOnClickListener(this));
+        saveButton.setOnClickListener(UserEditProfileController.getInstance().getSaveOnClickListener(this,
+            userFirstNameEditText,
+            userLastNameEditText,
+            userEmailEditText,
+            userAddress1EditText,
+            userAddress2EditText,
+            userProvinceEditText,
+            userCountryEditText,
+            userPostalEditText));
 
         Button cancelButton = (Button) findViewById(R.id.edit_user_profile_cancel);
         cancelButton.setOnClickListener(UserEditProfileController.getInstance().getCancelOnClickListener(this));
