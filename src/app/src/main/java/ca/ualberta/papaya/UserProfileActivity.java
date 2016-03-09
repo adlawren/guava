@@ -16,8 +16,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        Intent intent = getIntent();
-        User user = (User) intent.getSerializableExtra(USER_EXTRA); // TODO: establish public identifier
+        User user = (User) getIntent().getSerializableExtra(USER_EXTRA);
 
         TextView userNameTextView = (TextView) findViewById(R.id.user_profile_user_name);
         userNameTextView.setText(user.getName());
