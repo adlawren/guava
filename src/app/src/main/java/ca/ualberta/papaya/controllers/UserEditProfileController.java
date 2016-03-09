@@ -3,10 +3,12 @@ package ca.ualberta.papaya.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.interfaces.Observer;
 
 /**
@@ -40,35 +42,93 @@ public class UserEditProfileController {
 
     private class SaveOnClickListener implements View.OnClickListener {
 
-        private TextView textView;
+        private Context context;
 
-        public SaveOnClickListener(TextView textView) {
-            this.textView = textView;
+        private EditText firstNameEditText;
+        private EditText lastNameEditText;
+        private EditText emailEditText;
+        private EditText address1EditText;
+        private EditText address2EditText;
+        private EditText provinceEditText;
+        private EditText countryEditText;
+        private EditText postalEditText;
+
+        public SaveOnClickListener(Context initialContext,
+                                   EditText initialFirstNameEditText,
+                                   EditText initialLastNameEditText,
+                                   EditText initialEmailEditText,
+                                   EditText initialAddress1EditText,
+                                   EditText initialAddress2EditText,
+                                   EditText initialProvinceEditText,
+                                   EditText initialCountryEditText,
+                                   EditText initialPostalEditText) {
+            context = initialContext;
+
+            firstNameEditText = initialFirstNameEditText;
+            lastNameEditText = initialLastNameEditText;
+            emailEditText = initialEmailEditText;
+            address1EditText = initialAddress1EditText;
+            address2EditText = initialAddress2EditText;
+            provinceEditText = initialProvinceEditText;
+            countryEditText = initialCountryEditText;
+            postalEditText = initialPostalEditText;
         }
 
         @Override
         public void onClick(View view) {
-            String text = textView.getText().toString();
+            TextView textView = (TextView) view;
 
+            String firstName = firstNameEditText.getText().toString();
+            String lastName = lastNameEditText.getText().toString();
+            String email = emailEditText.getText().toString();
+            String address1 = address1EditText.getText().toString();
+            String address2 = address2EditText.getText().toString();
+            String province = provinceEditText.getText().toString();
+            String country = countryEditText.getText().toString();
+            String postal = postalEditText.getText().toString();
+
+            // TODO: Save the profile updates
             // ...
+
+            transitionToActivity(context, ThingListActivity.class);
         }
     }
 
-    public SaveOnClickListener getSaveOnClickListener(TextView textView) {
-        return new SaveOnClickListener(textView);
+    public SaveOnClickListener getSaveOnClickListener(Context initialContext,
+                                                      EditText initialFirstNameEditText,
+                                                      EditText initialLastNameEditText,
+                                                      EditText initialEmailEditText,
+                                                      EditText initialAddress1EditText,
+                                                      EditText initialAddress2EditText,
+                                                      EditText initialProvinceEditText,
+                                                      EditText initialCountryEditText,
+                                                      EditText initialPostalEditText) {
+        return new SaveOnClickListener(initialContext,
+                                        initialFirstNameEditText,
+                                        initialLastNameEditText,
+                                        initialEmailEditText,
+                                        initialAddress1EditText,
+                                        initialAddress2EditText,
+                                        initialProvinceEditText,
+                                        initialCountryEditText,
+                                        initialPostalEditText);
     }
 
     private class CancelOnClickListener implements View.OnClickListener {
 
-        public CancelOnClickListener() {}
+        private Context context;
+
+        public CancelOnClickListener(Context initialContext) {
+            context = initialContext;
+        }
 
         @Override
         public void onClick(View view) {
-            // ...
+            transitionToActivity(context, ThingListActivity.class);
         }
     }
 
-    public CancelOnClickListener getCancelOnClickListener() {
-        return new CancelOnClickListener();
+    public CancelOnClickListener getCancelOnClickListener(Context initialContext) {
+        return new CancelOnClickListener(initialContext);
     }
 }

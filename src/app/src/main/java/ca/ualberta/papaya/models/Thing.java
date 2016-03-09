@@ -108,7 +108,4 @@ public class Thing extends ElasticModel {
             return name().toLowerCase();
         }
     }
-
-
-
 }

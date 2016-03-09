@@ -131,7 +131,7 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
     /*
     Use Case: 05.03.01 - BidNotification
      */
-    public void testBidNotification(){
+    public void testBidNotification() {
         User owner = new User();
         Thing thing1 = new Thing(owner);
 
@@ -139,18 +139,21 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         Bid bid = new Bid(thing1, borrower, 800);
 
         try {
-            thing.placeBid(bid);
+            thing1.placeBid(bid);
         } catch (ThingUnavailableException e) {
             fail();
         }
 
-        assertTrue(user.notifiedOfBid(bid));
+        // TODO: Implement
+        //assertTrue(owner.notifiedOfBid(bid));
+
+        assertTrue(false);
     }
 
     /*
     Use Case: 05.08.01 - BidAcceptNotification
      */
-    public void testBidNotification(){
+    public void testBidAcceptionNotification() {
         User owner = new User();
         Thing thing1 = new Thing(owner);
 
@@ -158,19 +161,22 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         Bid bid = new Bid(thing1, borrower, 800);
 
         try {
-            thing.placeBid(bid);
+            thing1.placeBid(bid);
         } catch (ThingUnavailableException e) {
             fail();
         }
 
-        Owner.acceptBid(thing1, bid);
-        assertTrue(borrower.notifiedOfAcceptedBid(bid));
+        // TODO: Implement
+        //owner.acceptBid(thing1, bid);
+        //assertTrue(borrower.notifiedOfAcceptedBid(bid));
+
+        assertTrue(false);
     }
 
     /*
     Use Case: 05.09.01 - BidDeclineNotification
      */
-    public void testBidNotification(){
+    public void testBidDeclineNotification(){
         User owner = new User();
         Thing thing1 = new Thing(owner);
 
@@ -178,13 +184,16 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         Bid bid = new Bid(thing1, borrower, 800);
 
         try {
-            thing.placeBid(bid);
+            thing1.placeBid(bid);
         } catch (ThingUnavailableException e) {
             fail();
         }
 
-        owner.declineBid(thing, bid);
-        assertTrue(borrower.notifiedOfDeclinedBid(bid));
+        // TODO: Implement
+        //owner.declineBid(thing, bid);
+        //assertTrue(borrower.notifiedOfDeclinedBid(bid));
+
+        assertTrue(false);
     }
 
 }
