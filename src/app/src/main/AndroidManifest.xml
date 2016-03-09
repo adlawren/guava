@@ -32,6 +32,11 @@
 
         <activity android:name=".UserEditProfileActivity" />
         <activity android:name=".UserProfileActivity"></activity>
+        <!--<activity-->
+            <!--android:name="com.javatechig.sample.MyActivity"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:theme="@style/AppTheme" >-->
+        <!--</activity>-->
     </application>
 
 </manifest>

@@ -10,26 +10,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.hsbarker.myfirstapp.DisplayMessageActivity"
-    tools:showIn="@layout/activity_thing_detail"
+    tools:showIn="@layout/activity_edit_profile"
     android:id="@+id/content">
 
     <TextView
-    android:id="@+id/thing_detail"
-    style="?android:attr/textAppearanceLarge"
-    android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context="ca.ualberta.papaya.ThingDetailFragment"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textItemName"
+        android:text="Contact Information:" />
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentStart="true"
-    android:id="@+id/textBids"
-        android:layout_below="@+id/thing_detail"
-    android:text="Bids:" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemName"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textItemName"
+        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

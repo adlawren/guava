@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ca.ualberta.papaya.ThingDetailActivity"
+    tools:context="ca.ualberta.papaya.AllInfoActivity"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.AppBarLayout
@@ -19,45 +19,17 @@
             android:background="#f95f22"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/editItem"
-                android:src="@android:drawable/ic_menu_edit"
-                android:tint="#57c042"
-                app:backgroundTint="#050000">
-            </android.support.design.widget.FloatingActionButton>
-
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/deleteItem"
-                android:src="@android:drawable/ic_delete"
-                android:tint="#57c042"
-                app:backgroundTint="#050000">
-            </android.support.design.widget.FloatingActionButton>
-
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/thing_detail" />
+    <include layout="@layout/content_all_info" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/thing_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <ListView
-        android:id="@+id/bids"
-        android:layout_width="fill_parent"
-        android:layout_height="225dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:layout_gravity="bottom|center">
-
-    </ListView>
 
 
 
