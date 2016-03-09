@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.interfaces.Observer;
 
 /**
@@ -40,35 +41,44 @@ public class UserEditProfileController {
 
     private class SaveOnClickListener implements View.OnClickListener {
 
-        private TextView textView;
+        private Context context;
 
-        public SaveOnClickListener(TextView textView) {
-            this.textView = textView;
+        public SaveOnClickListener(Context initialContext) {
+            context = initialContext;
         }
 
         @Override
         public void onClick(View view) {
-            String text = textView.getText().toString();
+            TextView textView = (TextView) view;
 
+            String text = textView.toString();
+
+            // TODO: Save the profile updates
             // ...
+
+            transitionToActivity(context, ThingListActivity.class);
         }
     }
 
-    public SaveOnClickListener getSaveOnClickListener(TextView textView) {
-        return new SaveOnClickListener(textView);
+    public SaveOnClickListener getSaveOnClickListener(Context initialContext) {
+        return new SaveOnClickListener(initialContext);
     }
 
     private class CancelOnClickListener implements View.OnClickListener {
 
-        public CancelOnClickListener() {}
+        private Context context;
+
+        public CancelOnClickListener(Context initialContext) {
+            context = initialContext;
+        }
 
         @Override
         public void onClick(View view) {
-            // ...
+            transitionToActivity(context, ThingListActivity.class);
         }
     }
 
-    public CancelOnClickListener getCancelOnClickListener() {
-        return new CancelOnClickListener();
+    public CancelOnClickListener getCancelOnClickListener(Context initialContext) {
+        return new CancelOnClickListener(initialContext);
     }
 }
