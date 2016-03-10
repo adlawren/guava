@@ -13,29 +13,14 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_all_info);
 
         User user = (User) getIntent().getSerializableExtra(USER_EXTRA);
 
-        TextView userNameTextView = (TextView) findViewById(R.id.user_profile_user_name);
+        TextView userNameTextView = (TextView) findViewById(R.id.userName);
         userNameTextView.setText(user.getName());
 
-        TextView userEmailTextView = (TextView) findViewById(R.id.user_profile_user_email);
+        TextView userEmailTextView = (TextView) findViewById(R.id.userInfo);
         userEmailTextView.setText(user.getEmail());
-
-        TextView userAddress1TextView = (TextView) findViewById(R.id.user_profile_user_address1);
-        userAddress1TextView.setText(user.getAddress1());
-
-        TextView userAddress2TextView = (TextView) findViewById(R.id.user_profile_user_address2);
-        userAddress2TextView.setText(user.getAddress2());
-
-        TextView userProvinceTextView = (TextView) findViewById(R.id.user_profile_user_province);
-        userProvinceTextView.setText(user.getProvince().toString());
-
-        TextView userCountryTextView = (TextView) findViewById(R.id.user_profile_user_country);
-        userCountryTextView.setText(user.getCountry().toString());
-
-        TextView userPostalTextView = (TextView) findViewById(R.id.user_profile_user_postal);
-        userPostalTextView.setText(user.getPostal());
     }
 }

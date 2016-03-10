@@ -4,6 +4,7 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import io.searchbox.core.SearchResult;
  * Abstract class to help deal with the ElasticSearch communication.
  * Created by martin on 10/02/16.
  */
-public abstract class ElasticModel {
+public abstract class ElasticModel implements Serializable {
 
     private static JestClient client = null;
 

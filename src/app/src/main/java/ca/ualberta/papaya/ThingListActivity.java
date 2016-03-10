@@ -18,6 +18,9 @@ import android.support.v7.app.ActionBarActivity;
 
 
 import ca.ualberta.papaya.dummy.DummyContent;
+import ca.ualberta.papaya.fixtures.Country;
+import ca.ualberta.papaya.fixtures.Province;
+import ca.ualberta.papaya.models.User;
 
 import java.util.List;
 
@@ -58,6 +61,23 @@ public class ThingListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        FloatingActionButton addFloatingActionButton = (FloatingActionButton) findViewById(R.id.profile);
+        addFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), UserEditProfileActivity.class);
+
+                // TODO: Retrieve user information properly
+                User user = new User();
+                user.setFirstName("Emily");
+                user.setLastName("Jones");
+                user.setEmail("ejones@ualberta.ca");
+
+                intent.putExtra(UserEditProfileActivity.USER_EXTRA, user);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
 
