@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.support.v7.app.ActionBarActivity;
 
 
+import ca.ualberta.papaya.controllers.ThingListController;
 import ca.ualberta.papaya.dummy.DummyContent;
 import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
@@ -63,52 +64,16 @@ public class ThingListActivity extends PapayaActivity {
         }
 
         FloatingActionButton otherItemsFloatingActionButton = (FloatingActionButton) findViewById(R.id.otherItems);
-        otherItemsFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                System.err.println("TODO: IMPLEMENT");
-
-                // TODO: Implement
-                //Intent intent = new Intent(view.getContext(), ...);
-                //view.getContext().startActivity(intent);
-            }
-        });
+        otherItemsFloatingActionButton.setOnClickListener(ThingListController.getInstance().getOtherItemsOnClickListener(this));
 
         FloatingActionButton addFloatingActionButton = (FloatingActionButton) findViewById(R.id.addItem);
-        addFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), AddThingActivity.class);
-                view.getContext().startActivity(intent);
-            }
-        });
+        addFloatingActionButton.setOnClickListener(ThingListController.getInstance().getAddItemOnClickListener(this));
 
         FloatingActionButton profileFloatingActionButton = (FloatingActionButton) findViewById(R.id.profile);
-        profileFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), UserEditProfileActivity.class);
-
-                // TODO: Retrieve user information properly
-                User user = new User();
-                user.setFirstName("Emily");
-                user.setLastName("Jones");
-                user.setEmail("ejones@ualberta.ca");
-
-                intent.putExtra(UserEditProfileActivity.USER_EXTRA, user);
-                view.getContext().startActivity(intent);
-            }
-        });
+        profileFloatingActionButton.setOnClickListener(ThingListController.getInstance().getProfileOnClickListener(this));
 
         FloatingActionButton searchFloatingActionButton = (FloatingActionButton) findViewById(R.id.search);
-        searchFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ThingSearchActivity.class);
-                view.getContext().startActivity(intent);
-            }
-        });
+        searchFloatingActionButton.setOnClickListener(ThingListController.getInstance().getSearchOnClickListener(this));
     }
 
 
