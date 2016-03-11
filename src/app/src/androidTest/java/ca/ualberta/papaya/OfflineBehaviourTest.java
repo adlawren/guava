@@ -2,9 +2,8 @@ package ca.ualberta.papaya;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
-import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Ctx;
 
 /* created by Vishruth on 02/21/16
 */
@@ -20,7 +19,7 @@ public class OfflineBehaviourTest extends ActivityInstrumentationTestCase2 {
      */
     public testAddOffline() {
         ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager)context.getSystemService(Ctx.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&

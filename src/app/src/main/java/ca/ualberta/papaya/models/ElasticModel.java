@@ -1,12 +1,17 @@
 package ca.ualberta.papaya.models;
 
+import android.content.Context;
+
+import com.google.gson.Gson;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualberta.papaya.util.Ctx;
 import io.searchbox.annotations.JestId;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
@@ -40,8 +45,12 @@ public abstract class ElasticModel {
     @JestId
     protected String id;
 
+
     // is this model supposed to be pushed to database?
-    protected boolean publish = false;
+    protected transient boolean publish = false;
+
+    // has this model been pushed to database?
+    protected transient boolean published = false;
 
     /**
      * Construct (if necessary) and return a jest client to
@@ -138,6 +147,10 @@ public abstract class ElasticModel {
     }
 
     private static class ElasticChangeSet {
+
+        private static String changeListFile = "change_list.sav";
+
+
         private static List<ElasticModel> changeList = new ArrayList<ElasticModel>();
 
         public static Boolean contains(ElasticModel model){
@@ -152,10 +165,12 @@ public abstract class ElasticModel {
         }
 
         public static void commit(){
+
             for (ElasticModel model : changeList){
-                if (model.id == null){
+                if (model.id == null && model.publish == true){
                     //insert
                     // todo: offline storage
+                    model.published = true;
                     Index index = new Index.Builder(model)
                             .index(ElasticModel.index)
                             .type(model.kind.getName()).build();
@@ -164,6 +179,7 @@ public abstract class ElasticModel {
                         changeList.remove(model);
                     } catch (IOException e){
                         // todo: make more robust
+                        model.published = false;
                         e.printStackTrace();
                     }
                 } else {
@@ -171,6 +187,26 @@ public abstract class ElasticModel {
                     // OMG PANIC. :j No "updates" allowed. k?
                 }
             }
+        }
+
+        public static void saveChangeListFile(){
+
+            Gson gson = new Gson();
+            String s = gson.toJson(changeList);
+
+            FileOutputStream outputStream;
+
+            try {
+                outputStream = Ctx.get().openFileOutput(changeListFile, Context.MODE_PRIVATE);
+                outputStream.write(s.getBytes());
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public static void loadChangeListFile(){
+
         }
 
     }

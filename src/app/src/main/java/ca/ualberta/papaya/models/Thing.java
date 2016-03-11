@@ -26,8 +26,8 @@ public class Thing extends ElasticModel {
     private Thing.Status status = Status.AVAILABLE;
     private ArrayList<Tag> tags = new ArrayList<Tag>();
     private String description = "";
-    private Bitmap thumbnail; // todo: initialize with default blank photo.
-    private Bitmap photo;     // todo: initialize with default blank photo.
+
+    private Photo photo = new Photo();     // todo: initialize with default blank photo.
 
     public Thing(User owner){
 
