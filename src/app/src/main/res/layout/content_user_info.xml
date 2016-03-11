@@ -42,6 +42,4 @@
         android:id="@+id/contactInfo"
         android:layout_below="@+id/textContactInfo" />
 
-
-
 </RelativeLayout>

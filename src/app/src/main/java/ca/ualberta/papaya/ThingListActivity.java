@@ -62,8 +62,30 @@ public class ThingListActivity extends PapayaActivity {
             mTwoPane = true;
         }
 
-        FloatingActionButton addFloatingActionButton = (FloatingActionButton) findViewById(R.id.profile);
+        FloatingActionButton otherItemsFloatingActionButton = (FloatingActionButton) findViewById(R.id.otherItems);
+        otherItemsFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                System.err.println("TODO: IMPLEMENT");
+
+                // TODO: Implement
+                //Intent intent = new Intent(view.getContext(), ...);
+                //view.getContext().startActivity(intent);
+            }
+        });
+
+        FloatingActionButton addFloatingActionButton = (FloatingActionButton) findViewById(R.id.addItem);
         addFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), AddThingActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        FloatingActionButton profileFloatingActionButton = (FloatingActionButton) findViewById(R.id.profile);
+        profileFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), UserEditProfileActivity.class);
@@ -75,6 +97,15 @@ public class ThingListActivity extends PapayaActivity {
                 user.setEmail("ejones@ualberta.ca");
 
                 intent.putExtra(UserEditProfileActivity.USER_EXTRA, user);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        FloatingActionButton searchFloatingActionButton = (FloatingActionButton) findViewById(R.id.search);
+        searchFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ThingSearchActivity.class);
                 view.getContext().startActivity(intent);
             }
         });

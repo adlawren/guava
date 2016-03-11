@@ -15,6 +15,4 @@ public class PapayaActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Ctx.set(getApplicationContext());
     }
-
-
 }

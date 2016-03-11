@@ -8,6 +8,6 @@ public class ThingSearchActivity extends PapayaActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thing_search);
+        setContentView(R.layout.activity_item_search);
     }
 }
