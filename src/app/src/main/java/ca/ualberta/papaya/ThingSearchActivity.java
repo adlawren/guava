@@ -3,7 +3,7 @@ package ca.ualberta.papaya;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class ThingSearchActivity extends PapayaActivity {
+public class ThingSearchActivity extends AbstractPapayaActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

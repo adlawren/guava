@@ -9,7 +9,7 @@ import ca.ualberta.papaya.controllers.UserEditProfileController;
 import ca.ualberta.papaya.interfaces.Observer;
 import ca.ualberta.papaya.models.User;
 
-public class UserEditProfileActivity extends PapayaActivity implements Observer {
+public class UserEditProfileActivity extends AbstractPapayaActivity implements Observer {
 
     public static final String USER_EXTRA = "com.papaya.user.edit.profile.user.extra";
 
