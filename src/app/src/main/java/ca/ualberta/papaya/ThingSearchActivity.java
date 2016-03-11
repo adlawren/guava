@@ -7,7 +7,7 @@ import android.widget.EditText;
 
 import ca.ualberta.papaya.controllers.ThingSearchController;
 
-public class ThingSearchActivity extends PapayaActivity {
+public class ThingSearchActivity extends AbstractPapayaActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

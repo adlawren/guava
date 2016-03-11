@@ -7,7 +7,7 @@ import android.widget.EditText;
 import ca.ualberta.papaya.controllers.AddThingController;
 import ca.ualberta.papaya.controllers.ThingListController;
 
-public class AddThingActivity extends PapayaActivity {
+public class AddThingActivity extends AbstractPapayaActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

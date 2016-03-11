@@ -8,7 +8,7 @@ import ca.ualberta.papaya.util.Ctx;
 /**
  * Created by mghumphr on 3/10/16.
  */
-public class PapayaActivity  extends AppCompatActivity {
+public abstract class AbstractPapayaActivity  extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
