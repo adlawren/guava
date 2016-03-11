@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import ca.ualberta.papaya.models.User;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends PapayaActivity {
 
     public static final String USER_EXTRA = "com.papaya.user.profile.user.extra";
 

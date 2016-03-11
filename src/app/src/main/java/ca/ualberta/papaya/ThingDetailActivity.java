@@ -16,7 +16,7 @@ import android.view.MenuItem;
  * item details are presented side-by-side with a list of items
  * in a {@link ThingListActivity}.
  */
-public class ThingDetailActivity extends AppCompatActivity {
+public class ThingDetailActivity extends PapayaActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
