@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import ca.ualberta.papaya.controllers.ThingDetailController;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.Thing;
 
@@ -57,21 +58,11 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.deleteItem);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
+        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
+        editItemButton.setOnClickListener(ThingDetailController.getInstance().getEditItemOnClickListener(this));
 
-                // TODO: Implement
-                System.err.println("TODO: Implement deleteButton OnClickListener");
-
-//                ThrowawayDataManager.getInstance().deleteThing(index);
-//                Context context = v.getContext();
-//                Intent intent = new Intent(context, ThingListActivity.class);
-//                startActivity(intent);
-            }
-        });
-
+        FloatingActionButton deleteItemButton = (FloatingActionButton) findViewById(R.id.deleteItem);
+        deleteItemButton.setOnClickListener(ThingDetailController.getInstance().getDeleteItemOnClickListener(this));
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
