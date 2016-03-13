@@ -8,7 +8,7 @@ import ca.ualberta.papaya.controllers.UserEditProfileController;
 import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.User;
 
-public class UserEditProfileActivity extends AbstractPapayaActivity implements IObserver {
+public class UserEditProfileActivity extends AbstractPapayaActivity {
 
     public static final String USER_EXTRA = "ca.papaya.ualberta.user.edit.profile.user.extra";
 
@@ -24,10 +24,5 @@ public class UserEditProfileActivity extends AbstractPapayaActivity implements I
 
         FloatingActionButton saveButton = (FloatingActionButton) findViewById(R.id.saveProfile);
         saveButton.setOnClickListener(UserEditProfileController.getInstance().getSaveOnClickListener(this, userEmailEditText));
-    }
-
-    @Override
-    public void update() {
-
     }
 }

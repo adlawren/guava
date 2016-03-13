@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ca.ualberta.papaya.interfaces.IDataManager;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Observable;
 
 /**
  * Created by VK on 12/03/2016.
@@ -16,22 +17,40 @@ import ca.ualberta.papaya.models.User;
  */
 public class ThrowawayDataManager implements IDataManager {
 
+    private static Observable<User> observedCurrentUser = null;
+    public Observable<User> getObservedCurrentUser() {
+        return observedCurrentUser;
+    }
+
+    private static Observable<ArrayList<Thing>> observedCurrentUserThings = null;
+    public Observable<ArrayList<Thing>> getObservedCurrentUserThings() {
+        return observedCurrentUserThings;
+    }
+
     private ArrayList<Thing> things = new ArrayList<Thing>();
+    public ArrayList<Thing> getThings(){
+        return things;
+    }
 
     private void initThrowawayData() {
 
-        User owner = new User(), borrower = new User();
-        owner.setFirstName("Emily");
-        owner.setLastName("Jones");
-        owner.setEmail("ejones@ualberta.ca");
+        User currentUser = new User(), borrower = new User();
+        currentUser.setFirstName("Emily");
+        currentUser.setLastName("Jones");
+        currentUser.setEmail("ejones@ualberta.ca");
+
+
+        observedCurrentUser = new Observable<User>(currentUser);
 
         for (int i = 0; i < 15; ++i) {
             Thing thing = new Thing(getCurrentUser());
             thing.setDescription("Thing " + i);
-            thing.setOwner(owner);
+            thing.setOwner(currentUser);
 
             things.add(thing);
         }
+
+        observedCurrentUserThings = new Observable<ArrayList<Thing>>(things);
     }
 
     private static ThrowawayDataManager ourInstance = new ThrowawayDataManager();
@@ -44,25 +63,21 @@ public class ThrowawayDataManager implements IDataManager {
         initThrowawayData();
     }
 
-    public ArrayList<Thing> getThings(){
-        return things;
-    }
-
-    public void addThings(Thing thing){
-        things.add(thing);
-    }
-
-    public void deleteThing(int index){
-
-        System.err.println(index);
-        System.err.println(things.size());
-        things.remove(index);
-    }
-
-    public Thing getThingAt(int index){
-
-        return things.get(index);
-    }
+//    public void addThings(Thing thing){
+//        things.add(thing);
+//    }
+//
+//    public void deleteThing(int index){
+//
+//        System.err.println(index);
+//        System.err.println(things.size());
+//        things.remove(index);
+//    }
+//
+//    public Thing getThingAt(int index){
+//
+//        return things.get(index);
+//    }
 
     // TODO: Implement
     @Override
@@ -77,11 +92,6 @@ public class ThrowawayDataManager implements IDataManager {
     public User getCurrentUser() {
 
         // TODO: Integrate functionality to obtain the actual user
-        User user = new User();
-        user.setFirstName("Emily");
-        user.setLastName("Jones");
-        user.setEmail("ejones@ualberta.ca");
-
-        return user;
+        return observedCurrentUser.getData();
     }
 }

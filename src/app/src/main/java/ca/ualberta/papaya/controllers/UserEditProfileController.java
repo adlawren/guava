@@ -22,21 +22,9 @@ public class UserEditProfileController {
 
     private UserEditProfileController() {}
 
-    private ArrayList<IObserver> observers;
-
-    private void updateObservers() {
-        for (IObserver observer : observers) {
-            observer.update();
-        }
-    }
-
     private void transitionToActivity(Context context, Class activityClass) {
         Intent intent = new Intent(context, activityClass);
         context.startActivity(intent);
-    }
-
-    public void addObserver(IObserver observer) {
-        observers.add(observer);
     }
 
     private class SaveOnClickListener implements View.OnClickListener {
