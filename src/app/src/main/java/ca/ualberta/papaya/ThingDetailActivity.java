@@ -4,22 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import ca.ualberta.papaya.models.Thing;
-import ca.ualberta.papaya.models.tempThings;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
 
 /**
  * An activity representing a single Thing detail screen. This
@@ -39,7 +29,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         Intent intent = getIntent();
         final int index = intent.getIntExtra("position", 0);
 
-        //Thing tempThing = tempThings.getInstance().getThingAt(index);
+        //Thing tempThing = ThrowawayDataManager.getInstance().getThingAt(index);
         //ListView details = (ListView) findViewById(R.id.bids);
         //details = (EditText) findViewById(R.id.thing_detail_container);
         //details.setText(tempThing.getTitle());
@@ -64,7 +54,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                tempThings.getInstance().deleteThing(index);
+                ThrowawayDataManager.getInstance().deleteThing(index);
                 Context context = v.getContext();
                 Intent intent = new Intent(context, ThingListActivity.class);
                 startActivity(intent);

@@ -4,28 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.support.v7.app.ActionBarActivity;
 
 
 import ca.ualberta.papaya.controllers.ThingListController;
-import ca.ualberta.papaya.dummy.DummyContent;
-import ca.ualberta.papaya.fixtures.Country;
-import ca.ualberta.papaya.fixtures.Province;
 import ca.ualberta.papaya.models.Thing;
-import ca.ualberta.papaya.models.User;
-import ca.ualberta.papaya.models.tempThings;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,8 +35,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
      */
     private boolean mTwoPane;
 
-    //TODO: Remove usage of tempThings
-    //ArrayList<Thing> tempThings = new ArrayList<>();
+    //TODO: Remove usage of ThrowawayDataManager
+    //ArrayList<Thing> ThrowawayDataManager = new ArrayList<>();
 
 
     @Override
@@ -86,7 +77,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(tempThings.getInstance().getThings()));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(ThrowawayDataManager.getInstance().getThings()));
     }
 
     public class SimpleItemRecyclerViewAdapter

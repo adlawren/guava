@@ -7,8 +7,8 @@ import android.widget.EditText;
 
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.User;
-import ca.ualberta.papaya.models.tempThings;
 
 /**
  * Created by adlawren on 10/03/16.
@@ -43,6 +43,9 @@ public class AddThingController {
         public void onClick(View view) {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
+
+            //System.err.println("TODO: IMPLEMENT");
+
             //TODO: Set up with ElasticSearch
             User user = new User();
             user.setFirstName("Emily");
@@ -51,10 +54,9 @@ public class AddThingController {
             Thing newThing = new Thing(user);
             newThing.setTitle(itemName);
             newThing.setDescription(description);
-            tempThings.getInstance().addThings(newThing);
+            ThrowawayDataManager.getInstance().addThings(newThing);
             System.err.println("added 1");
-            System.err.println(tempThings.getInstance().getThings().size());
-            //System.err.println("TODO: IMPLEMENT");
+            System.err.println(ThrowawayDataManager.getInstance().getThings().size());
 
             transitionToActivity(context, ThingListActivity.class);
         }

@@ -8,7 +8,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 import ca.ualberta.papaya.ThingListActivity;
-import ca.ualberta.papaya.interfaces.Observer;
+import ca.ualberta.papaya.interfaces.IObserver;
 
 /**
  * Created by adlawren on 07/03/16.
@@ -22,10 +22,10 @@ public class UserEditProfileController {
 
     private UserEditProfileController() {}
 
-    private ArrayList<Observer> observers;
+    private ArrayList<IObserver> observers;
 
     private void updateObservers() {
-        for (Observer observer : observers) {
+        for (IObserver observer : observers) {
             observer.update();
         }
     }
@@ -35,7 +35,7 @@ public class UserEditProfileController {
         context.startActivity(intent);
     }
 
-    public void addObserver(Observer observer) {
+    public void addObserver(IObserver observer) {
         observers.add(observer);
     }
 

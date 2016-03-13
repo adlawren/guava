@@ -1,15 +1,14 @@
 package ca.ualberta.papaya;
 
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 
 import ca.ualberta.papaya.controllers.UserEditProfileController;
-import ca.ualberta.papaya.interfaces.Observer;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.User;
 
-public class UserEditProfileActivity extends AbstractPapayaActivity implements Observer {
+public class UserEditProfileActivity extends AbstractPapayaActivity implements IObserver {
 
     public static final String USER_EXTRA = "com.papaya.user.edit.profile.user.extra";
 
