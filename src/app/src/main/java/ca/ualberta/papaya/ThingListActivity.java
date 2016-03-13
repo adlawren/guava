@@ -116,6 +116,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ThingDetailActivity.class);
+                        intent.putExtra(ThingDetailActivity.THING_EXTRA, holder.mItem);
+
                         intent.putExtra(ThingDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
                         //intent.putExtra("position", position);
 

@@ -10,7 +10,7 @@ import ca.ualberta.papaya.models.User;
 
 public class UserEditProfileActivity extends AbstractPapayaActivity implements IObserver {
 
-    public static final String USER_EXTRA = "com.papaya.user.edit.profile.user.extra";
+    public static final String USER_EXTRA = "ca.papaya.ualberta.user.edit.profile.user.extra";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

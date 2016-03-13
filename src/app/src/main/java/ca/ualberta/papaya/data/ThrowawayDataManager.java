@@ -75,8 +75,8 @@ public class ThrowawayDataManager implements IDataManager {
     // TODO: Implement
     @Override
     public User getCurrentUser() {
-        System.err.println("TODO: Implement getCurrentUser");
 
+        // TODO: Integrate functionality to obtain the actual user
         User user = new User();
         user.setFirstName("Emily");
         user.setLastName("Jones");

@@ -8,8 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.models.Thing;
 
 /**
  * An activity representing a single Thing detail screen. This
@@ -19,6 +21,8 @@ import ca.ualberta.papaya.data.ThrowawayDataManager;
  */
 public class ThingDetailActivity extends AbstractPapayaActivity {
 
+    public static final String THING_EXTRA = "ca.papaya.ualberta.thing.detail.thing.extra";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +31,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        //final int index = intent.getIntExtra("position", 0);
+        Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
         //Thing tempThing = ThrowawayDataManager.getInstance().getThingAt(index);
         //ListView details = (ListView) findViewById(R.id.bids);
@@ -43,6 +47,9 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         //ArrayAdapter<String> adapter;
         //adapter = new ArrayAdapter<>(this, R.layout.activity_thing_detail, items);
         //details.setAdapter(adapter);
+
+        TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);
+        thingDetailTextView.setText(thing.getDescription());
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
