@@ -38,7 +38,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
     //TODO: Remove usage of ThrowawayDataManager
     //ArrayList<Thing> ThrowawayDataManager = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +46,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
-
 
         View recyclerView = findViewById(R.id.thing_list);
         assert recyclerView != null;
@@ -76,8 +74,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(ThrowawayDataManager.getInstance().getThings()));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(ThrowawayDataManager.getInstance()
+                .getCurrentUserThingsObservable().getData()));
     }
 
     public class SimpleItemRecyclerViewAdapter

@@ -18,19 +18,23 @@ import ca.ualberta.papaya.util.Observable;
 public class ThrowawayDataManager implements IDataManager {
 
     private static Observable<User> observedCurrentUser = null;
-    public Observable<User> getObservedCurrentUser() {
+
+    @Override
+    public Observable<User> getCurrentUserObservable() {
         return observedCurrentUser;
     }
 
     private static Observable<ArrayList<Thing>> observedCurrentUserThings = null;
-    public Observable<ArrayList<Thing>> getObservedCurrentUserThings() {
+
+    @Override
+    public Observable<ArrayList<Thing>> getCurrentUserThingsObservable() {
         return observedCurrentUserThings;
     }
 
     private ArrayList<Thing> things = new ArrayList<Thing>();
-    public ArrayList<Thing> getThings(){
-        return things;
-    }
+//    public ArrayList<Thing> getThings(){
+//        return things;
+//    }
 
     private void initThrowawayData() {
 
@@ -39,11 +43,10 @@ public class ThrowawayDataManager implements IDataManager {
         currentUser.setLastName("Jones");
         currentUser.setEmail("ejones@ualberta.ca");
 
-
         observedCurrentUser = new Observable<User>(currentUser);
 
         for (int i = 0; i < 15; ++i) {
-            Thing thing = new Thing(getCurrentUser());
+            Thing thing = new Thing(getCurrentUserObservable().getData());
             thing.setDescription("Thing " + i);
             thing.setOwner(currentUser);
 
@@ -78,20 +81,4 @@ public class ThrowawayDataManager implements IDataManager {
 //
 //        return things.get(index);
 //    }
-
-    // TODO: Implement
-    @Override
-    public ArrayList<Thing> getLoadedThings() {
-        System.err.println("TODO: Implement getLoadedThings");
-
-        return new ArrayList<Thing>();
-    }
-
-    // TODO: Implement
-    @Override
-    public User getCurrentUser() {
-
-        // TODO: Integrate functionality to obtain the actual user
-        return observedCurrentUser.getData();
-    }
 }

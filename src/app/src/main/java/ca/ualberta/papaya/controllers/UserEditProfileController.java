@@ -8,7 +8,9 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 import ca.ualberta.papaya.ThingListActivity;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.User;
 
 /**
  * Created by adlawren on 07/03/16.
@@ -42,8 +44,10 @@ public class UserEditProfileController {
         public void onClick(View view) {
             String email = emailEditText.getText().toString();
 
-            // TODO: Save the profile updates
-            // ...
+            User user = ThrowawayDataManager.getInstance().getCurrentUserObservable().getData();
+            user.setEmail(email);
+
+            ThrowawayDataManager.getInstance().getCurrentUserObservable().setData(user);
 
             transitionToActivity(context, ThingListActivity.class);
         }
