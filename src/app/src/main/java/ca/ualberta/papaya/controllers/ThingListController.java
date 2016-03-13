@@ -79,7 +79,7 @@ public class ThingListController {
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), UserEditProfileActivity.class);
 
-            // TODO: Retrieve user information properly
+            // TODO: Implement using actual data
             User user = new User();
             user.setFirstName("Emily");
             user.setLastName("Jones");
