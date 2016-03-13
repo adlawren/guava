@@ -11,12 +11,28 @@ import ca.ualberta.papaya.models.User;
  *
  * Edited by adlawren on 13/03/2016
  *
- * Note: Originally named ThrowawayDataManager.java
+ * Note: Originally named tempThings.java
  *
  */
 public class ThrowawayDataManager implements IDataManager {
 
     private ArrayList<Thing> things = new ArrayList<Thing>();
+
+    private void initThrowawayData() {
+
+        User owner = new User(), borrower = new User();
+        owner.setFirstName("Emily");
+        owner.setLastName("Jones");
+        owner.setEmail("ejones@ualberta.ca");
+
+        for (int i = 0; i < 15; ++i) {
+            Thing thing = new Thing(getCurrentUser());
+            thing.setDescription("Thing " + i);
+            thing.setOwner(owner);
+
+            things.add(thing);
+        }
+    }
 
     private static ThrowawayDataManager ourInstance = new ThrowawayDataManager();
 
@@ -25,7 +41,7 @@ public class ThrowawayDataManager implements IDataManager {
     }
 
     private ThrowawayDataManager() {
-
+        initThrowawayData();
     }
 
     public ArrayList<Thing> getThings(){
@@ -61,6 +77,11 @@ public class ThrowawayDataManager implements IDataManager {
     public User getCurrentUser() {
         System.err.println("TODO: Implement getCurrentUser");
 
-        return new User();
+        User user = new User();
+        user.setFirstName("Emily");
+        user.setLastName("Jones");
+        user.setEmail("ejones@ualberta.ca");
+
+        return user;
     }
 }

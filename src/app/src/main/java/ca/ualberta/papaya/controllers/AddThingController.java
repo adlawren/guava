@@ -44,19 +44,20 @@ public class AddThingController {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
 
-            //System.err.println("TODO: IMPLEMENT");
+            // TODO: Implement
+            System.err.println("TODO: IMPLEMENT");
 
             //TODO: Set up with ElasticSearch
-            User user = new User();
-            user.setFirstName("Emily");
-            user.setLastName("Jones");
-            user.setEmail("ejones@ualberta.ca");
-            Thing newThing = new Thing(user);
-            newThing.setTitle(itemName);
-            newThing.setDescription(description);
-            ThrowawayDataManager.getInstance().addThings(newThing);
-            System.err.println("added 1");
-            System.err.println(ThrowawayDataManager.getInstance().getThings().size());
+//            User user = new User();
+//            user.setFirstName("Emily");
+//            user.setLastName("Jones");
+//            user.setEmail("ejones@ualberta.ca");
+//            Thing newThing = new Thing(user);
+//            newThing.setTitle(itemName);
+//            newThing.setDescription(description);
+//            ThrowawayDataManager.getInstance().addThings(newThing);
+//            System.err.println("added 1");
+//            System.err.println(ThrowawayDataManager.getInstance().getThings().size());
 
             transitionToActivity(context, ThingListActivity.class);
         }

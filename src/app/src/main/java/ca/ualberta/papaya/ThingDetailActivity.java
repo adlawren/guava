@@ -27,7 +27,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        final int index = intent.getIntExtra("position", 0);
+        //final int index = intent.getIntExtra("position", 0);
 
         //Thing tempThing = ThrowawayDataManager.getInstance().getThingAt(index);
         //ListView details = (ListView) findViewById(R.id.bids);
@@ -54,10 +54,14 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                ThrowawayDataManager.getInstance().deleteThing(index);
-                Context context = v.getContext();
-                Intent intent = new Intent(context, ThingListActivity.class);
-                startActivity(intent);
+
+                // TODO: Implement
+                System.err.println("TODO: Implement deleteButton OnClickListener");
+
+//                ThrowawayDataManager.getInstance().deleteThing(index);
+//                Context context = v.getContext();
+//                Intent intent = new Intent(context, ThingListActivity.class);
+//                startActivity(intent);
             }
         });
 

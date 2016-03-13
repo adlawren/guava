@@ -97,10 +97,10 @@ public class ThingListActivity extends AbstractPapayaActivity {
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, final int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).getId());
-            holder.mContentView.setText(mValues.get(position).getTitle());
+            holder.mIdView.setText(mValues.get(position).getOwnerName()); // .getId()
+            holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -117,7 +117,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ThingDetailActivity.class);
                         intent.putExtra(ThingDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
-                        intent.putExtra("position", position);
+                        //intent.putExtra("position", position);
 
                         context.startActivity(intent);
                     }
