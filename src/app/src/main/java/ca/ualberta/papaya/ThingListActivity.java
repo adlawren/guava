@@ -21,8 +21,11 @@ import ca.ualberta.papaya.controllers.ThingListController;
 import ca.ualberta.papaya.dummy.DummyContent;
 import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
+import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.models.tempThings;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +43,10 @@ public class ThingListActivity extends AbstractPapayaActivity {
      * device.
      */
     private boolean mTwoPane;
+
+    //TODO: Remove usage of tempThings
+    //ArrayList<Thing> tempThings = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,15 +85,16 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(tempThings.getInstance().getThings()));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<Thing> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public SimpleItemRecyclerViewAdapter(List<Thing> items) {
             mValues = items;
         }
 
@@ -98,17 +106,17 @@ public class ThingListActivity extends AbstractPapayaActivity {
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mIdView.setText(mValues.get(position).getId());
+            holder.mContentView.setText(mValues.get(position).getTitle());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(ThingDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        arguments.putString(ThingDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
                         ThingDetailFragment fragment = new ThingDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -117,7 +125,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ThingDetailActivity.class);
-                        intent.putExtra(ThingDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        intent.putExtra(ThingDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
+                        intent.putExtra("position", position);
 
                         context.startActivity(intent);
                     }
@@ -134,7 +143,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public Thing mItem;
 
             public ViewHolder(View view) {
                 super(view);
