@@ -17,24 +17,19 @@ import ca.ualberta.papaya.util.Observable;
  */
 public class ThrowawayDataManager implements IDataManager {
 
-    private static Observable<User> observedCurrentUser = null;
+    private static Observable<User> currentUserObservable = null;
 
     @Override
     public Observable<User> getCurrentUserObservable() {
-        return observedCurrentUser;
+        return currentUserObservable;
     }
 
-    private static Observable<ArrayList<Thing>> observedCurrentUserThings = null;
+    private static Observable<ArrayList<Thing>> currentUserThingsObservable = null;
 
     @Override
     public Observable<ArrayList<Thing>> getCurrentUserThingsObservable() {
-        return observedCurrentUserThings;
+        return currentUserThingsObservable;
     }
-
-    private ArrayList<Thing> things = new ArrayList<Thing>();
-//    public ArrayList<Thing> getThings(){
-//        return things;
-//    }
 
     private void initThrowawayData() {
 
@@ -43,17 +38,19 @@ public class ThrowawayDataManager implements IDataManager {
         currentUser.setLastName("Jones");
         currentUser.setEmail("ejones@ualberta.ca");
 
-        observedCurrentUser = new Observable<User>(currentUser);
+        currentUserObservable.setData(currentUser);
 
+        ArrayList<Thing> things = new ArrayList<>();
         for (int i = 0; i < 15; ++i) {
             Thing thing = new Thing(getCurrentUserObservable().getData());
-            thing.setDescription("Thing " + i);
+            thing.setTitle("Thing " + (i + 1));
+            thing.setDescription("Description " + (i + 1));
             thing.setOwner(currentUser);
 
             things.add(thing);
         }
 
-        observedCurrentUserThings = new Observable<ArrayList<Thing>>(things);
+        currentUserThingsObservable.setData(things);
     }
 
     private static ThrowawayDataManager ourInstance = new ThrowawayDataManager();
@@ -63,13 +60,12 @@ public class ThrowawayDataManager implements IDataManager {
     }
 
     private ThrowawayDataManager() {
+        currentUserObservable = new Observable<>(null);
+        currentUserThingsObservable = new Observable<>(null);
+
         initThrowawayData();
     }
 
-//    public void addThings(Thing thing){
-//        things.add(thing);
-//    }
-//
 //    public void deleteThing(int index){
 //
 //        System.err.println(index);

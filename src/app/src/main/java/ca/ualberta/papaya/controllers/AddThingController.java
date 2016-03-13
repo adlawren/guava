@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
@@ -44,20 +46,17 @@ public class AddThingController {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
 
-            // TODO: Implement
-            System.err.println("TODO: IMPLEMENT");
+            Thing thing = new Thing(ThrowawayDataManager.getInstance().getCurrentUserObservable()
+                    .getData());
+            thing.setTitle(itemName);
+            thing.setDescription(description);
 
             //TODO: Set up with ElasticSearch
-//            User user = new User();
-//            user.setFirstName("Emily");
-//            user.setLastName("Jones");
-//            user.setEmail("ejones@ualberta.ca");
-//            Thing newThing = new Thing(user);
-//            newThing.setTitle(itemName);
-//            newThing.setDescription(description);
-//            ThrowawayDataManager.getInstance().addThings(newThing);
-//            System.err.println("added 1");
-//            System.err.println(ThrowawayDataManager.getInstance().getThings().size());
+            ArrayList<Thing> things = ThrowawayDataManager.getInstance()
+                    .getCurrentUserThingsObservable().getData();
+            things.add(thing);
+            ThrowawayDataManager.getInstance().getInstance().getCurrentUserThingsObservable()
+                    .setData(things);
 
             transitionToActivity(context, ThingListActivity.class);
         }

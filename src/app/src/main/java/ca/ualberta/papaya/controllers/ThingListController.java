@@ -79,15 +79,9 @@ public class ThingListController {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), UserEditProfileActivity.class);
-
-            // TODO: Retrieve user information properly
-//            User user = new User();
-//            user.setFirstName("Emily");
-//            user.setLastName("Jones");
-//            user.setEmail("ejones@ualberta.ca");
-
             intent.putExtra(UserEditProfileActivity.USER_EXTRA, ThrowawayDataManager.getInstance()
                     .getCurrentUserObservable().getData());
+
             view.getContext().startActivity(intent);
         }
     }

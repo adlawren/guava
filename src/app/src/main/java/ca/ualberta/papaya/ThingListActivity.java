@@ -97,7 +97,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).getOwnerName()); // .getId()
+            holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
             holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
 
             holder.mView.setOnClickListener(new View.OnClickListener() {

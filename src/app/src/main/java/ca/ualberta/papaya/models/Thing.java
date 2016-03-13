@@ -30,8 +30,10 @@ public class Thing extends ElasticModel {
     private Photo photo = new Photo();     // todo: initialize with default blank photo.
 
     public Thing(User owner){
-
         super();
+
+        // TODO: Update
+        ownerName = owner.getName();
     }
 
     public User getOwner(){ return (User)User.getById(ownerId); }
@@ -95,8 +97,6 @@ public class Thing extends ElasticModel {
     public List<Bid> getBids(){
         return new ArrayList<Bid>();
     }
-
-
 
     public String toString(){
         return title;
