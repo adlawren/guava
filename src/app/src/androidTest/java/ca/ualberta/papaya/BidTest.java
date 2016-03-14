@@ -144,8 +144,7 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
 
-        // TODO: Implement
-        //assertTrue(owner.notifiedOfBid(bid));
+        assertTrue(owner.notifiedOfBid(bid));
 
         assertTrue(false);
     }
@@ -166,9 +165,8 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
 
-        // TODO: Implement
-        //owner.acceptBid(thing1, bid);
-        //assertTrue(borrower.notifiedOfAcceptedBid(bid));
+        owner.acceptBid(thing1, bid);
+        assertTrue(borrower.notifiedOfAcceptedBid(bid));
 
         assertTrue(false);
     }
@@ -189,9 +187,8 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
 
-        // TODO: Implement
-        //owner.declineBid(thing, bid);
-        //assertTrue(borrower.notifiedOfDeclinedBid(bid));
+        owner.declineBid(thing, bid);
+        assertTrue(borrower.notifiedOfDeclinedBid(bid));
 
         assertTrue(false);
     }

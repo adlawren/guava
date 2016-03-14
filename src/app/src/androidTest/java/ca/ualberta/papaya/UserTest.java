@@ -222,11 +222,11 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         Thing thing2 = new Thing(owner);
         assertEquals(2, owner.getThings());
 
-        // owner.deleteItemAtIndex[1]; // TODO: fix; functionality currently unsupported by User class
+        owner.deleteItemAtIndex[1];
 
         assertEquals(1, owner.getThings().size());
 
-        // owner.deleteItemAtIndex[0]; // See above
+        owner.deleteItemAtIndex[0]; // See above
         assertEquals(0, owner.getThings().size());
     }
 
@@ -327,7 +327,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
 
-        //owner.acceptBid(thing1, bid);
+        owner.acceptBid(thing1, bid);
 
         assertEquals(Thing.Status.BORROWED, bid1.getThing().getStatus());
         assertEquals(Thing.Status.AVAILABLE, bid2.getThing().getStatus());
@@ -359,7 +359,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
         assertEquals(2, thing1.getBids().size());
 
-        //owner.declineBid(thing1, bid);
+        owner.declineBid(thing1, bid);
 
         assertEquals(1, thing1.getBids().size());
 

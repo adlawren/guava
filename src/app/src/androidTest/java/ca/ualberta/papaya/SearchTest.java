@@ -20,13 +20,13 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
     /*
     Use Case: US 04.01.01 - KeywordsSearch
      */
-//    public void testKeywordSearch(){
-//        User user = new User();
-//        Thing thing = new Thing(user);
-//        thing.setTitle("Oven");
-//
-//        ArrayList<Thing> searchResults = getSearchResults("oven");
-//
-//        assertEquals(thing.getTitle(), searchResults[0].getTitle());
-//    }
+    public void testKeywordSearch(){
+        User user = new User();
+        Thing thing = new Thing(user);
+        thing.setTitle("Oven");
+
+        ArrayList<Thing> searchResults = getSearchResults("oven");
+
+        assertEquals(thing.getTitle(), searchResults[0].getTitle());
+    }
 }
