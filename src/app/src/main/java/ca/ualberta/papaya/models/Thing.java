@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 
@@ -34,6 +35,7 @@ public class Thing extends ElasticModel {
 
         // TODO: Update
         ownerName = owner.getName();
+        id = UUID.randomUUID().toString();
     }
 
     public User getOwner(){ return (User)User.getById(ownerId); }

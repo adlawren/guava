@@ -62,7 +62,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         editItemButton.setOnClickListener(ThingDetailController.getInstance().getEditItemOnClickListener(this));
 
         FloatingActionButton deleteItemButton = (FloatingActionButton) findViewById(R.id.deleteItem);
-        deleteItemButton.setOnClickListener(ThingDetailController.getInstance().getDeleteItemOnClickListener(this));
+        deleteItemButton.setOnClickListener(ThingDetailController.getInstance()
+                .getDeleteItemOnClickListener(this, thing));
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
