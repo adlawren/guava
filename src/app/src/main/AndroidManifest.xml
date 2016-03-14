@@ -33,7 +33,8 @@
         <activity android:name=".UserEditProfileActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".AddThingActivity" />
-        <activity android:name=".ThingSearchActivity"></activity>
+        <activity android:name=".ThingSearchActivity" />
+        <activity android:name=".EditThingActivity"></activity>
     </application>
 
 </manifest>

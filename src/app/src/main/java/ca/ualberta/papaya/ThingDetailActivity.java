@@ -34,21 +34,6 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         Intent intent = getIntent();
         Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
-        //Thing tempThing = ThrowawayDataManager.getInstance().getThingAt(index);
-        //ListView details = (ListView) findViewById(R.id.bids);
-        //details = (EditText) findViewById(R.id.thing_detail_container);
-        //details.setText(tempThing.getTitle());
-        //NestedScrollView details = (NestedScrollView) findViewById(R.id.thing_detail_container);
-        //TextView tv1 = new TextView(this);
-        //tv1.setText(tempThing.getTitle());
-        //details.addView(tv1);
-        //ArrayList<String> items = new ArrayList<>();
-        //items.add(tempThing.getTitle());
-        //items.add(tempThing.getDescription());
-        //ArrayAdapter<String> adapter;
-        //adapter = new ArrayAdapter<>(this, R.layout.activity_thing_detail, items);
-        //details.setAdapter(adapter);
-
         TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);
         thingDetailTextView.setText(thing.getDescription());
 
@@ -59,7 +44,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         }
 
         FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
-        editItemButton.setOnClickListener(ThingDetailController.getInstance().getEditItemOnClickListener(this));
+        editItemButton.setOnClickListener(ThingDetailController.getInstance()
+                .getEditItemOnClickListener(this, thing));
 
         FloatingActionButton deleteItemButton = (FloatingActionButton) findViewById(R.id.deleteItem);
         deleteItemButton.setOnClickListener(ThingDetailController.getInstance()

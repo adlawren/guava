@@ -6,6 +6,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import ca.ualberta.papaya.EditThingActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.Thing;
@@ -32,20 +33,24 @@ public class ThingDetailController {
 
         private Context context;
 
-        public EditItemOnClickListener(Context initialContext) {
+        private Thing thing;
+
+        public EditItemOnClickListener(Context initialContext, Thing initialThing) {
             context = initialContext;
+            thing = initialThing;
         }
 
         @Override
         public void onClick(View view) {
+            Intent intent = new Intent(context, EditThingActivity.class);
+            intent.putExtra(EditThingActivity.THING_EXTRA, thing);
 
-            // TODO: Implement
-            System.err.println("TODO: Implement EditItemOnClickListener");
+            context.startActivity(intent);
         }
     }
 
-    public EditItemOnClickListener getEditItemOnClickListener(Context initialContext) {
-        return new EditItemOnClickListener(initialContext);
+    public EditItemOnClickListener getEditItemOnClickListener(Context initialContext, Thing initialThing) {
+        return new EditItemOnClickListener(initialContext, initialThing);
     }
 
     private class DeleteItemOnClickListener implements View.OnClickListener {
@@ -75,6 +80,8 @@ public class ThingDetailController {
             } else {
                 System.err.println("[ThingDetailController.DeleteItemOnClickListener] ERROR: Thing not found.");
             }
+
+            ThrowawayDataManager.getInstance().getCurrentUserThingsObservable().setData(things);
 
             transitionToActivity(context, ThingListActivity.class);
         }
