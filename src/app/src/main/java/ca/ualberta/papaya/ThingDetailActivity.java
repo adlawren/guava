@@ -4,22 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
+import ca.ualberta.papaya.controllers.ThingDetailController;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.Thing;
-import ca.ualberta.papaya.models.tempThings;
 
 /**
  * An activity representing a single Thing detail screen. This
@@ -29,6 +22,8 @@ import ca.ualberta.papaya.models.tempThings;
  */
 public class ThingDetailActivity extends AbstractPapayaActivity {
 
+    public static final String THING_EXTRA = "ca.papaya.ualberta.thing.detail.thing.extra";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,22 +32,10 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        final int index = intent.getIntExtra("position", 0);
+        Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
-        //Thing tempThing = tempThings.getInstance().getThingAt(index);
-        //ListView details = (ListView) findViewById(R.id.bids);
-        //details = (EditText) findViewById(R.id.thing_detail_container);
-        //details.setText(tempThing.getTitle());
-        //NestedScrollView details = (NestedScrollView) findViewById(R.id.thing_detail_container);
-        //TextView tv1 = new TextView(this);
-        //tv1.setText(tempThing.getTitle());
-        //details.addView(tv1);
-        //ArrayList<String> items = new ArrayList<>();
-        //items.add(tempThing.getTitle());
-        //items.add(tempThing.getDescription());
-        //ArrayAdapter<String> adapter;
-        //adapter = new ArrayAdapter<>(this, R.layout.activity_thing_detail, items);
-        //details.setAdapter(adapter);
+        TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);
+        thingDetailTextView.setText(thing.getDescription());
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -60,17 +43,13 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.deleteItem);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                tempThings.getInstance().deleteThing(index);
-                Context context = v.getContext();
-                Intent intent = new Intent(context, ThingListActivity.class);
-                startActivity(intent);
-            }
-        });
+        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
+        editItemButton.setOnClickListener(ThingDetailController.getInstance()
+                .getEditItemOnClickListener(this, thing));
 
+        FloatingActionButton deleteItemButton = (FloatingActionButton) findViewById(R.id.deleteItem);
+        deleteItemButton.setOnClickListener(ThingDetailController.getInstance()
+                .getDeleteItemOnClickListener(this, thing));
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity

@@ -6,8 +6,8 @@ import android.view.View;
 
 import ca.ualberta.papaya.AddThingActivity;
 import ca.ualberta.papaya.ThingSearchActivity;
-import ca.ualberta.papaya.UserEditProfileActivity;
-import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.EditUserProfileActivity;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
 
 /**
  * Created by adlawren on 10/03/16.
@@ -77,15 +77,10 @@ public class ThingListController {
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(), UserEditProfileActivity.class);
+            Intent intent = new Intent(view.getContext(), EditUserProfileActivity.class);
+            intent.putExtra(EditUserProfileActivity.USER_EXTRA, ThrowawayDataManager.getInstance()
+                    .getCurrentUser(context));
 
-            // TODO: Retrieve user information properly
-            User user = new User();
-            user.setFirstName("Emily");
-            user.setLastName("Jones");
-            user.setEmail("ejones@ualberta.ca");
-
-            intent.putExtra(UserEditProfileActivity.USER_EXTRA, user);
             view.getContext().startActivity(intent);
         }
     }

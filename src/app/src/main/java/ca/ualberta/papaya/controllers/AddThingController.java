@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.User;
-import ca.ualberta.papaya.models.tempThings;
 
 /**
  * Created by adlawren on 10/03/16.
@@ -43,18 +45,17 @@ public class AddThingController {
         public void onClick(View view) {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
+
+            Thing thing = new Thing(ThrowawayDataManager.getInstance().getCurrentUser(context));
+
+            thing.setTitle(itemName);
+            thing.setDescription(description);
+
             //TODO: Set up with ElasticSearch
-            User user = new User();
-            user.setFirstName("Emily");
-            user.setLastName("Jones");
-            user.setEmail("ejones@ualberta.ca");
-            Thing newThing = new Thing(user);
-            newThing.setTitle(itemName);
-            newThing.setDescription(description);
-            tempThings.getInstance().addThings(newThing);
-            System.err.println("added 1");
-            System.err.println(tempThings.getInstance().getThings().size());
-            //System.err.println("TODO: IMPLEMENT");
+            ArrayList<Thing> things = ThrowawayDataManager.getInstance().getCurrentUserThings(context);
+
+            things.add(thing);
+            ThrowawayDataManager.getInstance().getInstance().setCurrentUserThings(context, things);
 
             transitionToActivity(context, ThingListActivity.class);
 
@@ -93,7 +94,10 @@ public class AddThingController {
         }
     }
 
-    public SaveOnClickListener getSaveOnClickListener(Context initialContext, EditText initialItemNameEditText, EditText initialDescriptionEditText) {
-        return new SaveOnClickListener(initialContext, initialItemNameEditText, initialDescriptionEditText);
+    public SaveOnClickListener getSaveOnClickListener(Context initialContext,
+                                                      EditText initialItemNameEditText,
+                                                      EditText initialDescriptionEditText) {
+        return new SaveOnClickListener(initialContext, initialItemNameEditText,
+                initialDescriptionEditText);
     }
 }
