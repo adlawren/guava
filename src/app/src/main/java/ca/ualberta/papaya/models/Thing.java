@@ -2,6 +2,7 @@ package ca.ualberta.papaya.models;
 
 import android.graphics.Bitmap;
 
+import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,9 @@ public class Thing extends ElasticModel {
     private String ownerId;
     private String ownerName;
 
+    // TODO: Fix
+    private User owner;
+
     private String borrowerId;
     private String borrowerName;
 
@@ -34,12 +38,25 @@ public class Thing extends ElasticModel {
         super();
 
         // TODO: Update
+        this.owner = owner;
         ownerName = owner.getName();
         id = UUID.randomUUID().toString();
     }
 
-    public User getOwner(){ return (User)User.getById(ownerId); }
-    public String getOwnerName(){ return ownerName; }
+    public User getOwner() {
+
+        // TODO: Fix
+        //return (User)User.getById(ownerId);
+
+        return owner;
+    }
+    public String getOwnerName() {
+
+        // TODO: Fix
+        //return ownerName;
+
+        return owner.getName();
+    }
     public Thing setOwner(User owner){
         ownerId = owner.getId();
         ownerName = owner.getName();

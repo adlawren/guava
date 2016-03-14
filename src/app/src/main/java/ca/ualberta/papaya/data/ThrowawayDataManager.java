@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import ca.ualberta.papaya.interfaces.IDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.util.Observable;
@@ -157,6 +158,28 @@ public class ThrowawayDataManager implements IDataManager {
         } catch (IOException e) {
             throw new RuntimeException();
         }
+    }
+
+    @Override
+    public ArrayList<Thing> getNonCurrentUserThings() {
+
+        // TODO: Get actual data
+        User owner = new User();
+        owner.setFirstName("Bob");
+        owner.setLastName("Jones");
+        owner.setEmail("bjones@ualberta.ca");
+
+        ArrayList<Thing> things = new ArrayList<>();
+        for (int i = 0; i < 15; ++i) {
+            Thing thing = new Thing(owner);
+            thing.setOwner(owner); // ???
+            thing.setTitle("Thing " + (i + 1));
+            thing.setDescription("The description of Thing " + (i + 1));
+
+            things.add(thing);
+        }
+
+        return things;
     }
 
     private static ThrowawayDataManager ourInstance = new ThrowawayDataManager();

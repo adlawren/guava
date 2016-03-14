@@ -34,7 +34,8 @@
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".AddThingActivity" />
         <activity android:name=".ThingSearchActivity" />
-        <activity android:name=".EditThingActivity"></activity>
+        <activity android:name=".EditThingActivity" />
+        <activity android:name=".ThingSearchDetailActivity"></activity>
     </application>
 
 </manifest>

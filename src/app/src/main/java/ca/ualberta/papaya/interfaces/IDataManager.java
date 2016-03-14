@@ -13,8 +13,10 @@ import ca.ualberta.papaya.util.Observable;
  */
 public interface IDataManager {
     User getCurrentUser(Context context);
-    ArrayList<Thing> getCurrentUserThings(Context context);
-
     void setCurrentUser(Context context, User newUser);
+
+    ArrayList<Thing> getCurrentUserThings(Context context);
     void setCurrentUserThings(Context context, ArrayList<Thing> newThings);
+
+    ArrayList<Thing> getNonCurrentUserThings();
 }
