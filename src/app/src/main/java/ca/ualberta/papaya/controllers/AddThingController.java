@@ -12,6 +12,12 @@ import ca.ualberta.papaya.models.tempThings;
 
 /**
  * Created by adlawren on 10/03/16.
+ *
+ * Main controller for creating Thing objects. extract input data and creates a
+ * thing object.
+ *
+ * @see ca.ualberta.papaya.AddThingActivity
+ *
  */
 public class AddThingController {
     private static AddThingController ourInstance = new AddThingController();
@@ -23,6 +29,7 @@ public class AddThingController {
     private AddThingController() {
     }
 
+    // Save Button
     private class SaveOnClickListener implements View.OnClickListener {
 
         private Context context;

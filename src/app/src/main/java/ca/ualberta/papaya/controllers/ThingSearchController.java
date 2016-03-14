@@ -7,6 +7,7 @@ import android.widget.EditText;
 /**
  * Created by adlawren on 10/03/16.
  */
+
 public class ThingSearchController {
     private static ThingSearchController ourInstance = new ThingSearchController();
 

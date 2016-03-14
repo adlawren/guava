@@ -7,6 +7,13 @@ import android.widget.EditText;
 import ca.ualberta.papaya.controllers.AddThingController;
 import ca.ualberta.papaya.controllers.ThingListController;
 
+/**
+ * Activity for adding Thing objects.
+ *
+ * Calls AddThingController for all of the button implementations.
+ * @see AddThingController
+ *
+ */
 public class AddThingActivity extends AbstractPapayaActivity {
 
     @Override

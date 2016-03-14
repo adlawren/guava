@@ -7,6 +7,11 @@ import android.widget.EditText;
 
 import ca.ualberta.papaya.controllers.ThingSearchController;
 
+/**
+ *  Activity for searching Thing objects. Calls
+ *
+ *  @see ThingSearchController
+ */
 public class ThingSearchActivity extends AbstractPapayaActivity {
 
     @Override

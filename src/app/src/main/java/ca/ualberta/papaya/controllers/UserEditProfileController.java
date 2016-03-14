@@ -12,6 +12,8 @@ import ca.ualberta.papaya.interfaces.Observer;
 
 /**
  * Created by adlawren on 07/03/16.
+ *
+ *
  */
 public class UserEditProfileController {
     private static UserEditProfileController ourInstance = new UserEditProfileController();

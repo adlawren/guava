@@ -35,6 +35,12 @@ import java.util.List;
  * lead to a {@link ThingDetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
+ *
+ * Calls ThingListController for all of the button implementations
+ * @see ThingListController
+ *
+ * Calls ThingDetailFragment when a specific thing in clicked
+ * @see ThingDetailFragment
  */
 public class ThingListActivity extends AbstractPapayaActivity {
 
@@ -108,6 +114,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
             return new ViewHolder(view);
         }
 
+        // method that is called when a Thing in the list is selected.
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.mItem = mValues.get(position);

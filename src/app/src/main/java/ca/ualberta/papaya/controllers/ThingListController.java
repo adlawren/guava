@@ -11,6 +11,15 @@ import ca.ualberta.papaya.models.User;
 
 /**
  * Created by adlawren on 10/03/16.
+ *
+ * Main activity to control Things that are shown. Displays Thing objects and allows
+ * the user to perform certain actions. The actions that can be performed are:
+ *      edit and view a users own profile.
+ *      add a thing to user
+ *      switch to the search activity
+ *      switch to other items activity
+ *
+ * @see ThingSearchActivity
  */
 public class ThingListController {
     private static ThingListController ourInstance = new ThingListController();
@@ -27,6 +36,7 @@ public class ThingListController {
         context.startActivity(intent);
     }
 
+    // switch to other items activity
     private class OtherItemsOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -45,10 +55,12 @@ public class ThingListController {
         }
     }
 
+    // implement other items button
     public OtherItemsOnClickListener getOtherItemsOnClickListener(Context initialContext) {
         return new OtherItemsOnClickListener(initialContext);
     }
 
+    // add thing button
     private class AddItemOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -63,10 +75,12 @@ public class ThingListController {
         }
     }
 
+    // implement add thing button
     public AddItemOnClickListener getAddItemOnClickListener(Context initialContext) {
         return new AddItemOnClickListener(initialContext);
     }
 
+    // button to view and edit a users own contact information
     private class ProfileOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -89,11 +103,12 @@ public class ThingListController {
             view.getContext().startActivity(intent);
         }
     }
-
+    // implement view/edit contact information button
     public ProfileOnClickListener getProfileOnClickListener(Context initialContext) {
         return new ProfileOnClickListener(initialContext);
     }
 
+    // button to switch to the search activity
     private class SearchOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -108,6 +123,7 @@ public class ThingListController {
         }
     }
 
+    // implement search button
     public SearchOnClickListener getSearchOnClickListener(Context initialContext) {
         return new SearchOnClickListener(initialContext);
     }
