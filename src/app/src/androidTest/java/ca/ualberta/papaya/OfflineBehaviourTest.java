@@ -19,29 +19,29 @@ public class OfflineBehaviourTest extends ActivityInstrumentationTestCase2 {
     Use Case: US 08.01.01 - AddOffline
      */
     public void testAddOffline() {
-//        ConnectivityManager cm =
-//                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-//
-//        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-//        boolean isConnected = activeNetwork != null &&
-//                activeNetwork.isConnectedOrConnecting();
-//
-//        assertEquals(isConnected, false);
-//
-//        int count = getItemCount();
-//
-//        Thing thing = new Thing(owner);
-//        thing.setTitle(title).setDescription(description);
-//
-//        assertEquals(Thing.Status.AVAILABLE, thing.getStatus());
-//        assertEquals(title, thing.getTitle());
-//        assertEquals(description, thing.getDescription());
-//        assertEquals(owner.getName(), thing.getOwnerName());
-//
-//        setConnectionOnline();
-//        isConnected = activeNetwork!= null &&
-//                activeNetwork.isConnectedOrConnecting();
-//        assertEquals(isConnected, true);
-//        assertEquals(getItemCount(), count + 1);
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        assertEquals(isConnected, false);
+
+        int count = getItemCount();
+
+        Thing thing = new Thing(owner);
+        thing.setTitle(title).setDescription(description);
+
+        assertEquals(Thing.Status.AVAILABLE, thing.getStatus());
+        assertEquals(title, thing.getTitle());
+        assertEquals(description, thing.getDescription());
+        assertEquals(owner.getName(), thing.getOwnerName());
+
+        setConnectionOnline();
+        isConnected = activeNetwork!= null &&
+                activeNetwork.isConnectedOrConnecting();
+        assertEquals(isConnected, true);
+        assertEquals(getItemCount(), count + 1);
     }
 }

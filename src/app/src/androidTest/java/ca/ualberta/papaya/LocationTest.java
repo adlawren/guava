@@ -15,23 +15,21 @@ public class LocationTest extends ActivityInstrumentationTestCase2{
     public LocationTest() {
         super(ca.ualberta.papaya.ThingListActivity.class);
     }
+    public void testSetLocation(){
+        Thing thing = new Thing(new User());
+        Point p = new Point( -113.43473, 53.45358);
+        thing.setLocation(p);
 
-//    public void testSetLocation(){
-//        Thing thing = new Thing(new User());
-//        Point p = new Point( -113.43473, 53.45358);
-//        thing.setLocation(p);
-//
-//        assertEquals(thing.getLocation(), p);
-//
-//    }
-//
-//
-//    public void testGetLocation(){
-//        Thing thing = new Thing(new User());
-//        Point p = new Point( -113.43473, 53.45358);
-//        thing.setLocation(p);
-//
-//        assertEquals( thing.getLocation(), p);
-//
-//    }
+        assertEquals(thing.getLocation(), p);
+
+    }
+
+    public void testGetLocation(){
+        Thing thing = new Thing(new User());
+        Point p = new Point( -113.43473, 53.45358);
+        thing.setLocation(p);
+
+        assertEquals( thing.getLocation(), p);
+
+    }
 }
