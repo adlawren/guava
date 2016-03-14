@@ -21,6 +21,7 @@ import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.search.sort.Sort;
 
 /**
  * Abstract class to help deal with the ElasticSearch communication.
@@ -53,6 +54,8 @@ public abstract class ElasticModel implements Serializable {
     // has this model been pushed to database?
     protected transient boolean published = false;
 
+
+
     /**
      * Construct (if necessary) and return a jest client to
      * talk to the ElasticSearch database.
@@ -78,7 +81,8 @@ public abstract class ElasticModel implements Serializable {
      * @return the object with the given id. null on failure.
      */
     public static ElasticModel getById(String id){
-        Get get = new Get.Builder(ElasticModel.index, id).type(kind.getName()).build();
+
+        Get get = new Get.Builder(ElasticModel.index, id).type(type).build();
         try {
             JestResult result = ElasticModel.getClient().execute(get);
             ElasticModel model = (ElasticModel) result.getSourceAsObject(kind);
@@ -92,18 +96,27 @@ public abstract class ElasticModel implements Serializable {
 
     /**
      * Get a list of model objects corresponding to the given search query
-     * @param search
+     * @param query
      * @return List of model objects
      */
-    public static List<?> search(Search search){
+    public static List<?> search(String query, Sort sort){
         try {
+            Class<?> cl=new Object(){}.getClass().getEnclosingClass();
+            System.err.println(cl.getName());
+
+            System.err.println("test");
+            System.err.println(index);
+            System.err.println(type);
+            Search search = new Search.Builder(query).addIndex(index).addType(type).build();
             SearchResult result = ElasticModel.client.execute(search);
-            return result.getHits(kind);
+            return result.getSourceAsObjectList(kind);
+
         } catch (IOException e){
             // todo: make more robust
             e.printStackTrace();
             return null;
         }
+
     }
 
     public static void delete(ElasticModel model){
@@ -192,6 +205,10 @@ public abstract class ElasticModel implements Serializable {
 
         public static void saveChangeListFile(){
 
+            return;
+
+            // todo: offline
+            /*
             Gson gson = new Gson();
             String s = gson.toJson(changeList);
 
@@ -204,10 +221,13 @@ public abstract class ElasticModel implements Serializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            */
         }
 
         public static void loadChangeListFile(){
+            return;
 
+            // todo: offline
         }
 
     }

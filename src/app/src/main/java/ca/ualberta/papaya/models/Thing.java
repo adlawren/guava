@@ -29,6 +29,19 @@ public class Thing extends ElasticModel {
 
     private Photo photo = new Photo();     // todo: initialize with default blank photo.
 
+    public static List<Thing> getMyThings(){
+        return new ArrayList<Thing>();
+    }
+
+    public static List<Thing> getThings(){
+        return (List<Thing>) Thing.search("{}", null);
+    }
+
+    public static List<Thing> getThings(List<String> keywords){
+        return new ArrayList<Thing>();
+    }
+
+
     public Thing(User owner){
 
         super();
