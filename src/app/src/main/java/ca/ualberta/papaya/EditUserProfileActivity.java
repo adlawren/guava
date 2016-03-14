@@ -4,11 +4,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.widget.EditText;
 
-import ca.ualberta.papaya.controllers.UserEditProfileController;
-import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.controllers.EditUserProfileController;
 import ca.ualberta.papaya.models.User;
 
-public class UserEditProfileActivity extends AbstractPapayaActivity {
+public class EditUserProfileActivity extends AbstractPapayaActivity {
 
     public static final String USER_EXTRA = "ca.papaya.ualberta.user.edit.profile.user.extra";
 
@@ -23,6 +22,6 @@ public class UserEditProfileActivity extends AbstractPapayaActivity {
         userEmailEditText.setText(user.getEmail());
 
         FloatingActionButton saveButton = (FloatingActionButton) findViewById(R.id.saveProfile);
-        saveButton.setOnClickListener(UserEditProfileController.getInstance().getSaveOnClickListener(this, userEmailEditText));
+        saveButton.setOnClickListener(EditUserProfileController.getInstance().getSaveOnClickListener(this, userEmailEditText));
     }
 }

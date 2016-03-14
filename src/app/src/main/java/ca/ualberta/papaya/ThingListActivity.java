@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import ca.ualberta.papaya.controllers.ThingListController;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,9 +34,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
      * device.
      */
     private boolean mTwoPane;
-
-    //TODO: Remove usage of ThrowawayDataManager
-    //ArrayList<Thing> ThrowawayDataManager = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +69,11 @@ public class ThingListActivity extends AbstractPapayaActivity {
         searchFloatingActionButton.setOnClickListener(ThingListController.getInstance().getSearchOnClickListener(this));
     }
 
-
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(ThrowawayDataManager.getInstance()
-                .getCurrentUserThingsObservable().getData()));
+                .getCurrentUserThings(this)));
+        //recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(ThrowawayDataManager.getInstance()
+        //        .getCurrentUserThingsObservable().getData()));
     }
 
     public class SimpleItemRecyclerViewAdapter

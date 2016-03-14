@@ -46,23 +46,25 @@ public class AddThingController {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
 
-            Thing thing = new Thing(ThrowawayDataManager.getInstance().getCurrentUserObservable()
-                    .getData());
+            Thing thing = new Thing(ThrowawayDataManager.getInstance().getCurrentUser(context));
+
             thing.setTitle(itemName);
             thing.setDescription(description);
 
             //TODO: Set up with ElasticSearch
-            ArrayList<Thing> things = ThrowawayDataManager.getInstance()
-                    .getCurrentUserThingsObservable().getData();
+            ArrayList<Thing> things = ThrowawayDataManager.getInstance().getCurrentUserThings(context);
+
             things.add(thing);
-            ThrowawayDataManager.getInstance().getInstance().getCurrentUserThingsObservable()
-                    .setData(things);
+            ThrowawayDataManager.getInstance().getInstance().setCurrentUserThings(context, things);
 
             transitionToActivity(context, ThingListActivity.class);
         }
     }
 
-    public SaveOnClickListener getSaveOnClickListener(Context initialContext, EditText initialItemNameEditText, EditText initialDescriptionEditText) {
-        return new SaveOnClickListener(initialContext, initialItemNameEditText, initialDescriptionEditText);
+    public SaveOnClickListener getSaveOnClickListener(Context initialContext,
+                                                      EditText initialItemNameEditText,
+                                                      EditText initialDescriptionEditText) {
+        return new SaveOnClickListener(initialContext, initialItemNameEditText,
+                initialDescriptionEditText);
     }
 }

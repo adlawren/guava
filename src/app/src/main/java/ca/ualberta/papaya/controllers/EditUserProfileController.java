@@ -5,24 +5,21 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.ArrayList;
-
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
-import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.User;
 
 /**
  * Created by adlawren on 07/03/16.
  */
-public class UserEditProfileController {
-    private static UserEditProfileController ourInstance = new UserEditProfileController();
+public class EditUserProfileController {
+    private static EditUserProfileController ourInstance = new EditUserProfileController();
 
-    public static UserEditProfileController getInstance() {
+    public static EditUserProfileController getInstance() {
         return ourInstance;
     }
 
-    private UserEditProfileController() {}
+    private EditUserProfileController() {}
 
     private void transitionToActivity(Context context, Class activityClass) {
         Intent intent = new Intent(context, activityClass);
@@ -44,10 +41,10 @@ public class UserEditProfileController {
         public void onClick(View view) {
             String email = emailEditText.getText().toString();
 
-            User user = ThrowawayDataManager.getInstance().getCurrentUserObservable().getData();
+            User user = ThrowawayDataManager.getInstance().getCurrentUser(context);
             user.setEmail(email);
 
-            ThrowawayDataManager.getInstance().getCurrentUserObservable().setData(user);
+            ThrowawayDataManager.getInstance().setCurrentUser(context, user);
 
             transitionToActivity(context, ThingListActivity.class);
         }

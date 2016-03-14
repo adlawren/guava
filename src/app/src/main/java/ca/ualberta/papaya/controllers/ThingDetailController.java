@@ -66,7 +66,7 @@ public class ThingDetailController {
         @Override
         public void onClick(View view) {
             ArrayList<Thing> things = ThrowawayDataManager.getInstance()
-                    .getCurrentUserThingsObservable().getData();
+                    .getCurrentUserThings(context);
 
             Thing match = null;
             for (Thing nextThing : things) {
@@ -81,7 +81,7 @@ public class ThingDetailController {
                 System.err.println("[ThingDetailController.DeleteItemOnClickListener] ERROR: Thing not found.");
             }
 
-            ThrowawayDataManager.getInstance().getCurrentUserThingsObservable().setData(things);
+            ThrowawayDataManager.getInstance().setCurrentUserThings(context, things);
 
             transitionToActivity(context, ThingListActivity.class);
         }
