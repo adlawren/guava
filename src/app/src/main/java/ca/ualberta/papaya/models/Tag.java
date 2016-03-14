@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Tag extends ElasticModel {
 
-    protected transient final Class<?> kind = Tag.class;
+    protected transient Class<?> kind;
 
     private String label = "";
     private Tag.Status status = Status.NEW;
@@ -24,6 +24,7 @@ public class Tag extends ElasticModel {
 
     public Tag(){
         super();
+        kind = Tag.class;
     }
 
     public String getLabel(){ return label; }
