@@ -13,7 +13,7 @@ import ca.ualberta.papaya.fixtures.Province;
 
 public class User extends ElasticModel {
 
-    protected transient final Class<?> kind = User.class;
+    protected transient final Class<?> kind;
 
     private String firstName = "";
     private String lastName = "";
@@ -27,6 +27,7 @@ public class User extends ElasticModel {
 
     public User(){
         super();
+        kind = User.class;
     }
 
     public String getFirstName(){ return firstName; }

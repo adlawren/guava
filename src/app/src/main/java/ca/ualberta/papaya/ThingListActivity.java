@@ -87,9 +87,9 @@ public class ThingListActivity extends AbstractPapayaActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
         
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(Thing.getThings()));
+        //recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(Thing.getThings()));
 
-        //recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(tempThings.getInstance().getThings()));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(tempThings.getInstance().getThings()));
     }
 
     public class SimpleItemRecyclerViewAdapter

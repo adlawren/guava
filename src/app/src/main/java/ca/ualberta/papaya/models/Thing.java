@@ -13,7 +13,7 @@ import ca.ualberta.papaya.exceptions.ThingUnavailableException;
  */
 public class Thing extends ElasticModel {
 
-    protected transient final Class<?> kind = Thing.class;
+    protected transient Class<?> kind;
 
     private String ownerId;
     private String ownerName;
@@ -42,8 +42,8 @@ public class Thing extends ElasticModel {
 
 
     public Thing(User owner){
-
         super();
+        kind = Thing.class;
     }
 
     public User getOwner(){ return (User)User.getById(kind, ownerId); }

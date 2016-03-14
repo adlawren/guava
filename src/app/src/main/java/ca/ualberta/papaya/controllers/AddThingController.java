@@ -57,6 +57,39 @@ public class AddThingController {
             //System.err.println("TODO: IMPLEMENT");
 
             transitionToActivity(context, ThingListActivity.class);
+
+            /*
+
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    try {
+
+                        String itemName = itemNameEditText.getText().toString();
+                        String description = descriptionEditText.getText().toString();
+
+                        User user = new User();
+                        user.setFirstName("Emily");
+                        user.setLastName("Jones");
+                        user.setEmail("ejones@ualberta.ca");
+
+                        user.publish();
+
+                        Thing newThing = new Thing(user);
+                        newThing.setTitle(itemName);
+                        newThing.setDescription(description);
+
+                        newThing.publish();
+
+                        transitionToActivity(context, ThingListActivity.class);
+                    }
+                    catch (Exception e) { e.printStackTrace(); }
+                }
+            }).start();
+
+             */
+
+
         }
     }
 

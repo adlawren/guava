@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.ualberta.papaya">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,12 +31,12 @@
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
 
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
         <activity android:name=".UserEditProfileActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".AddThingActivity" />
         <activity android:name=".ThingSearchActivity"></activity>
+
+
     </application>
 
 </manifest>
