@@ -1,0 +1,9 @@
+ca.ualberta.papaya
+ca.ualberta.papaya.controllers
+ca.ualberta.papaya.data
+ca.ualberta.papaya.dummy
+ca.ualberta.papaya.exceptions
+ca.ualberta.papaya.fixtures
+ca.ualberta.papaya.interfaces
+ca.ualberta.papaya.models
+ca.ualberta.papaya.util
