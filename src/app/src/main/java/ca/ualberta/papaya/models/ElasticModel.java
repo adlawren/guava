@@ -37,11 +37,8 @@ public abstract class ElasticModel implements Serializable {
     // Elastic search index.
     protected static final String index = "papaya";
 
-    // Elastic search "type" of object. Override.
-    protected static String type;
-
-    // The java class representing the child objects. Override
-    protected static Class<?> kind;
+    // The java class representing the child objects. Implement in subclasses
+    protected Class<?> kind;
 
     // the id of this object.
     @JestId
@@ -55,7 +52,13 @@ public abstract class ElasticModel implements Serializable {
     protected transient boolean published = false;
 
 
-
+    /**
+     * return lowercase class name
+     * @return type
+     */
+    private static String typeName(Class<?> kind){
+        return kind.getSimpleName().toLowerCase();
+    }
     /**
      * Construct (if necessary) and return a jest client to
      * talk to the ElasticSearch database.
@@ -77,16 +80,14 @@ public abstract class ElasticModel implements Serializable {
      * Depending on the the "type" and "kind" of the subcless,
      * try and find from local cache or ElasticSearch the object
      * with the given id
+     * @param kind the class of the model to load
      * @param id the id to find.
      * @return the object with the given id. null on failure.
      */
-    public static ElasticModel getById(String id){
-
-        Get get = new Get.Builder(ElasticModel.index, id).type(type).build();
+    public static Object getById(Class<?> kind, String id){
         try {
-            JestResult result = ElasticModel.getClient().execute(get);
-            ElasticModel model = (ElasticModel) result.getSourceAsObject(kind);
-            return model;
+            Get get = new Get.Builder(ElasticModel.index, id).type(typeName(kind)).build();
+            return getClient().execute(get).getSourceAsObject(kind);
         } catch (IOException e){
             // TODO: make more robust
             e.printStackTrace();
@@ -96,34 +97,27 @@ public abstract class ElasticModel implements Serializable {
 
     /**
      * Get a list of model objects corresponding to the given search query
+     * @param kind  the class of the model(s) to load
      * @param query
      * @return List of model objects
      */
-    public static List<?> search(String query, Sort sort){
+    public static List<?> search(Class<?> kind, String query, Sort sort){
         try {
-            Class<?> cl=new Object(){}.getClass().getEnclosingClass();
-            System.err.println(cl.getName());
-
-            System.err.println("test");
-            System.err.println(index);
-            System.err.println(type);
-            Search search = new Search.Builder(query).addIndex(index).addType(type).build();
-            SearchResult result = ElasticModel.client.execute(search);
-            return result.getSourceAsObjectList(kind);
-
+            Search search = new Search.Builder(query).addIndex(index).addType(typeName(kind)).build();
+            return getClient().execute(search).getSourceAsObjectList(kind);
         } catch (IOException e){
             // todo: make more robust
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
-
     }
 
-    public static void delete(ElasticModel model){
+    public static void delete(Class<?> kind, ElasticModel model){
         try {
+            
             getClient().execute(new Delete.Builder(model.getId())
-                    .index(ElasticModel.index)
-                    .type(kind.getName())
+                    .index(index)
+                    .type(typeName(kind))
                     .build());
         } catch (IOException e){
             // todo: make more robust
@@ -181,13 +175,13 @@ public abstract class ElasticModel implements Serializable {
         public static void commit(){
 
             for (ElasticModel model : changeList){
-                if (model.id == null && model.publish == true){
+                if (model.id == null && model.publish){
                     //insert
                     // todo: offline storage
                     model.published = true;
                     Index index = new Index.Builder(model)
                             .index(ElasticModel.index)
-                            .type(model.kind.getName()).build();
+                            .type(typeName(model.kind)).build();
                     try {
                         ElasticModel.getClient().execute(index);
                         changeList.remove(model);

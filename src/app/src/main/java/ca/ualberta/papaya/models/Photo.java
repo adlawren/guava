@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
  */
 public class Photo extends ElasticModel {
 
+    protected transient final Class<?> kind = Photo.class;
+
     private Bitmap thumbnail;
     private Bitmap image;
 

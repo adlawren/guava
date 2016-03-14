@@ -13,8 +13,7 @@ import ca.ualberta.papaya.exceptions.ThingUnavailableException;
  */
 public class Thing extends ElasticModel {
 
-    protected static final String type = "thing";
-    protected static final Class<?> kind = Thing.class;
+    protected transient final Class<?> kind = Thing.class;
 
     private String ownerId;
     private String ownerName;
@@ -34,7 +33,7 @@ public class Thing extends ElasticModel {
     }
 
     public static List<Thing> getThings(){
-        return (List<Thing>) Thing.search("{}", null);
+        return (List<Thing>) Thing.search(Thing.class, "{}", null);
     }
 
     public static List<Thing> getThings(List<String> keywords){
@@ -47,7 +46,7 @@ public class Thing extends ElasticModel {
         super();
     }
 
-    public User getOwner(){ return (User)User.getById(ownerId); }
+    public User getOwner(){ return (User)User.getById(kind, ownerId); }
     public String getOwnerName(){ return ownerName; }
     public Thing setOwner(User owner){
         ownerId = owner.getId();
@@ -56,7 +55,7 @@ public class Thing extends ElasticModel {
         return this;
     }
 
-    public User getBorrower(){ return (User)User.getById(borrowerId); }
+    public User getBorrower(){ return (User)User.getById(kind, borrowerId); }
     public String getBorrowerName(){ return borrowerName; }
     public Thing setBorrower(User borrower){
         borrowerId = borrower.getId();

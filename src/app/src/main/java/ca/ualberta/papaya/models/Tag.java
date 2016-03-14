@@ -9,8 +9,7 @@ import java.util.List;
  */
 public class Tag extends ElasticModel {
 
-    protected static final String type = "tag";
-    protected static final Class<?> kind = Tag.class;
+    protected transient final Class<?> kind = Tag.class;
 
     private String label = "";
     private Tag.Status status = Status.NEW;

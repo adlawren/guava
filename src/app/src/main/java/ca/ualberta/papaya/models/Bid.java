@@ -15,9 +15,7 @@ import ca.ualberta.papaya.exceptions.InvalidLocationException;
  */
 public class Bid extends ElasticModel {
 
-
-    protected static final String type = "bid";
-    protected static final Class<?> kind = Bid.class;
+    protected transient final Class<?> kind = Bid.class;
 
     private String bidderName;       // Denormalized User.getName()
     private String bidderId;         // the bidder's .getId()
@@ -55,7 +53,7 @@ public class Bid extends ElasticModel {
         setPer(per);
     }
 
-    public User getBidder(){ return (User) User.getById(bidderId); }
+    public User getBidder(){ return (User) User.getById(kind, bidderId); }
     public Bid setBidder(User bidder){
         this.bidderId = bidder.getId();
         this.bidderName = bidder.getFullName();
@@ -63,7 +61,7 @@ public class Bid extends ElasticModel {
         return this;
     }
 
-    public Thing getThing(){ return (Thing) Thing.getById(thingId); }
+    public Thing getThing(){ return (Thing) Thing.getById(kind, thingId); }
     public Bid setThing(Thing thing){
         thingId = thing.getId();
         changed();
