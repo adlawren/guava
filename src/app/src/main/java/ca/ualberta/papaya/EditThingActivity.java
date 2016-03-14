@@ -11,6 +11,12 @@ import android.widget.EditText;
 import ca.ualberta.papaya.controllers.EditThingController;
 import ca.ualberta.papaya.models.Thing;
 
+/**
+ * Activity for editing Thing objects.
+ *
+ * Calls EditThingController for all of the button implementations.
+ * @see EditThingActivity
+ */
 public class EditThingActivity extends AbstractPapayaActivity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.edit.thing.thing.extra";

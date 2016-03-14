@@ -15,8 +15,8 @@ import ca.ualberta.papaya.models.User;
 /**
  * Created by adlawren on 10/03/16.
  *
- * Main controller for creating Thing objects. extract input data and creates a
- * thing object.
+ * Main controller for creating Thing objects. It is a singleton that contains the instance and
+ * methods for the AddThingActivity
  *
  * @see ca.ualberta.papaya.AddThingActivity
  *
@@ -101,6 +101,7 @@ public class AddThingController {
         }
     }
 
+    // return the onClickListener
     public SaveOnClickListener getSaveOnClickListener(Context initialContext,
                                                       EditText initialItemNameEditText,
                                                       EditText initialDescriptionEditText) {

@@ -29,6 +29,8 @@ import ca.ualberta.papaya.util.Observable;
  *
  * Note: Originally named tempThings.java
  *
+ * A singleton that contains all Users and Things data
+ *
  */
 public class ThrowawayDataManager implements IDataManager {
 

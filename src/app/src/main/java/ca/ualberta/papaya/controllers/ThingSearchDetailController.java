@@ -9,6 +9,12 @@ import ca.ualberta.papaya.models.User;
 
 /**
  * Created by adlawren on 14/03/16.
+ *
+ * Main controller for displaying Thing objects that are searched. It is a singleton that contains the instance and
+ * methods for the ThingSearchDetailActivity
+ *
+ * @see ca.ualberta.papaya.ThingSearchDetailActivity
+ *
  */
 public class ThingSearchDetailController {
     private static ThingSearchDetailController ourInstance = new ThingSearchDetailController();
@@ -20,6 +26,7 @@ public class ThingSearchDetailController {
     private ThingSearchDetailController() {
     }
 
+    // button for displaying the owner (User) of the Thing
     private class UserOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -40,6 +47,7 @@ public class ThingSearchDetailController {
         }
     }
 
+    // return the onClickListener for user
     public UserOnClickListener getUserOnClickListener(Context initialContext,
                                                             User initialUser) {
         return new UserOnClickListener(initialContext, initialUser);

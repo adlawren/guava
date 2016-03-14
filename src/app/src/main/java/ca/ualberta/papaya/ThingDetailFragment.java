@@ -16,6 +16,7 @@ import ca.ualberta.papaya.dummy.DummyContent;
  * This fragment is either contained in a {@link ThingListActivity}
  * in two-pane mode (on tablets) or a {@link ThingDetailActivity}
  * on handsets.
+ *
  */
 public class ThingDetailFragment extends Fragment {
     /**

@@ -13,6 +13,11 @@ import ca.ualberta.papaya.models.Thing;
 
 /**
  * Created by adlawren on 13/03/16.
+ *
+ * Main controller for displaying a single item. It is a singleton that contains the instance and
+ * methods for the ThingDetailActivity
+ *
+ * @see ca.ualberta.papaya.ThingDetailActivity
  */
 public class ThingDetailController {
     private static ThingDetailController ourInstance = new ThingDetailController();
@@ -24,11 +29,13 @@ public class ThingDetailController {
     private ThingDetailController() {
     }
 
+    //Change to the activity
     private void transitionToActivity(Context context, Class activityClass) {
         Intent intent = new Intent(context, activityClass);
         context.startActivity(intent);
     }
 
+    // button for editing the item
     private class EditItemOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -49,10 +56,12 @@ public class ThingDetailController {
         }
     }
 
+    // return the onClickListener for edit
     public EditItemOnClickListener getEditItemOnClickListener(Context initialContext, Thing initialThing) {
         return new EditItemOnClickListener(initialContext, initialThing);
     }
 
+    // Button for Deleting the item
     private class DeleteItemOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -87,6 +96,7 @@ public class ThingDetailController {
         }
     }
 
+    // return the onClickListener for delete
     public DeleteItemOnClickListener getDeleteItemOnClickListener(Context initialContext,
                                                                   Thing initialThing) {
         return new DeleteItemOnClickListener(initialContext, initialThing);

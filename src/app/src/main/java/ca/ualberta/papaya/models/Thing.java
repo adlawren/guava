@@ -10,8 +10,10 @@ import java.util.UUID;
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 
 /**
- *
  * Created by martin on 10/02/16.
+ *
+ * Model class representing a thing that is owned by a user.
+ * @see ElasticModel
  */
 public class Thing extends ElasticModel {
 

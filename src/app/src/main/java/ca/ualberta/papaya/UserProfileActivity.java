@@ -4,7 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import ca.ualberta.papaya.controllers.ThingSearchDetailController;
 import ca.ualberta.papaya.models.User;
+
+/**
+ * Activity for displaying a User's profile when viewing a searched Thing.
+ *
+ */
 
 public class UserProfileActivity extends AbstractPapayaActivity {
 

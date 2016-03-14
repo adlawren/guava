@@ -8,6 +8,13 @@ import android.widget.TextView;
 import ca.ualberta.papaya.controllers.ThingSearchDetailController;
 import ca.ualberta.papaya.models.Thing;
 
+/**
+ * Activity for displaying Thing objects that are returned by the search activity.
+ *
+ * Calls ThingSearchDetailController for all of the button implementations.
+ * @see ThingSearchDetailController
+ */
+
 public class ThingSearchDetailActivity extends Activity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.thing.search.detail.thing.extra";

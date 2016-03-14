@@ -12,7 +12,10 @@ import ca.ualberta.papaya.models.User;
 /**
  * Created by adlawren on 07/03/16.
  *
+ * Main controller for Editing a user profile. It is a singleton that contains the instance and
+ * methods for the EditUserProfileActivity
  *
+ * @see ca.ualberta.papaya.EditUserProfileActivity
  */
 public class EditUserProfileController {
     private static EditUserProfileController ourInstance = new EditUserProfileController();
@@ -28,6 +31,7 @@ public class EditUserProfileController {
         context.startActivity(intent);
     }
 
+    // button to save the changes to the profile
     private class SaveOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -52,12 +56,14 @@ public class EditUserProfileController {
         }
     }
 
+    //return the onClickListener for save button
     public SaveOnClickListener getSaveOnClickListener(Context initialContext,
                                                       EditText initialEmailEditText) {
         return new SaveOnClickListener(initialContext,
                 initialEmailEditText);
     }
 
+    // button to cancel the edit
     private class CancelOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -72,6 +78,7 @@ public class EditUserProfileController {
         }
     }
 
+    // return the onClickListener for cancel
     public CancelOnClickListener getCancelOnClickListener(Context initialContext) {
         return new CancelOnClickListener(initialContext);
     }

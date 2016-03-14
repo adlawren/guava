@@ -13,6 +13,12 @@ import ca.ualberta.papaya.models.Thing;
 
 /**
  * Created by adlawren on 13/03/16.
+ *
+ * Main controller for Editing Thing objects. It is a singleton that contains the instance and
+ * methods for the EditThingActivity
+ *
+ * @see ca.ualberta.papaya.EditThingActivity
+ *
  */
 public class EditThingController {
     private static EditThingController ourInstance = new EditThingController();
@@ -29,6 +35,7 @@ public class EditThingController {
         context.startActivity(intent);
     }
 
+    // button to save the changes to the Thing
     private class EditItemOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -75,6 +82,7 @@ public class EditThingController {
         }
     }
 
+    // return the onClickListener for edit save
     public EditItemOnClickListener getEditItemOnClickListener(Context initialContext,
                                                               Thing initialThing,
                                                               EditText initialItemNameEditText,
@@ -83,6 +91,7 @@ public class EditThingController {
                 initialDescriptionEditText);
     }
 
+    // Button to change a Thing back to available once it is no being borrowed anymore
     private class AvailableOnClickListener implements View.OnClickListener {
 
         private Context context;
@@ -104,6 +113,7 @@ public class EditThingController {
         }
     }
 
+    // return the onClickListener for available
     public AvailableOnClickListener getAvailableOnClickListener(Context initialContext, Thing initialThing) {
         return new AvailableOnClickListener(initialContext, initialThing);
     }

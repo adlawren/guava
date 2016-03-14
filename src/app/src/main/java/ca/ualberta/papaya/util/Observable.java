@@ -6,6 +6,9 @@ import ca.ualberta.papaya.interfaces.IObserver;
 
 /**
  * Created by adlawren on 13/03/16.
+ *
+ * Observer Class for updating data and views
+ *
  */
 public class Observable<T> {
 

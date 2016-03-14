@@ -9,6 +9,9 @@ import ca.ualberta.papaya.fixtures.Province;
 
 /**
  * Created by martin on 10/02/16.
+ *
+ * Model Class representing a User that can own Things and bid on other Users' Things
+ * @see ElasticModel
  */
 
 public class User extends ElasticModel {

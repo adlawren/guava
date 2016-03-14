@@ -5,6 +5,8 @@ import android.content.Context;
 /**
  * Created by mghumphr on 3/10/16.
  * Inspired by https://possiblemobile.com/2013/06/context/ [2016/03/10]
+ *
+ * Singleton used to pass Context information
  */
 public class Ctx {
 

@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 
 /**
  * Created by mghumphr on 3/10/16.
+ *
+ * Model Class for photos that will be attached to a specific Thing object
+ * @see ElasticModel
  */
 public class Photo extends ElasticModel {
 

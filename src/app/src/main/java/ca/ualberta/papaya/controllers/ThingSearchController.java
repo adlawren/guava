@@ -13,6 +13,11 @@ import ca.ualberta.papaya.models.Thing;
 
 /**
  * Created by adlawren on 10/03/16.
+ *
+ * Main controller for Searching Thing objects. It is a singleton that contains the instance and
+ * methods for the ThingSearchActivity
+ *
+ * @see ca.ualberta.papaya.ThingSearchActivity
  */
 
 public class ThingSearchController {
@@ -25,6 +30,7 @@ public class ThingSearchController {
     private ThingSearchController() {
     }
 
+    // button for searching inputted keywords
     // TODO: Fix
     private class SearchOnClickListener implements View.OnClickListener {
 
@@ -61,6 +67,7 @@ public class ThingSearchController {
         }
     }
 
+    // return the onClickListener for search
     public SearchOnClickListener getSearchOnClickListener(Context initialContext,
                                                           EditText initialKeywordsEditText,
                                                           RecyclerView initialRecyclerView,

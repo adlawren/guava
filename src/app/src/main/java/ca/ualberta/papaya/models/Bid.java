@@ -11,6 +11,8 @@ import ca.ualberta.papaya.exceptions.InvalidLocationException;
 
 /**
  * Model class representing a Bid on a Thing owned by a User
+ * @see ElasticModel
+ *
  * Created by martin on 10/02/16.
  */
 public class Bid extends ElasticModel {

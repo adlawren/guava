@@ -21,7 +21,8 @@ import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.Thing;
 
 /**
- *  Activity for searching Thing objects. Calls
+ *  Activity for searching Thing objects. Calls ThingSearchController for all of the
+ *  button implementations
  *
  *  @see ThingSearchController
  */
@@ -101,6 +102,7 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
             return new ViewHolder(view);
         }
 
+        // display the Thing that is clicked on in the list. start ThingSearchDetailActivity
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);

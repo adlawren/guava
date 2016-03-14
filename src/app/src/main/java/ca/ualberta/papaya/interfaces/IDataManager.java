@@ -10,6 +10,9 @@ import ca.ualberta.papaya.util.Observable;
 
 /**
  * Created by adlawren on 13/03/16.
+ *
+ * Interface for ThrowawayDataManager
+ * @see ca.ualberta.papaya.data.ThrowawayDataManager
  */
 public interface IDataManager {
     User getCurrentUser(Context context);

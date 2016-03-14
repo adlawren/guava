@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * Created by martin on 10/02/16.
+ *
+ * Model class representing a Tag that will correspond to Thing
+ * @see ElasticModel
  */
 public class Tag extends ElasticModel {
 

@@ -7,6 +7,12 @@ import android.widget.EditText;
 import ca.ualberta.papaya.controllers.EditUserProfileController;
 import ca.ualberta.papaya.models.User;
 
+/**
+ * Activity for editing user profiles.
+ *
+ * Calls EditUserProfile Controller for all of the button implementations.
+ * @see EditUserProfileActivity
+ */
 public class EditUserProfileActivity extends AbstractPapayaActivity {
 
     public static final String USER_EXTRA = "ca.papaya.ualberta.user.edit.profile.user.extra";

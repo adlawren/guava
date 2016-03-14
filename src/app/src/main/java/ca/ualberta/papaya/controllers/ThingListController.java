@@ -55,7 +55,7 @@ public class ThingListController {
         }
     }
 
-    // implement other items button
+    // returnt the onClickListener for OtherItems
     public OtherItemsOnClickListener getOtherItemsOnClickListener(Context initialContext) {
         return new OtherItemsOnClickListener(initialContext);
     }
@@ -75,7 +75,7 @@ public class ThingListController {
         }
     }
 
-    // implement add thing button
+    // return onClickListener for AddItem
     public AddItemOnClickListener getAddItemOnClickListener(Context initialContext) {
         return new AddItemOnClickListener(initialContext);
     }
@@ -98,7 +98,7 @@ public class ThingListController {
             view.getContext().startActivity(intent);
         }
     }
-    // implement view/edit contact information button
+    // return onClickListener for Profile
     public ProfileOnClickListener getProfileOnClickListener(Context initialContext) {
         return new ProfileOnClickListener(initialContext);
     }
@@ -118,7 +118,7 @@ public class ThingListController {
         }
     }
 
-    // implement search button
+    // return onClickListener for search
     public SearchOnClickListener getSearchOnClickListener(Context initialContext) {
         return new SearchOnClickListener(initialContext);
     }
