@@ -5,40 +5,27 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.ArrayList;
-
 import ca.ualberta.papaya.ThingListActivity;
-import ca.ualberta.papaya.interfaces.Observer;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.models.User;
 
 /**
  * Created by adlawren on 07/03/16.
  *
  *
  */
-public class UserEditProfileController {
-    private static UserEditProfileController ourInstance = new UserEditProfileController();
+public class EditUserProfileController {
+    private static EditUserProfileController ourInstance = new EditUserProfileController();
 
-    public static UserEditProfileController getInstance() {
+    public static EditUserProfileController getInstance() {
         return ourInstance;
     }
 
-    private UserEditProfileController() {}
-
-    private ArrayList<Observer> observers;
-
-    private void updateObservers() {
-        for (Observer observer : observers) {
-            observer.update();
-        }
-    }
+    private EditUserProfileController() {}
 
     private void transitionToActivity(Context context, Class activityClass) {
         Intent intent = new Intent(context, activityClass);
         context.startActivity(intent);
-    }
-
-    public void addObserver(Observer observer) {
-        observers.add(observer);
     }
 
     private class SaveOnClickListener implements View.OnClickListener {
@@ -56,8 +43,10 @@ public class UserEditProfileController {
         public void onClick(View view) {
             String email = emailEditText.getText().toString();
 
-            // TODO: Save the profile updates
-            // ...
+            User user = ThrowawayDataManager.getInstance().getCurrentUser(context);
+            user.setEmail(email);
+
+            ThrowawayDataManager.getInstance().setCurrentUser(context, user);
 
             transitionToActivity(context, ThingListActivity.class);
         }

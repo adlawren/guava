@@ -23,7 +23,7 @@ public class SearchTest extends ActivityInstrumentationTestCase2 {
 //    public void testKeywordSearch(){
 //        User user = new User();
 //        Thing thing = new Thing(user);
-//        thing.setTitle("Oven")
+//        thing.setTitle("Oven");
 //
 //        ArrayList<Thing> searchResults = getSearchResults("oven");
 //

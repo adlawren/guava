@@ -23,7 +23,7 @@ import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
-import ca.ualberta.papaya.models.tempThings;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,11 +91,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-
-        
-        //recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(Thing.getThings()));
-
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(tempThings.getInstance().getThings()));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(ThrowawayDataManager.getInstance()
+                .getCurrentUserThings(this)));
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -116,10 +113,10 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
         // method that is called when a Thing in the list is selected.
         @Override
-        public void onBindViewHolder(final ViewHolder holder, final int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).getId());
-            holder.mContentView.setText(mValues.get(position).getTitle());
+            holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
+            holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -135,8 +132,9 @@ public class ThingListActivity extends AbstractPapayaActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ThingDetailActivity.class);
+                        intent.putExtra(ThingDetailActivity.THING_EXTRA, holder.mItem);
                         intent.putExtra(ThingDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
-                        intent.putExtra("position", position);
+                        //intent.putExtra("position", position);
 
                         context.startActivity(intent);
                     }

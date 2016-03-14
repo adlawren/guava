@@ -9,10 +9,10 @@ import ca.ualberta.papaya.models.User;
 /**
  * Created by adlawren on 09/03/16.
  */
-public class UserEditProfileActivityTest extends ActivityInstrumentationTestCase2 {
+public class EditUserProfileActivityTest extends ActivityInstrumentationTestCase2 {
 
-    public UserEditProfileActivityTest() {
-        super(UserEditProfileActivity.class);
+    public EditUserProfileActivityTest() {
+        super(EditUserProfileActivity.class);
     }
 
     /**
@@ -24,10 +24,10 @@ public class UserEditProfileActivityTest extends ActivityInstrumentationTestCase
         User user = new User();
         user.setEmail("ejones@ualberta.ca");
 
-        intent.putExtra(UserEditProfileActivity.USER_EXTRA, user);
+        intent.putExtra(EditUserProfileActivity.USER_EXTRA, user);
         setActivityIntent(intent);
 
-        UserEditProfileActivity userProfileActivity = (UserEditProfileActivity) getActivity();
+        EditUserProfileActivity userProfileActivity = (EditUserProfileActivity) getActivity();
 
         TextView userEmailTextView = (TextView) userProfileActivity.findViewById(R.id.contactInfo);
 

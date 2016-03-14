@@ -7,12 +7,14 @@ import android.graphics.Bitmap;
  */
 public class Photo extends ElasticModel {
 
-    protected transient final Class<?> kind = Photo.class;
+    protected transient Class<?> kind;
 
     private Bitmap thumbnail;
     private Bitmap image;
 
     public Photo(){
+        super();
+        kind = Photo.class;
         // todo: construct as blank photo?
     }
 

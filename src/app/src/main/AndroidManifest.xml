@@ -31,12 +31,12 @@
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
 
-        <activity android:name=".UserEditProfileActivity" />
+        <activity android:name=".EditUserProfileActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".AddThingActivity" />
-        <activity android:name=".ThingSearchActivity"></activity>
-
-
+        <activity android:name=".ThingSearchActivity" />
+        <activity android:name=".EditThingActivity" />
+        <activity android:name=".ThingSearchDetailActivity"></activity>
     </application>
 
 </manifest>

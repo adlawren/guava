@@ -2,8 +2,10 @@ package ca.ualberta.papaya.models;
 
 import android.graphics.Bitmap;
 
+import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 
@@ -17,6 +19,9 @@ public class Thing extends ElasticModel {
 
     private String ownerId;
     private String ownerName;
+
+    // TODO: Fix
+    private User owner;
 
     private String borrowerId;
     private String borrowerName;
@@ -44,10 +49,25 @@ public class Thing extends ElasticModel {
     public Thing(User owner){
         super();
         kind = Thing.class;
+
+		// TODO: Update
+        this.owner = owner;
+        ownerName = owner.getName();
+        id = UUID.randomUUID().toString();
     }
 
-    public User getOwner(){ return (User)User.getById(kind, ownerId); }
-    public String getOwnerName(){ return ownerName; }
+    public User getOwner(){ 
+		//return (User)User.getById(kind, ownerId);
+		
+		// TODO: Fix
+        return owner;
+	}
+    public String getOwnerName(){ 
+		//return ownerName;
+		
+		// TODO: Fix
+        return owner.getName();
+	}
     public Thing setOwner(User owner){
         ownerId = owner.getId();
         ownerName = owner.getName();
