@@ -29,6 +29,6 @@ Dave Smith, for inspiration on how to pass around application contexts: https://
 
 Stephen Romansky, for being an awesome and helpful TA: https://github.com/SRomansky
 
-Dr. Ken Wong, for being a solid proffessor, and showing us 101 ways to beat Java into submission: http://www.cs.ualberta.ca/~kenw
+Dr. Ken Wong, for showing us 101+ ways to beat Java into submission: http://www.cs.ualberta.ca/~kenw
 
 
