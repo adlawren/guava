@@ -43,7 +43,7 @@
             android:id="@+id/keywords"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:text="Keywords"/>
+            android:hint="Keywords"/>
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
