@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.support.v7.app.ActionBarActivity;
 
@@ -77,6 +78,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(ThingListController.getInstance().getProfileOnClickListener(this));
 
     }
 

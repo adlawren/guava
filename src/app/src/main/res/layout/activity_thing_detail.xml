@@ -13,31 +13,11 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/detail_toolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:background="#f95f22"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/editItem"
-                android:src="@android:drawable/ic_menu_edit"
-                android:tint="#57c042"
-                app:backgroundTint="#050000">
-            </android.support.design.widget.FloatingActionButton>
-
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/deleteItem"
-                android:src="@android:drawable/ic_delete"
-                android:tint="#57c042"
-                app:backgroundTint="#050000">
-            </android.support.design.widget.FloatingActionButton>
-
-        </android.support.v7.widget.Toolbar>
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 

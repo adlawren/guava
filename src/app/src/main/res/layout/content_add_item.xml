@@ -11,6 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.hsbarker.myfirstapp.DisplayMessageActivity"
     tools:showIn="@layout/activity_add_item"
+    android:background="#ffffff"
     android:id="@+id/content">
 
     <TextView
@@ -18,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:id="@+id/textItemName"
+        android:textColor="#000000"
         android:text="Item Name:" />
 
     <EditText
@@ -26,6 +28,8 @@
         android:id="@+id/itemName"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textItemName"
+        android:textColor="#000000"
+        android:hint="Enter the item's name here."
         android:layout_alignParentLeft="true" />
 
     <TextView
@@ -34,6 +38,7 @@
         android:layout_alignParentStart="true"
         android:id="@+id/textDescription"
         android:layout_below="@+id/itemName"
+        android:textColor="#000000"
         android:text="Description:" />
 
     <EditText
@@ -42,6 +47,8 @@
         android:id="@+id/description"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textDescription"
+        android:textColor="#000000"
+        android:hint="Enter the item's description here."
         android:layout_alignParentLeft="true" />
 
 

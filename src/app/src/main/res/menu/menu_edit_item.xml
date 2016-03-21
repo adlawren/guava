@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/editItem"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Save Changes">
+    </item>
+
+    <item
+        android:id="@+id/available"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Set to Available">
+    </item>
+
+</menu>

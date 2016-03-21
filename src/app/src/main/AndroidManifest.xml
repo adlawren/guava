@@ -21,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ThingDetailActivity"
             android:label="@string/title_thing_detail"
@@ -31,12 +32,54 @@
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
 
-        <activity android:name=".EditUserProfileActivity" />
-        <activity android:name=".UserProfileActivity" />
-        <activity android:name=".AddThingActivity" />
-        <activity android:name=".ThingSearchActivity" />
-        <activity android:name=".EditThingActivity" />
-        <activity android:name=".ThingSearchDetailActivity"></activity>
+        <activity android:name=".EditUserProfileActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+
+        <activity android:name=".UserProfileActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+
+        <activity android:name=".AddThingActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+
+        <activity android:name=".ThingSearchActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+
+        <activity android:name=".EditThingActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+
+        <activity android:name=".ThingSearchDetailActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingSearchActivity" />
+        </activity>
+
     </application>
 
 </manifest>

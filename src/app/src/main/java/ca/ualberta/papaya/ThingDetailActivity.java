@@ -43,13 +43,13 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
-        editItemButton.setOnClickListener(ThingDetailController.getInstance()
-                .getEditItemOnClickListener(this, thing));
-
-        FloatingActionButton deleteItemButton = (FloatingActionButton) findViewById(R.id.deleteItem);
-        deleteItemButton.setOnClickListener(ThingDetailController.getInstance()
-                .getDeleteItemOnClickListener(this, thing));
+//        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
+//        editItemButton.setOnClickListener(ThingDetailController.getInstance()
+//                .getEditItemOnClickListener(this, thing));
+//
+//        FloatingActionButton deleteItemButton = (FloatingActionButton) findViewById(R.id.deleteItem);
+//        deleteItemButton.setOnClickListener(ThingDetailController.getInstance()
+//                .getDeleteItemOnClickListener(this, thing));
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity

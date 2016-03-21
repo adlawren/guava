@@ -52,4 +52,6 @@ public class ThingSearchDetailController {
                                                             User initialUser) {
         return new UserOnClickListener(initialContext, initialUser);
     }
+
+
 }
