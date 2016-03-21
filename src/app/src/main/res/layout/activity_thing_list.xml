@@ -5,44 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="#ffffff"
     tools:context=".MainActivity">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:background="#f95f22"
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-       <android.support.design.widget.FloatingActionButton
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:id="@+id/otherItems"
-           android:src="@android:drawable/ic_menu_view"
-           android:tint="#57c042"
-           app:backgroundTint="#050000">
-       </android.support.design.widget.FloatingActionButton>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#f95f22"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/addItem"
-            android:src="@android:drawable/ic_input_add"
-            android:tint="#57c042"
-            app:backgroundTint="#050000">
-        </android.support.design.widget.FloatingActionButton>
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/profile"
-            android:src="@android:drawable/ic_menu_info_details"
-            android:tint="#57c042"
-            app:backgroundTint="#050000">
-        </android.support.design.widget.FloatingActionButton>
-
-    </android.support.v7.widget.Toolbar>
-
-
+    </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -51,28 +29,10 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/thing_list"
-            android:layout_height="362dp"
+            android:layout_height="fill_parent"
             android:layout_width="fill_parent"
             android:layout_gravity="left|center_vertical" />
 
     </FrameLayout>
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:minHeight="?attr/actionBarSize"
-        android:background="#f95f22"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/search"
-            android:src="@android:drawable/ic_menu_search"
-            android:tint="#57c042"
-            app:backgroundTint="#050000">
-        </android.support.design.widget.FloatingActionButton>
-
-    </android.support.v7.widget.Toolbar>
 
 </android.support.design.widget.CoordinatorLayout>

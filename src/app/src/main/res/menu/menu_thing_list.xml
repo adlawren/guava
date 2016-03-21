@@ -1,0 +1,45 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/otherItems"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Other Items"/>
+
+    <item
+        android:id="@+id/addItem"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Add Item">
+    </item>
+
+    <item
+        android:id="@+id/profile"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Edit Profile">
+    </item>
+
+    <item
+        android:id="@+id/search"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Search">
+    </item>
+
+    <item
+        android:id="@+id/filter"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Filter">
+        <menu>
+            <item android:id="@+id/create_new"
+                android:title="Option 1" />
+            <item android:id="@+id/open"
+                android:title="Option 2" />
+        </menu>
+    </item>
+
+
+</menu>
