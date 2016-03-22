@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import ca.ualberta.papaya.controllers.ThingDetailController;
@@ -24,15 +26,17 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.thing.detail.thing.extra";
 
+    Intent intent;
+    Thing thing;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thing_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
-        Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
+        intent = getIntent();
+        thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
         TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);
         thingDetailTextView.setText(thing.getDescription());
@@ -74,20 +78,46 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_thing_detail, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            navigateUpTo(new Intent(this, ThingListActivity.class));
-            return true;
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.goToEdit:
+                View goToEditView = findViewById(R.id.addItem);
+                goToEditView.setOnClickListener(ThingDetailController.getInstance().getEditItemOnClickListener(this, thing));
+                goToEditView.performClick();
+                return true;
+            case R.id.delete:
+                View deleteView = findViewById(R.id.delete);
+                deleteView.setOnClickListener(ThingDetailController.getInstance().getDeleteItemOnClickListener(this, thing));
+                deleteView.performClick();
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == android.R.id.home) {
+//            // This ID represents the Home or Up button. In the case of this
+//            // activity, the Up button is shown. For
+//            // more details, see the Navigation pattern on Android Design:
+//            //
+//            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+//            //
+//            navigateUpTo(new Intent(this, ThingListActivity.class));
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }

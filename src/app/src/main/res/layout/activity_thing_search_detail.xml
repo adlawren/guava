@@ -13,29 +13,19 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/detail_toolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:background="#f95f22"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
 
-            <EditText
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/keywords"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:text="Bid amount"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/editItem"
-                android:src="@android:drawable/ic_menu_send"
-                android:tint="#57c042"
-                app:backgroundTint="#050000">
-            </android.support.design.widget.FloatingActionButton>
-
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/bidAmount"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:hint="Enter your bid"/>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -46,6 +36,7 @@
         android:id="@+id/thing_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textColor="#000000"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ListView
@@ -54,10 +45,10 @@
         android:layout_height="225dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
-        android:layout_gravity="bottom|center">
+        android:textColor="#000000"
+        android:layout_gravity="bottom|center"
+        android:textFilterEnabled="false">
 
     </ListView>
-
-
 
 </android.support.design.widget.CoordinatorLayout>

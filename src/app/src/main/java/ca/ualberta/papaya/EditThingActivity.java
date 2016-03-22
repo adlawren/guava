@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -63,10 +64,22 @@ public class EditThingActivity extends AbstractPapayaActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.otherItems:
+            case R.id.editItem:
+                View editItemView = findViewById(R.id.addItem);
+                Intent intent = getIntent();
+                Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
+
+                EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
+                        descriptionEditText = (EditText) findViewById(R.id.description);
+                editItemView.setOnClickListener(EditThingController.getInstance().getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
+                editItemView.performClick();
                 return true;
-            case R.id.search:
-                //showHelp();
+            case R.id.available:
+                View availableView = findViewById(R.id.addItem);
+                Intent intent2 = getIntent();
+                Thing thingy = (Thing) intent2.getSerializableExtra(THING_EXTRA);
+                availableView.setOnClickListener(EditThingController.getInstance().getAvailableOnClickListener(this, thingy));
+                availableView.performClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

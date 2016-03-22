@@ -78,8 +78,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
-//        Button button = (Button) findViewById(R.id.button);
-//        button.setOnClickListener(ThingListController.getInstance().getProfileOnClickListener(this));
 
     }
 
@@ -95,22 +93,27 @@ public class ThingListActivity extends AbstractPapayaActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        //http://developer.android.com/reference/android/view/View.html#performClick()
         switch (item.getItemId()) {
             case R.id.otherItems:
-                ThingListController.getInstance().getOtherItemsOnClickListener(this);
+                View otherItemsView = findViewById(R.id.otherItems);
+                otherItemsView.setOnClickListener(ThingListController.getInstance().getOtherItemsOnClickListener(this));
+                otherItemsView.performClick();
                 return true;
             case R.id.addItem:
-                ThingListController.getInstance().getAddItemOnClickListener(this.getApplicationContext());
-                //Intent additemintent = new Intent(this, AddThingActivity.class);
-                //startActivity(additemintent);
+                View addItemView = findViewById(R.id.addItem);
+                addItemView.setOnClickListener(ThingListController.getInstance().getAddItemOnClickListener(this));
+                addItemView.performClick();
                 return true;
             case R.id.profile:
-                Intent editprofileintent = new Intent(this, UserProfileActivity.class);
-                startActivity(editprofileintent);
+                View profileView = findViewById(R.id.profile);
+                profileView.setOnClickListener(ThingListController.getInstance().getProfileOnClickListener(this));
+                profileView.performClick();
                 return true;
             case R.id.search:
-                Intent searchintent = new Intent(this, ThingSearchActivity.class);
-                startActivity(searchintent);
+                View searchView = findViewById(R.id.search);
+                searchView.setOnClickListener(ThingListController.getInstance().getSearchOnClickListener(this));
+                searchView.performClick();
                 return true;
 
             default:

@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import ca.ualberta.papaya.controllers.AddThingController;
@@ -23,17 +24,13 @@ public class AddThingActivity extends AbstractPapayaActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
-
-        EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
-                descriptionEditText = (EditText) findViewById(R.id.description);
+//
+//        EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
+//                descriptionEditText = (EditText) findViewById(R.id.description);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton saveFloatingActionButton = (FloatingActionButton) findViewById(R.id.editItem);
-//        saveFloatingActionButton.setOnClickListener(AddThingController.getInstance().getSaveOnClickListener(this,
-//                itemNameEditText,
-//                descriptionEditText));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,11 +45,12 @@ public class AddThingActivity extends AbstractPapayaActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.otherItems:
-
-                return true;
-            case R.id.search:
-                //showHelp();
+            case R.id.addItem:
+                View addItemView = findViewById(R.id.addItem);
+                EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
+                        descriptionEditText = (EditText) findViewById(R.id.description);
+                addItemView.setOnClickListener(AddThingController.getInstance().getSaveOnClickListener(this,itemNameEditText,descriptionEditText));
+                addItemView.performClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

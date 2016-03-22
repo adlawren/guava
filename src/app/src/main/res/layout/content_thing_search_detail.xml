@@ -21,6 +21,7 @@
         tools:context="ca.ualberta.papaya.ThingDetailFragment"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:textColor="#000000"
         android:text="User Information:" />
 
     <TextView
@@ -29,6 +30,7 @@
         android:layout_height="75dp"
         android:textIsSelectable="true"
         tools:context="ca.ualberta.papaya.ThingDetailFragment"
+        android:textColor="#000000"
         android:layout_below="@+id/textUserInfo" />
 
     <TextView
@@ -39,6 +41,7 @@
         tools:context="ca.ualberta.papaya.ThingDetailFragment"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/userInfo"
+        android:textColor="#000000"
         android:text="Item Information:" />
 
     <TextView
@@ -48,6 +51,7 @@
         android:textIsSelectable="true"
         tools:context="ca.ualberta.papaya.ThingDetailFragment"
         android:layout_alignParentStart="true"
+        android:textColor="#000000"
         android:layout_below="@+id/textThingDetail" />
 
     <TextView
@@ -56,6 +60,7 @@
         android:layout_alignParentStart="true"
         android:id="@+id/textBids"
         android:layout_below="@+id/thingDetail"
+        android:textColor="#000000"
         android:text="Bids:" />
 
 </RelativeLayout>
