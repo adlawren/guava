@@ -50,11 +50,9 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.otherItems:
-
-                return true;
-            case R.id.search:
-                //showHelp();
+            case R.id.editProfile:
+                //EditUserProfileController.getInstance().getSaveOnClickListener(this,
+                  //      userEmailEditText);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

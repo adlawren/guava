@@ -34,10 +34,12 @@
         app:showAsAction="ifRoom"
         android:title="Filter">
         <menu>
-            <item android:id="@+id/create_new"
-                android:title="Option 1" />
-            <item android:id="@+id/open"
-                android:title="Option 2" />
+            <item android:id="@+id/all"
+                android:title="All Items" />
+            <item android:id="@+id/borrowed"
+                android:title="Borrowed" />
+            <item android:id="@+id/bidded"
+                android:title="Bidded" />
         </menu>
     </item>
 

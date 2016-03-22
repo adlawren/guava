@@ -78,8 +78,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
-        Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(ThingListController.getInstance().getProfileOnClickListener(this));
+//        Button button = (Button) findViewById(R.id.button);
+//        button.setOnClickListener(ThingListController.getInstance().getProfileOnClickListener(this));
 
     }
 
@@ -99,9 +99,20 @@ public class ThingListActivity extends AbstractPapayaActivity {
             case R.id.otherItems:
                 ThingListController.getInstance().getOtherItemsOnClickListener(this);
                 return true;
-            case R.id.search:
-                //showHelp();
+            case R.id.addItem:
+                ThingListController.getInstance().getAddItemOnClickListener(this.getApplicationContext());
+                //Intent additemintent = new Intent(this, AddThingActivity.class);
+                //startActivity(additemintent);
                 return true;
+            case R.id.profile:
+                Intent editprofileintent = new Intent(this, UserProfileActivity.class);
+                startActivity(editprofileintent);
+                return true;
+            case R.id.search:
+                Intent searchintent = new Intent(this, ThingSearchActivity.class);
+                startActivity(searchintent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
