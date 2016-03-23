@@ -40,6 +40,19 @@ public class AddThingActivity extends AbstractPapayaActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
+                descriptionEditText = (EditText) findViewById(R.id.description);
+
+        menu.findItem(R.id.addItem).setOnMenuItemClickListener(AddThingController.getInstance().getSaveOnClickListener(this, itemNameEditText, descriptionEditText));
+
+        return true;
+    }
+
+    /*
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -56,4 +69,5 @@ public class AddThingActivity extends AbstractPapayaActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    */
 }

@@ -2,6 +2,7 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -32,7 +33,7 @@ public class AddThingController {
     }
 
     // Save Button
-    private class SaveOnClickListener implements View.OnClickListener {
+    private class SaveOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
         private EditText itemNameEditText, descriptionEditText;
@@ -49,7 +50,8 @@ public class AddThingController {
         }
 
         @Override
-        public void onClick(View view) {
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
 
@@ -97,7 +99,7 @@ public class AddThingController {
 
              */
 
-
+            return true;
         }
     }
 

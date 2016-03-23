@@ -2,6 +2,8 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class ThingDetailController {
     }
 
     // button for editing the item
-    private class EditItemOnClickListener implements View.OnClickListener {
+    private class EditItemOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
 
@@ -48,11 +50,14 @@ public class ThingDetailController {
         }
 
         @Override
-        public void onClick(View view) {
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
             Intent intent = new Intent(context, EditThingActivity.class);
             intent.putExtra(EditThingActivity.THING_EXTRA, thing);
 
             context.startActivity(intent);
+
+            return true;
         }
     }
 
@@ -62,7 +67,7 @@ public class ThingDetailController {
     }
 
     // Button for Deleting the item
-    private class DeleteItemOnClickListener implements View.OnClickListener {
+    private class DeleteItemOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
         private Thing thing;
@@ -73,7 +78,8 @@ public class ThingDetailController {
         }
 
         @Override
-        public void onClick(View view) {
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
             ArrayList<Thing> things = ThrowawayDataManager.getInstance()
                     .getCurrentUserThings(context);
 
@@ -93,6 +99,8 @@ public class ThingDetailController {
             ThrowawayDataManager.getInstance().setCurrentUserThings(context, things);
 
             transitionToActivity(context, ThingListActivity.class);
+
+            return true;
         }
     }
 

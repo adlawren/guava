@@ -24,13 +24,16 @@ public class EditThingActivity extends AbstractPapayaActivity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.edit.thing.thing.extra";
 
+    Intent intent = null;
+    Thing thing = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
 
-        Intent intent = getIntent();
-        Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
+        intent = getIntent();
+        thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
         EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
                 descriptionEditText = (EditText) findViewById(R.id.description);
@@ -59,6 +62,22 @@ public class EditThingActivity extends AbstractPapayaActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
+                descriptionEditText = (EditText) findViewById(R.id.description);
+
+        menu.findItem(R.id.editItem).setOnMenuItemClickListener(EditThingController.getInstance()
+                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
+        menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
+                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
+
+        return true;
+    }
+
+    /*
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -85,5 +104,6 @@ public class EditThingActivity extends AbstractPapayaActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    */
 
 }

@@ -89,11 +89,29 @@ public class ThingListActivity extends AbstractPapayaActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        menu.findItem(R.id.otherItems).setOnMenuItemClickListener(ThingListController.getInstance()
+                .getOtherItemsOnClickListener(this));
+        menu.findItem(R.id.addItem).setOnMenuItemClickListener(ThingListController.getInstance()
+                .getAddItemOnClickListener(this));
+        menu.findItem(R.id.profile).setOnMenuItemClickListener(ThingListController.getInstance()
+                .getProfileOnClickListener(this));
+        menu.findItem(R.id.search).setOnMenuItemClickListener(ThingListController.getInstance()
+                .getSearchOnClickListener(this));
+
+        return true;
+    }
+
+    /*
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         //http://developer.android.com/reference/android/view/View.html#performClick()
+
         switch (item.getItemId()) {
             case R.id.otherItems:
                 View otherItemsView = findViewById(R.id.otherItems);
@@ -120,6 +138,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    */
 
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {

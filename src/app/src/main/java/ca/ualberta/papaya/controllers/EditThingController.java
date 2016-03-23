@@ -2,6 +2,7 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -36,7 +37,7 @@ public class EditThingController {
     }
 
     // button to save the changes to the Thing
-    private class EditItemOnClickListener implements View.OnClickListener {
+    private class EditItemOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
 
@@ -56,7 +57,8 @@ public class EditThingController {
         }
 
         @Override
-        public void onClick(View view) {
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
             thing.setTitle(itemNameEditText.getText().toString());
             thing.setDescription(descriptionEditText.getText().toString());
 
@@ -79,6 +81,8 @@ public class EditThingController {
             ThrowawayDataManager.getInstance().setCurrentUserThings(context, things);
 
             transitionToActivity(context, ThingListActivity.class);
+
+            return true;
         }
     }
 
@@ -92,7 +96,7 @@ public class EditThingController {
     }
 
     // Button to change a Thing back to available once it is no being borrowed anymore
-    private class AvailableOnClickListener implements View.OnClickListener {
+    private class AvailableOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
 
@@ -104,12 +108,15 @@ public class EditThingController {
         }
 
         @Override
-        public void onClick(View view) {
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
 
             // TODO: Implement
             System.err.println("TODO: Implement AvailableOnClickListener");
 
             // ...
+
+            return true;
         }
     }
 

@@ -2,6 +2,7 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 
 import ca.ualberta.papaya.AddThingActivity;
@@ -37,7 +38,7 @@ public class ThingListController {
     }
 
     // switch to other items activity
-    private class OtherItemsOnClickListener implements View.OnClickListener {
+    private class OtherItemsOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
 
@@ -46,12 +47,15 @@ public class ThingListController {
         }
 
         @Override
-        public void onClick(View view) {
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
             System.err.println("TODO: IMPLEMENT");
 
             // TODO: Implement
             //Intent intent = new Intent(view.getContext(), ...);
             //view.getContext().startActivity(intent);
+
+            return true;
         }
     }
 
@@ -61,7 +65,7 @@ public class ThingListController {
     }
 
     // add thing button
-    private class AddItemOnClickListener implements View.OnClickListener {
+    private class AddItemOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
 
@@ -70,8 +74,11 @@ public class ThingListController {
         }
 
         @Override
-        public void onClick(View view) {
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
             transitionToActivity(context, AddThingActivity.class);
+
+            return true;
         }
     }
 
@@ -81,7 +88,7 @@ public class ThingListController {
     }
 
     // button to view and edit a users own contact information
-    private class ProfileOnClickListener implements View.OnClickListener {
+    private class ProfileOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
 
@@ -90,12 +97,17 @@ public class ThingListController {
         }
 
         @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(), EditUserProfileActivity.class);
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            // Intent intent = new Intent(view.getContext(), EditUserProfileActivity.class);
+            Intent intent = new Intent(context, EditUserProfileActivity.class);
             intent.putExtra(EditUserProfileActivity.USER_EXTRA, ThrowawayDataManager.getInstance()
                     .getCurrentUser(context));
 
-            view.getContext().startActivity(intent);
+            // view.getContext().startActivity(intent);
+            context.startActivity(intent);
+
+            return true;
         }
     }
     // return onClickListener for Profile
@@ -104,7 +116,7 @@ public class ThingListController {
     }
 
     // button to switch to the search activity
-    private class SearchOnClickListener implements View.OnClickListener {
+    private class SearchOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
 
@@ -113,8 +125,11 @@ public class ThingListController {
         }
 
         @Override
-        public void onClick(View view) {
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
             transitionToActivity(context, ThingSearchActivity.class);
+
+            return true;
         }
     }
 

@@ -26,8 +26,9 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.thing.detail.thing.extra";
 
-    Intent intent;
-    Thing thing;
+    Intent intent = null;
+    Thing thing = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +86,18 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         return true;
     }
 
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        menu.findItem(R.id.goToEdit).setOnMenuItemClickListener(ThingDetailController.getInstance()
+                .getEditItemOnClickListener(this, thing));
+        menu.findItem(R.id.delete).setOnMenuItemClickListener(ThingDetailController.getInstance()
+                .getDeleteItemOnClickListener(this, thing));
+
+        return true;
+    }
+
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -104,6 +117,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    */
 
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
