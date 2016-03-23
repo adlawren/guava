@@ -1,11 +1,15 @@
 package ca.ualberta.papaya.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualberta.papaya.exceptions.UserInvalidPostalException;
 import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
+import ca.ualberta.papaya.interfaces.IObserver;
 
 /**
  * Created by martin on 10/02/16.
@@ -99,9 +103,49 @@ public class User extends ElasticModel {
         return this;
     }
 
-    public List<Bid> getBids(){ return new ArrayList<Bid>(); }
+    public void getBids(IObserver observer){
+        try {
+            JSONObject json = new JSONObject();
+            json.put("from", 0);
+            json.put("size", 1000);
 
-    public List<Thing> getThings(){ return new ArrayList<Thing>(); }
+            JSONObject queryJson = new JSONObject();
+            json.put("query", queryJson);
+
+            JSONObject termJson = new JSONObject();
+            queryJson.put("term", termJson);
+
+            termJson.put("bidderId", getId());
+
+            Bid.search(observer, Bid.class, json.toString());
+
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void getThings(IObserver observer){
+        try {
+            JSONObject json = new JSONObject();
+            json.put("from", 0);
+            json.put("size", 1000);
+
+            JSONObject queryJson = new JSONObject();
+            json.put("query", queryJson);
+
+            JSONObject termJson = new JSONObject();
+            queryJson.put("term", termJson);
+
+            termJson.put("ownerId", getId());
+
+            Thing.search(observer, Thing.class, json.toString());
+
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
 
     public String toString(){
         return getFullName();

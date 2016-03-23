@@ -55,17 +55,16 @@ public class Thing extends ElasticModel {
         super();
         kind = Thing.class;
 
-		// TODO: Update
-        this.owner = owner;
-        ownerName = owner.getName();
+        ownerId = owner.getId();
         id = UUID.randomUUID().toString();
     }
 
-    public User getOwner(){ 
+    public void getOwner(IObserver observer){
+        User.getById(observer, User.class, ownerId);
 		//return (User)User.getById(kind, ownerId);
 		
 		// TODO: Fix
-        return owner;
+        //return owner;
 	}
     public String getOwnerName(){ 
 		//return ownerName;
