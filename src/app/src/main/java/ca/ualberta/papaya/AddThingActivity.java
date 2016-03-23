@@ -46,7 +46,9 @@ public class AddThingActivity extends AbstractPapayaActivity {
         EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
                 descriptionEditText = (EditText) findViewById(R.id.description);
 
-        menu.findItem(R.id.addItem).setOnMenuItemClickListener(AddThingController.getInstance().getSaveOnClickListener(this, itemNameEditText, descriptionEditText));
+        menu.findItem(R.id.addItem).setOnMenuItemClickListener(
+                AddThingController.getInstance()
+                        .getSaveOnClickListener(this, itemNameEditText, descriptionEditText));
 
         return true;
     }

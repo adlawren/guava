@@ -191,7 +191,7 @@ public class ThrowawayDataManager implements IDataManager {
     }
 
     private ThrowawayDataManager() {
-        currentUserObservable = new Observable<>(null);
-        currentUserThingsObservable = new Observable<>(null);
+        currentUserObservable = new Observable<>();
+        currentUserThingsObservable = new Observable<>();
     }
 }

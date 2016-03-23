@@ -1,6 +1,7 @@
 package ca.ualberta.papaya.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.ualberta.papaya.interfaces.IObserver;
 
@@ -15,7 +16,8 @@ public class Observable<T> {
     private T data = null;
 
     private ArrayList<IObserver> observers = null;
-    private void notifyObservers() {
+
+    protected void notifyObservers() {
         if (observers.isEmpty()) return;
 
         for (IObserver observer : observers) {
@@ -23,8 +25,7 @@ public class Observable<T> {
         }
     }
 
-    public Observable(T initialData) {
-        data = initialData;
+    public Observable() {
         observers = new ArrayList<IObserver>();
     }
 
@@ -34,9 +35,6 @@ public class Observable<T> {
 
     public void setData(T newData) {
         data = newData;
-
-        System.err.println("Reset data.");
-
         notifyObservers();
     }
 

@@ -27,6 +27,8 @@ import ca.ualberta.papaya.fixtures.Province;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.util.Ctx;
+import ca.ualberta.papaya.util.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,9 +143,23 @@ public class ThingListActivity extends AbstractPapayaActivity {
     */
 
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(ThrowawayDataManager.getInstance()
-                .getCurrentUserThings(this)));
+    private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
+        SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
+        recyclerView.setAdapter(va);
+        Thing.search(new Observer<List<Thing>>() {
+            @Override
+            public void update(List<Thing> things) {
+                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(va);
+                    }
+                });
+
+            }
+        }, Thing.class, "{}"); // todo: add proper search query
+
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -154,6 +170,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
         public SimpleItemRecyclerViewAdapter(List<Thing> items) {
             mValues = items;
         }
+
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -12,7 +12,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.util.Ctx;
+import ca.ualberta.papaya.util.Observable;
 import io.searchbox.annotations.JestId;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
@@ -27,7 +29,7 @@ import io.searchbox.core.search.sort.Sort;
  * Abstract class to help deal with the ElasticSearch communication.
  * Created by martin on 10/02/16.
  */
-public abstract class ElasticModel implements Serializable {
+public abstract class ElasticModel extends Observable implements Serializable {
 
     private static JestClient client = null;
 
@@ -84,45 +86,61 @@ public abstract class ElasticModel implements Serializable {
      * @param id the id to find.
      * @return the object with the given id. null on failure.
      */
-    public static Object getById(Class<?> kind, String id){
-        try {
-            Get get = new Get.Builder(ElasticModel.index, id).type(typeName(kind)).build();
-            return getClient().execute(get).getSourceAsObject(kind);
-        } catch (IOException e){
-            // TODO: make more robust
-            e.printStackTrace();
-            return null;
-        }
+    public static void getById(final IObserver observer, final Class<?> kind, final String id){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Get get = new Get.Builder(ElasticModel.index, id).type(typeName(kind)).build();
+                    observer.update(getClient().execute(get).getSourceAsObject(kind));
+                } catch (IOException e){
+                    // TODO: make more robust
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     /**
      * Get a list of model objects corresponding to the given search query
      * @param kind  the class of the model(s) to load
-     * @param query
+     * @param query json string
      * @return List of model objects
      */
-    public static List<?> search(Class<?> kind, String query, Sort sort){
-        try {
-            Search search = new Search.Builder(query).addIndex(index).addType(typeName(kind)).build();
-            return getClient().execute(search).getSourceAsObjectList(kind);
-        } catch (IOException e){
-            // todo: make more robust
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+    public static void search(final IObserver observer, final Class<?> kind, final String query, final Sort sort){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Search search = new Search.Builder(query).addIndex(index).addType(typeName(kind)).build();
+                    observer.update(getClient().execute(search).getSourceAsObjectList(kind));
+                } catch (IOException e){
+                    // todo: make more robust
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
-    public static void delete(Class<?> kind, ElasticModel model){
-        try {
-            
-            getClient().execute(new Delete.Builder(model.getId())
-                    .index(index)
-                    .type(typeName(kind))
-                    .build());
-        } catch (IOException e){
-            // todo: make more robust
-            e.printStackTrace();
-        }
+    public static void search(final IObserver observer, final Class<?> kind, final String query) {
+        search(observer, kind, query, null);
+    }
+
+    public static void delete(final IObserver observer, final Class<?> kind, final ElasticModel model){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getClient().execute(new Delete.Builder(model.getId())
+                            .index(index)
+                            .type(typeName(kind))
+                            .build());
+                } catch (IOException e){
+                    // todo: make more robust
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     /**
@@ -173,28 +191,32 @@ public abstract class ElasticModel implements Serializable {
         }
 
         public static void commit(){
-
-            for (ElasticModel model : changeList){
-                if (model.id == null && model.publish){
-                    //insert
-                    // todo: offline storage
-                    model.published = true;
-                    Index index = new Index.Builder(model)
-                            .index(ElasticModel.index)
-                            .type(typeName(model.kind)).build();
-                    try {
-                        ElasticModel.getClient().execute(index);
-                        changeList.remove(model);
-                    } catch (IOException e){
-                        // todo: make more robust
-                        model.published = false;
-                        e.printStackTrace();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (ElasticModel model : changeList){
+                        if (model.id == null && model.publish){
+                            //insert
+                            // todo: offline storage
+                            model.published = true;
+                            Index index = new Index.Builder(model)
+                                    .index(ElasticModel.index)
+                                    .type(typeName(model.kind)).build();
+                            try {
+                                ElasticModel.getClient().execute(index);
+                                changeList.remove(model);
+                            } catch (IOException e){
+                                // todo: make more robust
+                                model.published = false;
+                                e.printStackTrace();
+                            }
+                        } else {
+                            // update
+                            // OMG PANIC. :j No "updates" allowed. k?
+                        }
                     }
-                } else {
-                    // update
-                    // OMG PANIC. :j No "updates" allowed. k?
                 }
-            }
+            }).start();
         }
 
         public static void saveChangeListFile(){
@@ -225,5 +247,6 @@ public abstract class ElasticModel implements Serializable {
         }
 
     }
+
 
 }

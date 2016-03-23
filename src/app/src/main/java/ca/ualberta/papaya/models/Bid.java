@@ -8,6 +8,7 @@ import java.util.List;
 
 import ca.ualberta.papaya.exceptions.BidNegativeException;
 import ca.ualberta.papaya.exceptions.InvalidLocationException;
+import ca.ualberta.papaya.interfaces.IObserver;
 
 /**
  * Model class representing a Bid on a Thing owned by a User
@@ -56,7 +57,9 @@ public class Bid extends ElasticModel {
         setPer(per);
     }
 
-    public User getBidder(){ return (User) User.getById(kind, bidderId); }
+    public void getBidder(IObserver observer){
+        User.getById(observer, kind, bidderId);
+    }
     public Bid setBidder(User bidder){
         this.bidderId = bidder.getId();
         this.bidderName = bidder.getFullName();
@@ -64,7 +67,9 @@ public class Bid extends ElasticModel {
         return this;
     }
 
-    public Thing getThing(){ return (Thing) Thing.getById(kind, thingId); }
+    public void getThing(IObserver observer){
+        Thing.getById(observer, kind, thingId);
+    }
     public Bid setThing(Thing thing){
         thingId = thing.getId();
         changed();

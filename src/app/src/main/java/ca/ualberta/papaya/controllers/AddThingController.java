@@ -55,17 +55,23 @@ public class AddThingController {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
 
-            Thing thing = new Thing(ThrowawayDataManager.getInstance().getCurrentUser(context));
+            //Thing thing = new Thing(ThrowawayDataManager.getInstance().getCurrentUser(context));
+
+            User testUser = new User();
+            testUser.setFirstName("Testy").setLastName("McTesterface");
+            Thing thing = new Thing(testUser);
 
             thing.setTitle(itemName);
             thing.setDescription(description);
 
-            //TODO: Set up with ElasticSearch
+            testUser.publish();
+            thing.publish();
+/*
             ArrayList<Thing> things = ThrowawayDataManager.getInstance().getCurrentUserThings(context);
 
             things.add(thing);
             ThrowawayDataManager.getInstance().getInstance().setCurrentUserThings(context, things);
-
+*/
             transitionToActivity(context, ThingListActivity.class);
 
             /*

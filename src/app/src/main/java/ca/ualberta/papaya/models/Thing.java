@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
+import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by martin on 10/02/16.
@@ -35,6 +37,7 @@ public class Thing extends ElasticModel {
 
     private Photo photo = new Photo();     // todo: initialize with default blank photo.
 
+    /*
     public static List<Thing> getMyThings(){
         return new ArrayList<Thing>();
     }
@@ -46,7 +49,7 @@ public class Thing extends ElasticModel {
     public static List<Thing> getThings(List<String> keywords){
         return new ArrayList<Thing>();
     }
-
+    */
 
     public Thing(User owner){
         super();
@@ -77,11 +80,12 @@ public class Thing extends ElasticModel {
         return this;
     }
 
-    public User getBorrower(){ return (User)User.getById(kind, borrowerId); }
+    public void getBorrower(IObserver observer){ User.getById(observer, kind, borrowerId); }
     public String getBorrowerName(){ return borrowerName; }
     public Thing setBorrower(User borrower){
         borrowerId = borrower.getId();
         borrowerName = borrower.getName();
+        changed();
         return this;
     }
 
@@ -96,6 +100,7 @@ public class Thing extends ElasticModel {
 
     public List<Tag> getTags(){ return new ArrayList<>(this.tags); }
     public Thing addTag(Tag tag){
+
         return this;
     }
 
@@ -118,8 +123,14 @@ public class Thing extends ElasticModel {
 
     public Thing acceptBid(Bid bid) throws ThingUnavailableException {
         if (status == Status.AVAILABLE) {
-            setBorrower(bid.getBidder());
-            status = Status.BORROWED;
+            bid.getBidder(new Observer<User>() {
+                @Override
+                public void update(User bidder) {
+                    setBorrower(bidder);
+                    status = Status.BORROWED;
+                    changed();
+                }
+            });
             return this;
         } else {
             throw new ThingUnavailableException();
