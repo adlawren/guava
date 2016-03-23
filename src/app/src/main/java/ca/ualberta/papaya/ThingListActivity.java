@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,6 +71,11 @@ public class ThingListActivity extends AbstractPapayaActivity {
         View recyclerView = findViewById(R.id.thing_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
 
         if (findViewById(R.id.thing_detail_container) != null) {
             // The detail container view will be present only in the

@@ -2,6 +2,7 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -32,7 +33,7 @@ public class ThingSearchController {
 
     // button for searching inputted keywords
     // TODO: Fix
-    private class SearchOnClickListener implements View.OnClickListener {
+    private class SearchOnClickListener implements MenuItem.OnMenuItemClickListener {
 
         private Context context;
 
@@ -53,7 +54,7 @@ public class ThingSearchController {
         }
 
         @Override
-        public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
             String keywords = keywordsEditText.getText().toString();
 
             thingList.clear();
@@ -64,6 +65,7 @@ public class ThingSearchController {
             }
 
             recyclerView.getAdapter().notifyDataSetChanged();
+            return true;
         }
     }
 

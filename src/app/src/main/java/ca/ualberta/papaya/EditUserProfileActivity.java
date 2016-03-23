@@ -2,6 +2,7 @@ package ca.ualberta.papaya;
 
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,11 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
 
 //        FloatingActionButton saveButton = (FloatingActionButton) findViewById(R.id.saveProfile);
 //        saveButton.setOnClickListener(EditUserProfileController.getInstance().getSaveOnClickListener(this, userEmailEditText));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
     }
 
     @Override
@@ -45,17 +51,13 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.editProfile:
-                //EditUserProfileController.getInstance().getSaveOnClickListener(this,
-                  //      userEmailEditText);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        EditText contactInfo = (EditText) findViewById(R.id.contactInfo);
+
+        menu.findItem(R.id.editProfile).setOnMenuItemClickListener(EditUserProfileController.getInstance().getSaveOnClickListener(this, contactInfo));
+
+        return true;
     }
 }

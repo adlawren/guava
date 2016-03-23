@@ -46,6 +46,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
         }
 
 //        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);

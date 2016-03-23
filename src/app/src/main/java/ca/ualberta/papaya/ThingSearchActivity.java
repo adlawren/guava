@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -39,6 +40,8 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
 
     private static ArrayList<Thing> thingList;
 
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +51,13 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
+        recyclerView = (RecyclerView) findViewById(R.id.thing_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
@@ -96,21 +104,17 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.otherItems:
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
 
-                return true;
-            case R.id.search:
-                //showHelp();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        EditText searchValue = (EditText) findViewById(R.id.keywords);
+
+        menu.findItem(R.id.search).setOnMenuItemClickListener(ThingSearchController.getInstance()
+                .getSearchOnClickListener(this,searchValue,recyclerView,thingList));
+
+        return true;
     }
+
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(thingList));

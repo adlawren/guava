@@ -2,6 +2,7 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 
 import ca.ualberta.papaya.UserProfileActivity;
@@ -27,7 +28,7 @@ public class ThingSearchDetailController {
     }
 
     // button for displaying the owner (User) of the Thing
-    private class UserOnClickListener implements View.OnClickListener {
+    private class UserOnClickListener implements MenuItem.OnMenuItemClickListener {
 
         private Context context;
 
@@ -39,11 +40,12 @@ public class ThingSearchDetailController {
         }
 
         @Override
-        public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
             Intent intent = new Intent(context, UserProfileActivity.class);
             intent.putExtra(UserProfileActivity.USER_EXTRA, user);
 
             context.startActivity(intent);
+            return true;
         }
     }
 
