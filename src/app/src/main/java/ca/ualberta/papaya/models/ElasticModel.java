@@ -214,46 +214,51 @@ public abstract class ElasticModel extends Observable implements Serializable, I
             commit();
         }
 
+        public static Boolean committing = false;
+
         public static void commit(){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
 
-                    List<ElasticModel> toRemove = new ArrayList<ElasticModel>();
+            if(!committing){
+                committing = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    for (int i = 0; i < changeList.size(); i++){
-                        ElasticModel model = changeList.get(i);
-                        if (model.id == null && model.publish){
-                            //insert
-                            // todo: offline storage
-                            model.published = true;
-                            String type = typeName(model);
-                            Index index = new Index.Builder(model)
-                                    .index(ElasticModel.index)
-                                    .type(type).build();
-                            try {
-                                String send = index.getData(new Gson());
-                                System.err.print(send);
-                                JestResult resp = ElasticModel.getClient().execute(index);
-                                String result = resp.getJsonString();
-                                System.err.print(result);
-                                toRemove.add(model);
+                        List<ElasticModel> toRemove = new ArrayList<ElasticModel>();
 
-                            } catch (IOException e){
-                                // todo: make more robust
-                                model.published = false;
-                                e.printStackTrace();
+                        for (int i = 0; i < changeList.size(); i++){
+                            ElasticModel model = changeList.get(i);
+                            if (model.publish && !model.published){
+                                //insert
+                                // todo: offline storage
+                                model.published = true;
+                                String type = typeName(model);
+                                Index index = new Index.Builder(model)
+                                        .index(ElasticModel.index)
+                                        .type(type).build();
+                                try {
+                                    String send = index.getData(new Gson());
+                                    System.err.print(send);
+                                    JestResult resp = ElasticModel.getClient().execute(index);
+                                    String result = resp.getJsonString();
+                                    System.err.print(result);
+                                    toRemove.add(model);
+                                } catch (IOException e){
+                                    // todo: make more robust
+                                    model.published = false;
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                // update
+                                // OMG PANIC. :j No "updates" allowed. k?
                             }
-                        } else {
-                            // update
-                            // OMG PANIC. :j No "updates" allowed. k?
                         }
+
+                        changeList.removeAll(toRemove);
+                        committing = false;
                     }
-
-                    changeList.removeAll(toRemove);
-
-                }
-            }).start();
+                }).start();
+            }
         }
 
         public static void saveChangeListFile(){
