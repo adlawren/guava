@@ -53,7 +53,7 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
         Intent intent = getIntent();
         final Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
-        if(thing != null) {
+        if (thing != null) {
 
             TextView itemInformationTextView = (TextView) findViewById(R.id.thingDetail);
             itemInformationTextView.setText(thing.getDescription());
@@ -75,6 +75,7 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
         } else {
             System.err.print("No thing specified!!? (ThingSearchDetailActivity)");
         }
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

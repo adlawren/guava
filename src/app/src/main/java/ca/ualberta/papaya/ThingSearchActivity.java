@@ -107,6 +107,7 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
         super.onPrepareOptionsMenu(menu);
 
         EditText searchValue = (EditText) findViewById(R.id.keywords);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
 
         menu.findItem(R.id.search).setOnMenuItemClickListener(ThingSearchController.getInstance()
                 .getSearchOnClickListener(this,searchValue,recyclerView,thingList));
