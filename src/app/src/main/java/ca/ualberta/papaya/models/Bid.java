@@ -18,7 +18,7 @@ import ca.ualberta.papaya.interfaces.IObserver;
  */
 public class Bid extends ElasticModel {
 
-    protected transient Class<?> kind;
+    public transient Class<?> kind;
 
     private String bidderName;       // Denormalized User.getName()
     private String bidderId;         // the bidder's .getId()

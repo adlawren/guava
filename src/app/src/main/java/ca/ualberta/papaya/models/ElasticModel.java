@@ -10,8 +10,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import ca.ualberta.papaya.interfaces.IKind;
 import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.util.Ctx;
 import ca.ualberta.papaya.util.Observable;
@@ -29,7 +31,7 @@ import io.searchbox.core.search.sort.Sort;
  * Abstract class to help deal with the ElasticSearch communication.
  * Created by martin on 10/02/16.
  */
-public abstract class ElasticModel extends Observable implements Serializable {
+public abstract class ElasticModel extends Observable implements Serializable, IKind {
 
     private static JestClient client = null;
 
@@ -40,7 +42,7 @@ public abstract class ElasticModel extends Observable implements Serializable {
     protected static final String index = "papaya";
 
     // The java class representing the child objects. Implement in subclasses
-    protected Class<?> kind;
+    // protected transient Class<?> kind;
 
     // the id of this object.
     @JestId
@@ -61,6 +63,17 @@ public abstract class ElasticModel extends Observable implements Serializable {
     private static String typeName(Class<?> kind){
         return kind.getSimpleName().toLowerCase();
     }
+
+    private static String typeName(ElasticModel model){
+        Class k = null;
+        if (model instanceof Bid){ k = ((Bid) model).kind; }
+        else if (model instanceof Photo){ k = ((Photo) model).kind; }
+        else if (model instanceof Tag){ k = ((Tag) model).kind; }
+        else if (model instanceof Thing){ k = ((Thing) model).kind; }
+        else if (model instanceof User){ k = ((User) model).kind; }
+        return typeName(k);
+    }
+
     /**
      * Construct (if necessary) and return a jest client to
      * talk to the ElasticSearch database.
@@ -87,18 +100,29 @@ public abstract class ElasticModel extends Observable implements Serializable {
      * @return the object with the given id. null on failure.
      */
     public static void getById(final IObserver observer, final Class<?> kind, final String id){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Get get = new Get.Builder(ElasticModel.index, id).type(typeName(kind)).build();
-                    observer.update(getClient().execute(get).getSourceAsObject(kind));
-                } catch (IOException e){
-                    // TODO: make more robust
-                    e.printStackTrace();
+        if(id != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Get get = new Get.Builder(ElasticModel.index, id).type(typeName(kind)).build();
+                        observer.update(getClient().execute(get).getSourceAsObject(kind));
+                    } catch (IOException e) {
+                        // TODO: make more robust
+                        e.printStackTrace();
+                    }
                 }
+            }).start();
+        } else {
+            System.err.print("Null id sent to getById");
+            try {
+                observer.update(kind.newInstance());
+            } catch(InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e){
+                e.printStackTrace();
             }
-        }).start();
+        }
     }
 
     /**
@@ -194,17 +218,23 @@ public abstract class ElasticModel extends Observable implements Serializable {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    for (ElasticModel model : changeList){
+
+                    List<ElasticModel> toRemove = new ArrayList<ElasticModel>();
+
+                    for (int i = 0; i < changeList.size(); i++){
+                        ElasticModel model = changeList.get(i);
                         if (model.id == null && model.publish){
                             //insert
                             // todo: offline storage
                             model.published = true;
+                            String type = typeName(model);
                             Index index = new Index.Builder(model)
                                     .index(ElasticModel.index)
-                                    .type(typeName(model.kind)).build();
+                                    .type(type).build();
                             try {
                                 ElasticModel.getClient().execute(index);
-                                changeList.remove(model);
+                                toRemove.add(model);
+
                             } catch (IOException e){
                                 // todo: make more robust
                                 model.published = false;
@@ -215,6 +245,9 @@ public abstract class ElasticModel extends Observable implements Serializable {
                             // OMG PANIC. :j No "updates" allowed. k?
                         }
                     }
+
+                    changeList.removeAll(toRemove);
+
                 }
             }).start();
         }

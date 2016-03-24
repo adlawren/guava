@@ -66,12 +66,7 @@ public class AddThingController {
 
             testUser.publish();
             thing.publish();
-/*
-            ArrayList<Thing> things = ThrowawayDataManager.getInstance().getCurrentUserThings(context);
 
-            things.add(thing);
-            ThrowawayDataManager.getInstance().getInstance().setCurrentUserThings(context, things);
-*/
             transitionToActivity(context, ThingListActivity.class);
 
             /*

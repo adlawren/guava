@@ -22,6 +22,7 @@ import java.util.List;
 import ca.ualberta.papaya.controllers.ThingSearchController;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  *  Activity for searching Thing objects. Calls ThingSearchController for all of the
@@ -37,21 +38,18 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
      */
     private boolean mTwoPane;
 
-    private static ArrayList<Thing> thingList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_search);
 
-        thingList = ThrowawayDataManager.getInstance().getNonCurrentUserThings();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        setupRecyclerView(recyclerView);
 
         if (findViewById(R.id.thing_detail_container) != null) {
             // The detail container view will be present only in the
@@ -112,8 +110,26 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
         }
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(thingList));
+    private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
+
+        SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
+        recyclerView.setAdapter(va);
+
+        Thing.search(new Observer<List<Thing>>() {
+            @Override
+            public void update(List<Thing> things) {
+                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(va);
+                    }
+                });
+
+            }
+        }, Thing.class, "{}"); // todo: add proper search query
+
+        //recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(thingList));
     }
 
     public class SimpleItemRecyclerViewAdapter

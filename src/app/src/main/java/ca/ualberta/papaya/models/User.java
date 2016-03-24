@@ -20,7 +20,7 @@ import ca.ualberta.papaya.interfaces.IObserver;
 
 public class User extends ElasticModel {
 
-    protected transient Class<?> kind;
+    public transient Class<?> kind;
 
     private String firstName = "";
     private String lastName = "";

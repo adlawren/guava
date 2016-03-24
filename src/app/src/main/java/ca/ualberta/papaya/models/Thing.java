@@ -19,20 +19,20 @@ import ca.ualberta.papaya.util.Observer;
  */
 public class Thing extends ElasticModel {
 
-    protected transient Class<?> kind;
+    public transient Class<?> kind;
 
     private String ownerId;
-    private String ownerName;
-
-    // TODO: Fix
-    private User owner;
+    private transient User owner;
 
     private String borrowerId;
-    private String borrowerName;
+    private transient User borrower;
 
     private String title = "";
+
     private Thing.Status status = Status.AVAILABLE;
-    private ArrayList<Tag> tags = new ArrayList<Tag>();
+
+    //private ArrayList<Tag> tags = new ArrayList<Tag>();
+
     private String description = "";
 
     private Photo photo = new Photo();     // todo: initialize with default blank photo.
@@ -61,29 +61,23 @@ public class Thing extends ElasticModel {
 
     public void getOwner(IObserver observer){
         User.getById(observer, User.class, ownerId);
-		//return (User)User.getById(kind, ownerId);
-		
-		// TODO: Fix
-        //return owner;
+        // TODO: memoize
 	}
-    public String getOwnerName(){ 
-		//return ownerName;
-		
-		// TODO: Fix
-        return owner.getName();
-	}
+
     public Thing setOwner(User owner){
         ownerId = owner.getId();
-        ownerName = owner.getName();
+        this.owner = owner;
         changed();
         return this;
     }
 
-    public void getBorrower(IObserver observer){ User.getById(observer, kind, borrowerId); }
-    public String getBorrowerName(){ return borrowerName; }
+    public void getBorrower(IObserver observer){
+        User.getById(observer, kind, borrowerId);
+        // TODO: memoize
+    }
     public Thing setBorrower(User borrower){
         borrowerId = borrower.getId();
-        borrowerName = borrower.getName();
+        this.borrower = borrower;
         changed();
         return this;
     }
@@ -97,11 +91,13 @@ public class Thing extends ElasticModel {
 
     public Status getStatus(){ return this.status; }
 
+    /*
     public List<Tag> getTags(){ return new ArrayList<>(this.tags); }
     public Thing addTag(Tag tag){
 
         return this;
     }
+    */
 
     public String getDescription(){ return description; }
     public Thing setDescription(String description){
