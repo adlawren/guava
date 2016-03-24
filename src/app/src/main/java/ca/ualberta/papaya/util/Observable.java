@@ -13,9 +13,9 @@ import ca.ualberta.papaya.interfaces.IObserver;
  */
 public class Observable<T> {
 
-    private T data = null;
+    private transient T data = null;
 
-    private ArrayList<IObserver> observers = null;
+    private transient ArrayList<IObserver> observers = null;
 
     protected void notifyObservers() {
         if (observers.isEmpty()) return;

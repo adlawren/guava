@@ -232,7 +232,11 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                     .index(ElasticModel.index)
                                     .type(type).build();
                             try {
-                                ElasticModel.getClient().execute(index);
+                                String send = index.getData(new Gson());
+                                System.err.print(send);
+                                JestResult resp = ElasticModel.getClient().execute(index);
+                                String result = resp.getJsonString();
+                                System.err.print(result);
                                 toRemove.add(model);
 
                             } catch (IOException e){
