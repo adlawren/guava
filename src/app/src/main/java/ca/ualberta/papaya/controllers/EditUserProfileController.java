@@ -2,6 +2,7 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -32,7 +33,7 @@ public class EditUserProfileController {
     }
 
     // button to save the changes to the profile
-    private class SaveOnClickListener implements View.OnClickListener {
+    private class SaveOnClickListener implements MenuItem.OnMenuItemClickListener {
 
         private Context context;
         private EditText emailEditText;
@@ -44,7 +45,7 @@ public class EditUserProfileController {
         }
 
         @Override
-        public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item)  {
             String email = emailEditText.getText().toString();
 
             User user = ThrowawayDataManager.getInstance().getCurrentUser(context);
@@ -53,6 +54,7 @@ public class EditUserProfileController {
             ThrowawayDataManager.getInstance().setCurrentUser(context, user);
 
             transitionToActivity(context, ThingListActivity.class);
+            return true;
         }
     }
 
