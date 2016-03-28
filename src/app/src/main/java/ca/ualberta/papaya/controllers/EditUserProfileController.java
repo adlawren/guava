@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.User;
@@ -84,4 +85,6 @@ public class EditUserProfileController {
     public CancelOnClickListener getCancelOnClickListener(Context initialContext) {
         return new CancelOnClickListener(initialContext);
     }
+
+
 }

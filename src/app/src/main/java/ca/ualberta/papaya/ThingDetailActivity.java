@@ -94,6 +94,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
                 .getEditItemOnClickListener(this, thing));
         menu.findItem(R.id.delete).setOnMenuItemClickListener(ThingDetailController.getInstance()
                 .getDeleteItemOnClickListener(this, thing));
+        //menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(ThingDetailController.getInstance()
+        //        .getPictureOnClickListener(this, thing)); //Todo fill in button id
 
         return true;
     }

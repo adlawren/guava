@@ -1,13 +1,16 @@
 package ca.ualberta.papaya.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
@@ -24,6 +27,7 @@ import ca.ualberta.papaya.models.User;
  */
 public class AddThingController {
     private static AddThingController ourInstance = new AddThingController();
+    public static final int PHOTO_RESULT = 10;
 
     public static AddThingController getInstance() {
         return ourInstance;
@@ -37,11 +41,15 @@ public class AddThingController {
 
         private Context context;
         private EditText itemNameEditText, descriptionEditText;
+        private Bitmap image;
 
-        public SaveOnClickListener(Context initialContext, EditText initialItemNameEditText, EditText initialDescriptionEditText) {
+        public SaveOnClickListener(Context initialContext, EditText initialItemNameEditText,
+                                   EditText initialDescriptionEditText, Bitmap initialImage) {
             context = initialContext;
             itemNameEditText = initialItemNameEditText;
             descriptionEditText = initialDescriptionEditText;
+            image = initialImage;
+
         }
 
         private void transitionToActivity(Context context, Class activityClass) {
@@ -63,6 +71,11 @@ public class AddThingController {
 
             thing.setTitle(itemName);
             thing.setDescription(description);
+
+
+            if( image != null){
+                thing.getPhoto().setImage(image);
+            }
 
             testUser.publish();
             thing.publish();
@@ -107,8 +120,38 @@ public class AddThingController {
     // return the onClickListener
     public SaveOnClickListener getSaveOnClickListener(Context initialContext,
                                                       EditText initialItemNameEditText,
-                                                      EditText initialDescriptionEditText) {
+                                                      EditText initialDescriptionEditText,
+                                                      Bitmap image ) {
         return new SaveOnClickListener(initialContext, initialItemNameEditText,
-                initialDescriptionEditText);
+                initialDescriptionEditText, image);
+    }
+
+    private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+
+        private Context context;
+
+        private Bitmap image;
+
+        public SetPictureOnClickListener(Context initialContext, Bitmap initialImage) {
+            context = initialContext;
+            image = initialImage;
+
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent intent = new Intent(context, AddPictureActivity.class);
+            intent.putExtra(AddPictureActivity.PICTURE_EXTRA, image);
+
+            ((Activity)context).startActivityForResult(intent, PHOTO_RESULT);
+
+            return true;
+        }
+    }
+
+    // return the onClickListener for setPicture
+    public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Bitmap initialImage) {
+        return new SetPictureOnClickListener(initialContext, initialImage);
     }
 }

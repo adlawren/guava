@@ -148,4 +148,9 @@ public class Thing extends ElasticModel {
             return name().toLowerCase();
         }
     }
+
+    public Photo getPhoto(){ return photo;}
+    public void setPhoto(Photo newPhoto){
+        this.photo = newPhoto;
+    }
 }

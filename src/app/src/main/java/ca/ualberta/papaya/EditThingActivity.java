@@ -2,6 +2,7 @@ package ca.ualberta.papaya;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ca.ualberta.papaya.controllers.EditThingController;
+import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 
 /**
@@ -42,6 +44,8 @@ public class EditThingActivity extends AbstractPapayaActivity {
         itemNameEditText.setText(thing.getTitle());
         descriptionEditText.setText(thing.getDescription());
 
+
+
 //        FloatingActionButton editItemFloatingActionButton = (FloatingActionButton)
 //                findViewById(R.id.editItem);
 //        editItemFloatingActionButton.setOnClickListener(EditThingController.getInstance()
@@ -67,6 +71,8 @@ public class EditThingActivity extends AbstractPapayaActivity {
         return true;
     }
 
+
+    //
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -78,6 +84,8 @@ public class EditThingActivity extends AbstractPapayaActivity {
                 .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
         menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
                 .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
+        //menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(EditThingController.getInstance()
+        //        .getSetPictureOnClickListener(this, thing)); //Todo fill in button id
 
         return true;
     }
@@ -111,5 +119,19 @@ public class EditThingActivity extends AbstractPapayaActivity {
         }
     }
     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == EditThingController.PHOTO_RESULT) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                Bitmap temp = data.getParcelableExtra(AddPictureActivity.PICTURE_EXTRA);
+                Photo photo = new Photo();
+                photo.setImage(temp);
+                thing.setPhoto(photo);
+
+            }
+        }
+    }
 
 }

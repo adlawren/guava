@@ -8,8 +8,10 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.EditThingActivity;
 import ca.ualberta.papaya.ThingListActivity;
+import ca.ualberta.papaya.ViewPictureActivity;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.Thing;
 
@@ -108,5 +110,33 @@ public class ThingDetailController {
     public DeleteItemOnClickListener getDeleteItemOnClickListener(Context initialContext,
                                                                   Thing initialThing) {
         return new DeleteItemOnClickListener(initialContext, initialThing);
+    }
+
+    private class ViewPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+
+        private Context context;
+
+        private Thing thing;
+
+        public ViewPictureOnClickListener(Context initialContext, Thing initialThing) {
+            context = initialContext;
+            thing = initialThing;
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent intent = new Intent(context, AddPictureActivity.class);
+            intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
+
+            context.startActivity(intent);
+
+            return true;
+        }
+    }
+
+    // return the onClickListener for getPicture
+    public ViewPictureOnClickListener getPictureOnClickListener(Context initialContext, Thing initialThing) {
+        return new ViewPictureOnClickListener(initialContext, initialThing);
     }
 }

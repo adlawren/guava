@@ -1,5 +1,7 @@
 package ca.ualberta.papaya;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -10,7 +12,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import ca.ualberta.papaya.controllers.AddThingController;
+import ca.ualberta.papaya.controllers.EditThingController;
 import ca.ualberta.papaya.controllers.ThingListController;
+import ca.ualberta.papaya.models.Photo;
 
 /**
  * Activity for adding Thing objects.
@@ -21,6 +25,7 @@ import ca.ualberta.papaya.controllers.ThingListController;
  */
 public class AddThingActivity extends AbstractPapayaActivity {
 
+    Bitmap image = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +59,9 @@ public class AddThingActivity extends AbstractPapayaActivity {
 
         menu.findItem(R.id.addItem).setOnMenuItemClickListener(
                 AddThingController.getInstance()
-                        .getSaveOnClickListener(this, itemNameEditText, descriptionEditText));
+                        .getSaveOnClickListener(this, itemNameEditText, descriptionEditText, image));
+        //menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(AddThingController.getInstance()
+                //.getSetPictureOnClickListener(this, image)); //Todo fill in button id
 
         return true;
     }
@@ -78,4 +85,15 @@ public class AddThingActivity extends AbstractPapayaActivity {
         }
     }
     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == EditThingController.PHOTO_RESULT) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                image = data.getParcelableExtra(AddPictureActivity.PICTURE_EXTRA);
+
+            }
+        }
+    }
 }
