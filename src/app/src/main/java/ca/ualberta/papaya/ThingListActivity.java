@@ -108,9 +108,12 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 .getProfileOnClickListener(this));
         menu.findItem(R.id.search).setOnMenuItemClickListener(ThingListController.getInstance()
                 .getSearchOnClickListener(this));
+        //menu.findItem(R.id.all).setOnMenuItemClickListener(getAllOnClickListener(this));
 
         return true;
     }
+
+
 
     /*
     @Override

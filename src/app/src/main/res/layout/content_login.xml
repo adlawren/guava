@@ -9,23 +9,23 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_edit_item"
+    tools:showIn="@layout/activity_login"
     android:id="@+id/content">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:id="@+id/textItemName"
+        android:id="@+id/textUserName"
         android:textColor="#000000"
-        android:text="Item Name:" />
+        android:text="User Name:" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/itemName"
+        android:id="@+id/userName"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textItemName"
+        android:layout_below="@+id/textUserName"
         android:textColor="#000000"
         android:background="@drawable/rectangle"
         android:layout_alignParentLeft="true" />
@@ -34,20 +34,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:id="@+id/textDescription"
-        android:layout_below="@+id/itemName"
+        android:id="@+id/textPassword"
+        android:layout_below="@+id/userName"
         android:textColor="#000000"
-        android:text="Description:" />
+        android:text="Password:" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/description"
+        android:id="@+id/password"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textDescription"
+        android:layout_below="@+id/textPassword"
         android:textColor="#000000"
         android:background="@drawable/rectangle"
         android:layout_alignParentLeft="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:id="@+id/login"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

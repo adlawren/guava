@@ -2,6 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/filter"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:title="Filter">
+        <menu>
+            <item android:id="@+id/all"
+                android:title="All Items" />
+            <item android:id="@+id/borrowed"
+                android:title="Borrowed" />
+            <item android:id="@+id/bidded"
+                android:title="Bidded" />
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/otherItems"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
@@ -10,7 +25,7 @@
     <item
         android:id="@+id/addItem"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:title="Add Item">
     </item>
 
@@ -24,23 +39,8 @@
     <item
         android:id="@+id/search"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:title="Search">
-    </item>
-
-    <item
-        android:id="@+id/filter"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom"
-        android:title="Filter">
-        <menu>
-            <item android:id="@+id/all"
-                android:title="All Items" />
-            <item android:id="@+id/borrowed"
-                android:title="Borrowed" />
-            <item android:id="@+id/bidded"
-                android:title="Bidded" />
-        </menu>
     </item>
 
 

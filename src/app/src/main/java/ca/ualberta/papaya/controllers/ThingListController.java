@@ -2,10 +2,12 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import ca.ualberta.papaya.AddThingActivity;
+import ca.ualberta.papaya.R;
 import ca.ualberta.papaya.ThingSearchActivity;
 import ca.ualberta.papaya.EditUserProfileActivity;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
@@ -136,5 +138,30 @@ public class ThingListController {
     // return onClickListener for search
     public SearchOnClickListener getSearchOnClickListener(Context initialContext) {
         return new SearchOnClickListener(initialContext);
+    }
+
+    //ToDo: change comments
+    // button to switch to the search activity
+    private class AllOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+
+        private Context context;
+
+        public AllOnClickListener(Context initialContext) {
+            context = initialContext;
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            //transitionToActivity(context, ThingSearchActivity.class);
+
+
+            return true;
+        }
+    }
+
+    // return onClickListener for search
+    public AllOnClickListener getAllOnClickListener(Context initialContext) {
+        return new AllOnClickListener(initialContext);
     }
 }
