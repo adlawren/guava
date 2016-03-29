@@ -41,15 +41,6 @@
         android:textColor="#000000"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textBids"
-        android:layout_below="@+id/thing_detail_container"
-        android:textColor="#000000"
-        android:text="Bids:" />
-
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
