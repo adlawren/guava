@@ -29,15 +29,19 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <ListView
-        android:id="@+id/bids"
-        android:layout_width="fill_parent"
-        android:layout_height="215dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:layout_gravity="bottom|center">
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </ListView>
+        <include layout="@layout/bid_list"
+            android:layout_height="213dp"
+            android:layout_width="fill_parent"
+            android:layout_gravity="center_horizontal|bottom" />
+
+
+    </FrameLayout>
 
 
 
