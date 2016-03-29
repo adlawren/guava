@@ -35,7 +35,6 @@
         android:layout_height="215dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
-        android:background="@drawable/rectangle"
         android:layout_gravity="bottom|center">
 
     </ListView>

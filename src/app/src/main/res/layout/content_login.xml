@@ -50,11 +50,12 @@
         android:layout_alignParentLeft="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/login"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/password"
+        android:background="#f95f22"
         android:layout_centerHorizontal="true" />
 
 
