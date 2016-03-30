@@ -10,6 +10,7 @@ import ca.ualberta.papaya.exceptions.UserInvalidPostalException;
 import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
 import ca.ualberta.papaya.interfaces.IObserver;
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by martin on 10/02/16.
@@ -19,6 +20,18 @@ import ca.ualberta.papaya.interfaces.IObserver;
  */
 
 public class User extends ElasticModel {
+    @JestId
+    protected String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String newId) {
+        id = newId;
+    }
 
     public transient Class<?> kind;
 

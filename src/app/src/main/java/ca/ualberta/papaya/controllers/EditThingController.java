@@ -8,11 +8,18 @@ import android.view.View;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
+import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.ThrowawayElasticChangeSet;
+import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Observable;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 13/03/16.
@@ -49,7 +56,8 @@ public class EditThingController {
 
         private EditText itemNameEditText, descriptionEditText;
 
-        public EditItemOnClickListener(Context initialContext, Thing initialThing,
+        public EditItemOnClickListener(Context initialContext,
+                                       Thing initialThing,
                                        EditText initialItemNameEditText,
                                        EditText initialDescriptionEditText) {
             context = initialContext;
@@ -63,26 +71,60 @@ public class EditThingController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
+//            thing.setTitle(itemNameEditText.getText().toString());
+//            thing.setDescription(descriptionEditText.getText().toString());
+//
+//            ArrayList<Thing> things = ThrowawayDataManager.getInstance()
+//                    .getCurrentUserThings(context);
+//
+//            Thing match = null;
+//            for (Thing nextThing : things) {
+//                if (nextThing.getId().equals(thing.getId())) {
+//                    match = nextThing;
+//                }
+//            }
+//
+//            if (match != null) {
+//                things.set(things.indexOf(match), thing);
+//            } else {
+//                System.err.println("[ThingDetailController.DeleteItemOnClickListener] ERROR: Thing not found.");
+//            }
+//
+//            ThrowawayDataManager.getInstance().setCurrentUserThings(context, things);
+
             thing.setTitle(itemNameEditText.getText().toString());
             thing.setDescription(descriptionEditText.getText().toString());
 
-            ArrayList<Thing> things = ThrowawayDataManager.getInstance()
-                    .getCurrentUserThings(context);
+            // thing.publish();
+            // ThrowawayElasticChangeSet.ElasticChangeSet.add(thing);
 
-            Thing match = null;
-            for (Thing nextThing : things) {
-                if (nextThing.getId().equals(thing.getId())) {
-                    match = nextThing;
-                }
-            }
+            User testUser = new User();
+            testUser.setFirstName("Things");
+            testUser.setLastName("McGee");
 
-            if (match != null) {
-                things.set(things.indexOf(match), thing);
-            } else {
-                System.err.println("[ThingDetailController.DeleteItemOnClickListener] ERROR: Thing not found.");
-            }
+            final Thing newThing = new Thing(testUser);
+            newThing.setTitle(itemNameEditText.getText().toString());
+            newThing.setDescription(descriptionEditText.getText().toString());
 
-            ThrowawayDataManager.getInstance().setCurrentUserThings(context, things);
+            // MyThingsDataManager.getInstance().update(newThing);
+            MyThingsDataManager.getInstance().update(thing);
+
+//            Observable<ArrayList<Thing>> thingsObservable = new Observable<>();
+//            thingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+//                @Override
+//                public void update(ArrayList<Thing> data) {
+//                    for (Thing nextThing : data) {
+//                        if (nextThing.getId().equals(thing.getId())) {
+//                            nextThing.setTitle(itemNameEditText.getText().toString());
+//                            nextThing.setDescription(descriptionEditText.getText().toString());
+//                        }
+//                    }
+//
+//                    MyThingsDataManager.getInstance().updateData(data);
+//                }
+//            });
+//
+//            MyThingsDataManager.getInstance().getData(thingsObservable);
 
             transitionToActivity(context, ThingListActivity.class);
 
@@ -128,10 +170,6 @@ public class EditThingController {
     public AvailableOnClickListener getAvailableOnClickListener(Context initialContext, Thing initialThing) {
         return new AvailableOnClickListener(initialContext, initialThing);
     }
-
-
-
-
 
     private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 

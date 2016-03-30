@@ -14,6 +14,7 @@ import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.models.ThrowawayElasticChangeSet;
 import ca.ualberta.papaya.models.User;
 
 /**
@@ -67,51 +68,22 @@ public class AddThingController {
 
             User testUser = new User();
             testUser.setFirstName("Testy").setLastName("McTesterface");
-            Thing thing = new Thing(testUser);
 
+            Thing thing = new Thing(testUser);
             thing.setTitle(itemName);
             thing.setDescription(description);
 
 
-            if( image != null){
+            if( image != null) {
                 thing.getPhoto().setImage(image);
             }
 
-            testUser.publish();
-            thing.publish();
+            // testUser.publish();
+
+            // thing.publish();
+            ThrowawayElasticChangeSet.ElasticChangeSet.add(thing);
 
             transitionToActivity(context, ThingListActivity.class);
-
-            /*
-
-            new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    try {
-
-                        String itemName = itemNameEditText.getText().toString();
-                        String description = descriptionEditText.getText().toString();
-
-                        User user = new User();
-                        user.setFirstName("Emily");
-                        user.setLastName("Jones");
-                        user.setEmail("ejones@ualberta.ca");
-
-                        user.publish();
-
-                        Thing newThing = new Thing(user);
-                        newThing.setTitle(itemName);
-                        newThing.setDescription(description);
-
-                        newThing.publish();
-
-                        transitionToActivity(context, ThingListActivity.class);
-                    }
-                    catch (Exception e) { e.printStackTrace(); }
-                }
-            }).start();
-
-             */
 
             return true;
         }

@@ -13,8 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ca.ualberta.papaya.controllers.ThingDetailController;
+import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.ElasticModel;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.util.Observable;
 
 /**
  * An activity representing a single Thing detail screen. This
@@ -25,6 +29,9 @@ import ca.ualberta.papaya.models.Thing;
 public class ThingDetailActivity extends AbstractPapayaActivity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.thing.detail.thing.extra";
+
+    // Test
+    public static final String ID_EXTRA = "ca.papaya.ualberta.thing.detail.id.extra";
 
     Intent intent = null;
     Thing thing = null;
@@ -39,6 +46,29 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         intent = getIntent();
         thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
+        // Alternatively
+        String id = intent.getStringExtra(ID_EXTRA);
+        System.out.println("Intent passed id: " + id);
+
+        ElasticModel.getById(new IObserver<Thing>() {
+            @Override
+            public void update(Thing data) {
+                System.out.println("In observer: Thing id: " + data.getId());
+            }
+        }, Thing.class, id);
+
+//        Observable<Thing> observable = new Observable<>();
+//        observable.addObserver(new IObserver<Thing>() {
+//            @Override
+//            public void update(Thing data) {
+//                System.out.println("In other obersver: Thing id: " + thing.getId());
+//            }
+//        });
+//
+//        ThrowawayElasticSearchController.GetThingTask getThingTask =
+//                new ThrowawayElasticSearchController.GetThingTask(observable);
+//        getThingTask.execute(id);
+
         TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);
         thingDetailTextView.setText(thing.getDescription());
 
@@ -48,14 +78,6 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-
-//        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
-//        editItemButton.setOnClickListener(ThingDetailController.getInstance()
-//                .getEditItemOnClickListener(this, thing));
-//
-//        FloatingActionButton deleteItemButton = (FloatingActionButton) findViewById(R.id.deleteItem);
-//        deleteItemButton.setOnClickListener(ThingDetailController.getInstance()
-//                .getDeleteItemOnClickListener(this, thing));
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -99,42 +121,4 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 
         return true;
     }
-
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.goToEdit:
-                View goToEditView = findViewById(R.id.addItem);
-                goToEditView.setOnClickListener(ThingDetailController.getInstance().getEditItemOnClickListener(this, thing));
-                goToEditView.performClick();
-                return true;
-            case R.id.delete:
-                View deleteView = findViewById(R.id.delete);
-                deleteView.setOnClickListener(ThingDetailController.getInstance().getDeleteItemOnClickListener(this, thing));
-                deleteView.performClick();
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    */
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == android.R.id.home) {
-//            // This ID represents the Home or Up button. In the case of this
-//            // activity, the Up button is shown. For
-//            // more details, see the Navigation pattern on Android Design:
-//            //
-//            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-//            //
-//            navigateUpTo(new Intent(this, ThingListActivity.class));
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }

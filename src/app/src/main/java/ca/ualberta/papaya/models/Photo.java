@@ -6,6 +6,8 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 
+import io.searchbox.annotations.JestId;
+
 
 /**
  * Created by mghumphr on 3/10/16.
@@ -14,6 +16,18 @@ import java.io.ByteArrayOutputStream;
  * @see ElasticModel
  */
 public class Photo extends ElasticModel {
+    @JestId
+    protected String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String newId) {
+        id = newId;
+    }
 
     protected transient Class<?> kind;
 
