@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ca.ualberta.papaya.AddPictureActivity"
+    tools:context="ca.ualberta.papaya.ViewPictureActivity"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.AppBarLayout
@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_add_picture" />
+    <include layout="@layout/content_view_picture" />
 
 
 </android.support.design.widget.CoordinatorLayout>

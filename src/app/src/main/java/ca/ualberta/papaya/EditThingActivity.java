@@ -84,8 +84,8 @@ public class EditThingActivity extends AbstractPapayaActivity {
                 .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
         menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
                 .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
-        //menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(EditThingController.getInstance()
-        //        .getSetPictureOnClickListener(this, thing)); //Todo fill in button id
+        menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(EditThingController.getInstance()
+                .getSetPictureOnClickListener(this, thing));
 
         return true;
     }

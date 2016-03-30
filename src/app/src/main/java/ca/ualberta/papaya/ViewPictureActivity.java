@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,8 +23,8 @@ public class ViewPictureActivity extends AbstractPapayaActivity {
     private Bitmap picture;
 
 
-    private Button backButton;
-    private ImageView imageView;
+
+    private ImageView image;
 
 
     public static final String PICTURE_EXTRA = "ca.papaya.ualberta.edit.Picture";
@@ -32,19 +34,15 @@ public class ViewPictureActivity extends AbstractPapayaActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.); //Todo change xml file
+        setContentView(R.layout.activity_view_picture);
 
+        image = (ImageView) findViewById(R.id.picture);
 
-        //imageView = (ImageView) findViewById(R.id.imageView);//Todo fill in id
-
-        // Button for going back to the Thing
-        //backButton = (Button) findViewById(R.id.backButton);//Todo fill in id
-        backButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
     }
 
     @Override
@@ -53,24 +51,16 @@ public class ViewPictureActivity extends AbstractPapayaActivity {
         intent = getIntent();
         picture = intent.getParcelableExtra(PICTURE_EXTRA);
         updateView();
+
     }
 
     private void updateView(){
         if(picture != null){
-            imageView.setImageBitmap(picture);
-
+            image.setImageBitmap(picture);
         } else {
-            imageView.setImageResource(android.R.color.transparent);
+            image.setImageResource(android.R.color.transparent);
         }
     }
-
-
-
-
-
-
-
-
 
 
 }

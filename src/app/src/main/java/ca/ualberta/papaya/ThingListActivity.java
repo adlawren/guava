@@ -1,6 +1,7 @@
 package ca.ualberta.papaya;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.support.v7.app.ActionBarActivity;
+
 
 
 import ca.ualberta.papaya.controllers.ThingListController;
@@ -56,6 +58,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
      */
     private boolean mTwoPane;
 
+    private int FILTER; //0 all, 1 borrowed,2 bidded
     //TODO: Remove usage of tempThings
     //ArrayList<Thing> tempThings = new ArrayList<>();
 
@@ -87,12 +90,18 @@ public class ThingListActivity extends AbstractPapayaActivity {
             mTwoPane = true;
         }
 
+        //updateView();
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_thing_list, menu);
+
+
+
         return true;
     }
 
@@ -108,11 +117,18 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 .getProfileOnClickListener(this));
         menu.findItem(R.id.search).setOnMenuItemClickListener(ThingListController.getInstance()
                 .getSearchOnClickListener(this));
-        //menu.findItem(R.id.all).setOnMenuItemClickListener(getAllOnClickListener(this));
+
+        //menu.findItem(R.id.all).setOnMenuItemClickListener(ThingListController.getInstance()
+              //  .getAllFilterOnClickListener(this));
+        //menu.findItem(R.id.borrowed).setOnMenuItemClickListener(ThingListController.getInstance()
+              // .getBorrewedFilterOnClickListener(this));
+        //menu.findItem(R.id.bidded).setOnMenuItemClickListener(ThingListController.getInstance()
+        //  .getBiddidFilterOnClickListener(this));
+
 
         return true;
-    }
 
+    }
 
 
     /*
@@ -243,4 +259,37 @@ public class ThingListActivity extends AbstractPapayaActivity {
             }
         }
     }
+
+    public void setFilterAll(){
+        FILTER = 0;
+        updateView();
+    }
+    public void setFilterBorrowed(){
+        FILTER = 1;
+        updateView();
+    }
+    public void setFilterBidded(){
+        FILTER = 2;
+        updateView();
+    }
+
+
+
+
+
+    public void updateView(){
+        MenuItem filterButton =(MenuItem) findViewById(R.id.filter);
+        if( FILTER == 0){
+            filterButton.setTitle("All Item");
+        } else if(FILTER == 1){
+            filterButton.setTitle("Borrowed");
+        } else{
+            filterButton.setTitle("Bidded");
+        }
+
+        //Todo put the code to change items per filter here
+
+    }
+
+
 }

@@ -5,9 +5,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+
+import ca.ualberta.papaya.controllers.AddThingController;
 
 
 /**
@@ -18,15 +25,14 @@ import android.widget.ImageView;
 public class AddPictureActivity extends AbstractPapayaActivity {
 
     private Intent intent;
-    //private Thing thing;
-    //private Photo photo;
     private Bitmap picture;
     private Bitmap undoPicture;
 
-    private Button takePicture;
-    private Button saveButton;
-    private Button deletePicture;
-    private ImageView imageView;
+    private MenuItem takePicture;
+    private MenuItem save;
+    private MenuItem delete;
+
+    private ImageView image;
     private int UNDO = 0;
 
 
@@ -38,76 +44,121 @@ public class AddPictureActivity extends AbstractPapayaActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.); //Todo change xml file
+        setContentView(R.layout.activity_add_picture);
+
+        image = (ImageView) findViewById(R.id.picture);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 
-       //imageView = (ImageView) findViewById(R.id.imageView);//Todo fill in id
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
 
         // Button for saving the current picture to the selected thing
-        //saveButton = (Button) findViewById(R.id.saveButton);//Todo fill in id
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(PICTURE_EXTRA, picture);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
+    }
+
+    void savePic() {
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(PICTURE_EXTRA, picture);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
+
+
+    // Button for taking a new picture
+    void takePic() {
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CAPTURING_IMAGE);
+        }
+
+    }
+
+    // button for deleting the picture
+    // may put in a undo feature
+    void deletePic() {
+        if (UNDO == 0) {
+            //delete
+            undoPicture = picture;
+            picture = null;
+            //updateView();
+            UNDO = 1;
+            delete.setTitle("Undo");
+        } else {
+            //redo
+            picture = undoPicture;
+            undoPicture = null;
+            //updateView();
+            UNDO = 0;
+            delete.setTitle("Delete");
+        }
+        //picture = null;
+        updateView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_add_picture, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        takePicture = menu.findItem(R.id.takePicture);
+        takePicture.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                takePic();
+                return true;
+            }
+        });
+        save = menu.findItem(R.id.saveButton);
+        save.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                savePic();
+                return true;
+            }
+        });
+        delete = menu.findItem(R.id.deleteButton);
+        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                deletePic();
+                return true;
 
             }
         });
 
-        // Button for taking a new picture
-        //takePicture = (Button) findViewById(R.id.takePicturue);//Todo fill in id
-        takePicture.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(intent, REQUEST_CAPTURING_IMAGE);
-                }
-            }
-        });
-
-        // button for deleting the picture
-        // may put in a undo feature
-        //deletePicture = (Button) findViewById(R.id.deletePicture);//Todo fill in id
-        deletePicture.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                if(UNDO == 0){
-                    //delete
-                    undoPicture = picture;
-                    picture = null;
-                    updateView();
-                    UNDO = 1;
-                    deletePicture.setText("Redo");
-                } else {
-                    //redo
-                    picture = undoPicture;
-                    undoPicture = null;
-                    updateView();
-                    UNDO = 0;
-                    deletePicture.setText("Delete");
-                }
-                picture = null;
-                updateView();
-            }
-        });
 
 
+        return true;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         intent = getIntent();
-        picture = intent.getParcelableExtra(PICTURE_EXTRA);
-        updateView();
+        if(picture == null) {
+            picture = intent.getParcelableExtra(PICTURE_EXTRA);
+            updateView();
+        }
     }
 
     private void updateView(){
         if(picture != null){
-            imageView.setImageBitmap(picture);
-
+            image.setImageBitmap(picture);
         } else {
-            imageView.setImageResource(android.R.color.transparent);
+            image.setImageResource(android.R.color.transparent);
         }
     }
 
@@ -118,6 +169,7 @@ public class AddPictureActivity extends AbstractPapayaActivity {
         if(requestCode == REQUEST_CAPTURING_IMAGE && resultCode == RESULT_OK){
             Bundle extras  = intent.getExtras();
             picture = (Bitmap) extras.get("data");
+
             updateView();
 
         }

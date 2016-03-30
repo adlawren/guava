@@ -39,6 +39,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         intent = getIntent();
         thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
+
         TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);
         thingDetailTextView.setText(thing.getDescription());
 
@@ -94,8 +95,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
                 .getEditItemOnClickListener(this, thing));
         menu.findItem(R.id.delete).setOnMenuItemClickListener(ThingDetailController.getInstance()
                 .getDeleteItemOnClickListener(this, thing));
-        //menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(ThingDetailController.getInstance()
-        //        .getPictureOnClickListener(this, thing)); //Todo fill in button id
+        menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(ThingDetailController.getInstance()
+                .getPictureOnClickListener(this, thing)); //Todo fill in button id
 
         return true;
     }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Papaya</string>
     <string name="title_thing_detail">Thing Detail</string>
+    <string name="picture_discription">picture_of_thing</string>
 </resources>
