@@ -41,16 +41,16 @@
         android:textColor="#000000"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <ListView
-        android:id="@+id/bids"
-        android:layout_width="fill_parent"
-        android:layout_height="225dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:textColor="#000000"
-        android:layout_gravity="bottom|center"
-        android:textFilterEnabled="false">
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </ListView>
+        <include layout="@layout/bid_list"
+            android:layout_height="291dp"
+            android:layout_width="fill_parent"
+            android:layout_gravity="left|bottom" />
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -2,13 +2,10 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import ca.ualberta.papaya.AddThingActivity;
-import ca.ualberta.papaya.R;
-import ca.ualberta.papaya.ThingListActivity;
+import ca.ualberta.papaya.ThingBidsActivity;
 import ca.ualberta.papaya.ThingSearchActivity;
 import ca.ualberta.papaya.EditUserProfileActivity;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
@@ -52,11 +49,7 @@ public class ThingListController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            System.err.println("TODO: IMPLEMENT");
-
-            // TODO: Implement
-            //Intent intent = new Intent(view.getContext(), ...);
-            //view.getContext().startActivity(intent);
+            transitionToActivity(context, ThingBidsActivity.class);
 
             return true;
         }

@@ -5,17 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="#ffffff"
     tools:context="ca.ualberta.papaya.MyBorrowingActivity">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:background="#f95f22"
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#f95f22"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    </android.support.v7.widget.Toolbar>
-
+    </android.support.design.widget.AppBarLayout>
 
 
     <FrameLayout
@@ -25,19 +30,9 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/thing_list"
-            android:layout_height="362dp"
+            android:layout_height="fill_parent"
             android:layout_width="fill_parent"
             android:layout_gravity="left|center_vertical" />
 
     </FrameLayout>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Switch to bids"
-        android:id="@+id/switchBorrowing"
-        android:background="#f95f22"
-        android:layout_gravity="center_horizontal|bottom" />
-
-
 </android.support.design.widget.CoordinatorLayout>

@@ -94,6 +94,22 @@
                 android:value="ca.ualberta.papaya.ThingSearchActivity" />
         </activity>
 
+        <activity android:name=".ThingBidsActivity"
+            android:parentActivityName=".ThingListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+
+        <activity android:name=".ThingBorrowingActivity"
+            android:parentActivityName=".ThingListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+
     </application>
 
 </manifest>
