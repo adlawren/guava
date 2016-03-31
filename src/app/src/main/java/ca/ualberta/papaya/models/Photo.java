@@ -24,7 +24,7 @@ public class Photo extends ElasticModel {
     public Photo(){
         super();
         kind = Photo.class;
-
+        imageBase64 = null;
         image = null;
 
     }

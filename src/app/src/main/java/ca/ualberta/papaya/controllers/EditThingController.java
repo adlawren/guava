@@ -3,6 +3,7 @@ package ca.ualberta.papaya.controllers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -46,15 +47,18 @@ public class EditThingController {
         private Context context;
 
         private Thing thing;
+        private Bitmap image;
 
         private EditText itemNameEditText, descriptionEditText;
 
         public EditItemOnClickListener(Context initialContext, Thing initialThing,
                                        EditText initialItemNameEditText,
-                                       EditText initialDescriptionEditText) {
+                                       EditText initialDescriptionEditText,
+                                       Bitmap initialImage) {
             context = initialContext;
 
             thing = initialThing;
+            image = initialImage;
 
             itemNameEditText = initialItemNameEditText;
             descriptionEditText = initialDescriptionEditText;
@@ -94,9 +98,10 @@ public class EditThingController {
     public EditItemOnClickListener getEditItemOnClickListener(Context initialContext,
                                                               Thing initialThing,
                                                               EditText initialItemNameEditText,
-                                                              EditText initialDescriptionEditText) {
+                                                              EditText initialDescriptionEditText,
+                                                              Bitmap initialImage) {
         return new EditItemOnClickListener(initialContext, initialThing, initialItemNameEditText,
-                initialDescriptionEditText);
+                initialDescriptionEditText, initialImage);
     }
 
     // Button to change a Thing back to available once it is no being borrowed anymore
@@ -133,32 +138,5 @@ public class EditThingController {
 
 
 
-    private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
-        private Context context;
-
-        private Thing thing;
-
-        public SetPictureOnClickListener(Context initialContext, Thing initialThing) {
-            context = initialContext;
-            thing = initialThing;
-        }
-
-        @Override
-        // public void onClick(View view) {
-        public boolean onMenuItemClick(MenuItem item) {
-            Intent intent = new Intent(context, AddPictureActivity.class);
-            intent.putExtra(AddPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
-
-
-            ((Activity)context).startActivityForResult(intent, PHOTO_RESULT);
-
-            return true;
-        }
-    }
-
-    // return the onClickListener for setPicture
-    public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Thing initialThing) {
-        return new SetPictureOnClickListener(initialContext, initialThing);
-    }
 }

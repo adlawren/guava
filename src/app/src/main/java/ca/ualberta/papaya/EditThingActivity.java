@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import ca.ualberta.papaya.controllers.EditThingController;
 import ca.ualberta.papaya.models.Photo;
@@ -29,6 +30,8 @@ public class EditThingActivity extends AbstractPapayaActivity {
 
     Intent intent = null;
     Thing thing = null;
+    public static final int PHOTO_RESULT = 10;
+    Bitmap picture = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +43,14 @@ public class EditThingActivity extends AbstractPapayaActivity {
 
         EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
                 descriptionEditText = (EditText) findViewById(R.id.description);
+        ImageButton image = (ImageButton) findViewById(R.id.viewPicture);
+
 
         itemNameEditText.setText(thing.getTitle());
         descriptionEditText.setText(thing.getDescription());
+        if( thing.getPhoto().getImage() != null){
+            image.setImageBitmap(thing.getPhoto().getImage());
+        }
 
 
 
@@ -62,6 +70,17 @@ public class EditThingActivity extends AbstractPapayaActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditThingActivity.this, ViewPictureActivity.class);
+                intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, picture);
+
+                startActivityForResult(intent, PHOTO_RESULT);
+
+            }
+        });
     }
 
     @Override
@@ -72,7 +91,7 @@ public class EditThingActivity extends AbstractPapayaActivity {
     }
 
 
-    //
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -81,11 +100,9 @@ public class EditThingActivity extends AbstractPapayaActivity {
                 descriptionEditText = (EditText) findViewById(R.id.description);
 
         menu.findItem(R.id.editItem).setOnMenuItemClickListener(EditThingController.getInstance()
-                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
+                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, picture));
         menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
-                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
-        menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(EditThingController.getInstance()
-                .getSetPictureOnClickListener(this, thing));
+                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, picture));
 
         return true;
     }
@@ -119,17 +136,16 @@ public class EditThingActivity extends AbstractPapayaActivity {
         }
     }
     */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == EditThingController.PHOTO_RESULT) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                Bitmap temp = data.getParcelableExtra(AddPictureActivity.PICTURE_EXTRA);
-                Photo photo = new Photo();
-                photo.setImage(temp);
-                thing.setPhoto(photo);
-
+                picture = data.getParcelableExtra(AddPictureActivity.PICTURE_EXTRA);
+                ImageButton imageButton =(ImageButton) findViewById(R.id.viewPicture);
+                imageButton.setImageBitmap(picture);
             }
         }
     }

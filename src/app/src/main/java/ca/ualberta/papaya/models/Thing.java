@@ -35,7 +35,7 @@ public class Thing extends ElasticModel {
 
     private String description = "";
 
-    private Photo photo = new Photo();     // todo: initialize with default blank photo.
+    private Photo photo;      // todo: initialize with default blank photo.
 
     /*
     public static List<Thing> getMyThings(){
@@ -54,6 +54,7 @@ public class Thing extends ElasticModel {
     public Thing(User owner){
         super();
         kind = Thing.class;
+        photo = new Photo();
 
         ownerId = owner.getId();
         id = UUID.randomUUID().toString();

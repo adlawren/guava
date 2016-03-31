@@ -7,11 +7,13 @@ import android.graphics.Bitmap;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
+import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.User;
@@ -27,7 +29,6 @@ import ca.ualberta.papaya.models.User;
  */
 public class AddThingController {
     private static AddThingController ourInstance = new AddThingController();
-    public static final int PHOTO_RESULT = 10;
 
     public static AddThingController getInstance() {
         return ourInstance;
@@ -41,14 +42,14 @@ public class AddThingController {
 
         private Context context;
         private EditText itemNameEditText, descriptionEditText;
-        private Bitmap image;
+        private ImageView imageView;
 
         public SaveOnClickListener(Context initialContext, EditText initialItemNameEditText,
-                                   EditText initialDescriptionEditText, Bitmap initialImage) {
+                                   EditText initialDescriptionEditText, ImageView initialImageView) {
             context = initialContext;
             itemNameEditText = initialItemNameEditText;
             descriptionEditText = initialDescriptionEditText;
-            image = initialImage;
+            imageView = initialImageView;
 
         }
 
@@ -62,6 +63,7 @@ public class AddThingController {
         public boolean onMenuItemClick(MenuItem item) {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
+            Bitmap image = imageView.getDrawingCache();
 
             //Thing thing = new Thing(ThrowawayDataManager.getInstance().getCurrentUser(context));
 
@@ -73,9 +75,12 @@ public class AddThingController {
             thing.setDescription(description);
 
 
-            if( image != null){
-                thing.getPhoto().setImage(image);
-            }
+            //if( image != null){
+            Photo photo = new Photo();
+            photo.setImage(image);
+            thing.setPhoto(photo);
+            //}
+
 
             testUser.publish();
             thing.publish();
@@ -111,7 +116,7 @@ public class AddThingController {
                 }
             }).start();
 
-             */
+            */
 
             return true;
         }
@@ -121,37 +126,10 @@ public class AddThingController {
     public SaveOnClickListener getSaveOnClickListener(Context initialContext,
                                                       EditText initialItemNameEditText,
                                                       EditText initialDescriptionEditText,
-                                                      Bitmap image ) {
+                                                      ImageView imageView ) {
         return new SaveOnClickListener(initialContext, initialItemNameEditText,
-                initialDescriptionEditText, image);
+                initialDescriptionEditText, imageView);
     }
 
-    private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
-        private Context context;
-
-        private Bitmap image;
-
-        public SetPictureOnClickListener(Context initialContext, Bitmap initialImage) {
-            context = initialContext;
-            image = initialImage;
-
-        }
-
-        @Override
-        // public void onClick(View view) {
-        public boolean onMenuItemClick(MenuItem item) {
-            Intent intent = new Intent(context, AddPictureActivity.class);
-            intent.putExtra(AddPictureActivity.PICTURE_EXTRA, image);
-
-            ((Activity)context).startActivityForResult(intent, PHOTO_RESULT);
-
-            return true;
-        }
-    }
-
-    // return the onClickListener for setPicture
-    public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Bitmap initialImage) {
-        return new SetPictureOnClickListener(initialContext, initialImage);
-    }
 }

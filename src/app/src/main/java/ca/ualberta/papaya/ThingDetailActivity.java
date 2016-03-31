@@ -2,6 +2,7 @@ package ca.ualberta.papaya;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import ca.ualberta.papaya.controllers.ThingDetailController;
@@ -28,6 +30,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 
     Intent intent = null;
     Thing thing = null;
+    public static final int PHOTO_RESULT = 10;
+    Bitmap picture = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
 
+
         TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);
         thingDetailTextView.setText(thing.getDescription());
 
@@ -49,7 +54,22 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+        ImageButton image = (ImageButton) findViewById(R.id.viewPicture);
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ThingDetailActivity.this, ViewPictureActivity.class);
+                intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, picture);
 
+                startActivityForResult(intent, PHOTO_RESULT);
+
+            }
+        });
+
+        if( thing.getPhoto().getImage() != null){
+            picture = thing.getPhoto().getImage();
+            image.setImageBitmap(picture);
+        }
 //        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
 //        editItemButton.setOnClickListener(ThingDetailController.getInstance()
 //                .getEditItemOnClickListener(this, thing));
@@ -95,8 +115,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
                 .getEditItemOnClickListener(this, thing));
         menu.findItem(R.id.delete).setOnMenuItemClickListener(ThingDetailController.getInstance()
                 .getDeleteItemOnClickListener(this, thing));
-        menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(ThingDetailController.getInstance()
-                .getPictureOnClickListener(this, thing)); //Todo fill in button id
+        //menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(ThingDetailController.getInstance()
+        //        .getPictureOnClickListener(this, thing)); //Todo fill in button id
 
         return true;
     }

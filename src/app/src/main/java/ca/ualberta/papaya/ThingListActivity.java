@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v7.app.ActionBarActivity;
 
@@ -37,7 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An activity representing a list of Things. This activity
+ * An activity representin
+ * g a list of Things. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
  * lead to a {@link ThingDetailActivity} representing
@@ -210,6 +212,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
             holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
+            holder.mPictureView.setImageBitmap(mValues.get(position).getPhoto().getImage());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -244,6 +247,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
+            public final ImageView mPictureView;
             public Thing mItem;
 
             public ViewHolder(View view) {
@@ -251,6 +255,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
+                mPictureView = (ImageView) view.findViewById(R.id.picture);
             }
 
             @Override

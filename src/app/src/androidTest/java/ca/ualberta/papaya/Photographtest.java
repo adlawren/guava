@@ -20,7 +20,7 @@ public class Photographtest extends ActivityInstrumentationTestCase2 {
 
     public void testAddPicture() {
         Thing thing = new Thing(new User());
-        Bitmap testpic = BitmapFactory.decodeResource(.getResources(),
+        Bitmap testpic = BitmapFactory.decodeResource(getResources(),
                 R.drawable.blue_pushpin);
         thing.addPicture(pic);
         assertEquals(thing.getPicture(), pic);

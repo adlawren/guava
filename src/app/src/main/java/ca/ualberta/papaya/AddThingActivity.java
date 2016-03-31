@@ -1,5 +1,6 @@
 package ca.ualberta.papaya;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import ca.ualberta.papaya.controllers.AddThingController;
 import ca.ualberta.papaya.controllers.EditThingController;
@@ -25,7 +28,10 @@ import ca.ualberta.papaya.models.Photo;
  */
 public class AddThingActivity extends AbstractPapayaActivity {
 
-    Bitmap image = null;
+    private Bitmap picture = null;
+    public static final int PHOTO_RESULT = 10;
+    ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,18 @@ public class AddThingActivity extends AbstractPapayaActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
+        imageView = (ImageButton) findViewById(R.id.viewPicture);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddThingActivity.this, AddPictureActivity.class);
+                intent.putExtra(AddPictureActivity.PICTURE_EXTRA, picture);
+
+                startActivityForResult(intent, PHOTO_RESULT);
+
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -57,11 +75,9 @@ public class AddThingActivity extends AbstractPapayaActivity {
         EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
                 descriptionEditText = (EditText) findViewById(R.id.description);
 
-        menu.findItem(R.id.addItem).setOnMenuItemClickListener(
-                AddThingController.getInstance()
-                        .getSaveOnClickListener(this, itemNameEditText, descriptionEditText, image));
-        //menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(AddThingController.getInstance()
-                //.getSetPictureOnClickListener(this, image)); //Todo fill in button id
+        menu.findItem(R.id.addItem).setOnMenuItemClickListener(AddThingController.getInstance()
+                .getSaveOnClickListener(this, itemNameEditText, descriptionEditText, imageView));
+
 
         return true;
     }
@@ -91,8 +107,9 @@ public class AddThingActivity extends AbstractPapayaActivity {
         if (requestCode == EditThingController.PHOTO_RESULT) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                image = data.getParcelableExtra(AddPictureActivity.PICTURE_EXTRA);
-
+                picture = data.getParcelableExtra(AddPictureActivity.PICTURE_EXTRA);
+                ImageButton imageButton =(ImageButton) findViewById(R.id.viewPicture);
+                imageButton.setImageBitmap(picture);
             }
         }
     }
