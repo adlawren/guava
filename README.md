@@ -1,4 +1,4 @@
-# papaya
+Papaya
 ---------
 
 University of Alberta Winter 2016 CMPUT 301 Group project.
