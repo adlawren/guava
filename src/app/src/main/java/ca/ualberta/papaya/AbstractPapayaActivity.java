@@ -18,4 +18,10 @@ public abstract class AbstractPapayaActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Ctx.set(getApplicationContext());
     }
+
+    private String loadUserId(){
+        Context context = getActivity();
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+    }
 }
