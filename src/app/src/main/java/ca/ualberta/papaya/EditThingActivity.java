@@ -73,8 +73,10 @@ public class EditThingActivity extends AbstractPapayaActivity {
                 .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
         menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
                 .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
-        menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(EditThingController.getInstance()
-                .getSetPictureOnClickListener(this, thing));
+
+        // TODO: Uncomment; testing - seems to cause null pointer exception
+//        menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(EditThingController.getInstance()
+//                .getSetPictureOnClickListener(this, thing));
 
         return true;
     }

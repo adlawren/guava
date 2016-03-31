@@ -129,7 +129,6 @@ public class EditThingController {
             Intent intent = new Intent(context, AddPictureActivity.class);
             intent.putExtra(AddPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
 
-
             ((Activity)context).startActivityForResult(intent, PHOTO_RESULT);
 
             return true;
