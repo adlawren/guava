@@ -2,10 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/bid"
+        android:id="@+id/goToBorrowings"
         android:orderInCategory="100"
-        app:showAsAction="always"
-        android:title="Bid">
+        app:showAsAction="ifRoom"
+        android:title="Show Items I'm Borrowing">
     </item>
 
 </menu>

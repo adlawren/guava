@@ -3,9 +3,9 @@ package ca.ualberta.papaya.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
-import android.view.View;
 
 import ca.ualberta.papaya.AddThingActivity;
+import ca.ualberta.papaya.ThingBidsActivity;
 import ca.ualberta.papaya.ThingSearchActivity;
 import ca.ualberta.papaya.EditUserProfileActivity;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
@@ -49,11 +49,7 @@ public class ThingListController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            System.err.println("TODO: IMPLEMENT");
-
-            // TODO: Implement
-            //Intent intent = new Intent(view.getContext(), ...);
-            //view.getContext().startActivity(intent);
+            transitionToActivity(context, ThingBidsActivity.class);
 
             return true;
         }
@@ -137,4 +133,76 @@ public class ThingListController {
     public SearchOnClickListener getSearchOnClickListener(Context initialContext) {
         return new SearchOnClickListener(initialContext);
     }
+/*
+    //ToDo: change comments
+    // button to switch to the search activity
+    private class AllOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+
+        private Context context;
+
+        public AllOnClickListener(Context initialContext) {
+            context = initialContext;
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            //transitionToActivity(context, ThingSearchActivity.class);
+            setFilterAll();
+
+            return true;
+        }
+    }
+
+    // return onClickListener for search
+    public AllOnClickListener getAllFilterOnClickListener(Context initialContext) {
+        return new AllOnClickListener(initialContext);
+    }
+
+    private class BorrowedOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+
+        private Context context;
+
+        public BorrowedOnClickListener(Context initialContext) {
+            context = initialContext;
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            //transitionToActivity(context, ThingSearchActivity.class);
+            context.
+
+            return true;
+        }
+    }
+
+    // return onClickListener for search
+    public BorrowedOnClickListener getBorrowedFilterOnClickListener(Context initialContext) {
+        return new BorrowedOnClickListener(initialContext);
+    }
+
+    private class BiddedOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+
+        private Context context;
+
+        public BiddedOnClickListener(Context initialContext) {
+            context = initialContext;
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            //transitionToActivity(context, ThingSearchActivity.class);
+            setFilterBidded();
+
+            return true;
+        }
+    }
+
+    // return onClickListener for search
+    public BiddedOnClickListener getBiddedFilterOnClickListener(Context initialContext) {
+        return new BiddedOnClickListener(initialContext);
+    }
+*/
 }

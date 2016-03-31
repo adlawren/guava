@@ -1,5 +1,7 @@
 package ca.ualberta.papaya;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.test.ActivityInstrumentationTestCase2;
 
 import ca.ualberta.papaya.models.Thing;
@@ -18,7 +20,8 @@ public class Photographtest extends ActivityInstrumentationTestCase2 {
 
     public void testAddPicture() {
         Thing thing = new Thing(new User());
-        ImageView pic = (ImageView) findViewById(R.id.image1);
+        Bitmap testpic = BitmapFactory.decodeResource(.getResources(),
+                R.drawable.blue_pushpin);
         thing.addPicture(pic);
         assertEquals(thing.getPicture(), pic);
     }

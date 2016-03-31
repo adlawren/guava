@@ -2,24 +2,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/viewPicture"
+        android:id="@+id/takePicture"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="Picture">
+        android:title="take" >
     </item>
 
     <item
-        android:id="@+id/goToEdit"
+        android:id="@+id/deleteButton"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="Edit Item">
+        android:title="delete">
     </item>
 
     <item
-        android:id="@+id/delete"
+        android:id="@+id/saveButton"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="Delete">
+        android:title="Save">
     </item>
 
 </menu>

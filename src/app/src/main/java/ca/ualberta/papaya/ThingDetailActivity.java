@@ -67,6 +67,14 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+//        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
+//        editItemButton.setOnClickListener(ThingDetailController.getInstance()
+//                .getEditItemOnClickListener(this, thing));
+//
+//        FloatingActionButton deleteItemButton = (FloatingActionButton) findViewById(R.id.deleteItem);
+//        deleteItemButton.setOnClickListener(ThingDetailController.getInstance()
+//                .getDeleteItemOnClickListener(this, thing));
+
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -104,9 +112,47 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
                 .getEditItemOnClickListener(this, thing));
         menu.findItem(R.id.delete).setOnMenuItemClickListener(ThingDetailController.getInstance()
                 .getDeleteItemOnClickListener(this, thing));
-        //menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(ThingDetailController.getInstance()
-        //        .getPictureOnClickListener(this, thing)); //Todo fill in button id
+        menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(ThingDetailController.getInstance()
+                .getPictureOnClickListener(this, thing)); //Todo fill in button id
 
         return true;
     }
+
+    /*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.goToEdit:
+                View goToEditView = findViewById(R.id.addItem);
+                goToEditView.setOnClickListener(ThingDetailController.getInstance().getEditItemOnClickListener(this, thing));
+                goToEditView.performClick();
+                return true;
+            case R.id.delete:
+                View deleteView = findViewById(R.id.delete);
+                deleteView.setOnClickListener(ThingDetailController.getInstance().getDeleteItemOnClickListener(this, thing));
+                deleteView.performClick();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    */
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == android.R.id.home) {
+//            // This ID represents the Home or Up button. In the case of this
+//            // activity, the Up button is shown. For
+//            // more details, see the Navigation pattern on Android Design:
+//            //
+//            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+//            //
+//            navigateUpTo(new Intent(this, ThingListActivity.class));
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }
