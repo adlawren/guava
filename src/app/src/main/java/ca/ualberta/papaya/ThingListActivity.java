@@ -48,10 +48,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
      */
     private boolean mTwoPane;
 
-    //TODO: Remove usage of tempThings
-    //ArrayList<Thing> tempThings = new ArrayList<>();
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,41 +113,19 @@ public class ThingListActivity extends AbstractPapayaActivity {
     private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
         SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
         recyclerView.setAdapter(va);
-//        Thing.search(new Observer<List<Thing>>() {
-//            @Override
-//            public void update(List<Thing> things) {
-//                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
-//                recyclerView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        recyclerView.setAdapter(va);
-//                    }
-//                });
-//
-//            }
-//        }, Thing.class, "{ \"size\" : \"50\" }"); // todo: add proper search query
-
-        Observable<ArrayList<Thing>> thingsObservable = new Observable<>();
-        thingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+        Thing.search(new Observer<List<Thing>>() {
             @Override
-            public void update(ArrayList<Thing> data) {
-                if (data == null) System.err.println("Data is null");
-
-                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(data);
+            public void update(List<Thing> things) {
+                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
                 recyclerView.post(new Runnable() {
                     @Override
                     public void run() {
                         recyclerView.setAdapter(va);
                     }
                 });
+
             }
-        });
-
-        MyThingsDataManager.getInstance().getData(thingsObservable);
-
-        // ThrowawayElasticSearchController.SearchThingTask searchThingTask =
-        //        new ThrowawayElasticSearchController.SearchThingTask(thingsObservable);
-        // searchThingTask.execute("{ \"size\" : \"50\" }"); // TODO: Filter by user id
+        }, Thing.class, "{ \"size\" : \"50\" }"); // todo: add proper search query
     }
 
     public class SimpleItemRecyclerViewAdapter

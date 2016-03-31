@@ -5,16 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-
-import java.util.ArrayList;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Thing;
-import ca.ualberta.papaya.data.ThrowawayDataManager;
-import ca.ualberta.papaya.models.ThrowawayElasticChangeSet;
 import ca.ualberta.papaya.models.User;
 
 /**
@@ -64,8 +59,6 @@ public class AddThingController {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
 
-            //Thing thing = new Thing(ThrowawayDataManager.getInstance().getCurrentUser(context));
-
             User testUser = new User();
             testUser.setFirstName("Testy").setLastName("McTesterface");
 
@@ -80,8 +73,7 @@ public class AddThingController {
 
             // testUser.publish();
 
-            // thing.publish();
-            ThrowawayElasticChangeSet.ElasticChangeSet.add(thing);
+            thing.publish();
 
             transitionToActivity(context, ThingListActivity.class);
 

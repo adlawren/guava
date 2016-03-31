@@ -30,9 +30,6 @@ public class AddThingActivity extends AbstractPapayaActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
-//
-//        EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
-//                descriptionEditText = (EditText) findViewById(R.id.description);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,25 +63,6 @@ public class AddThingActivity extends AbstractPapayaActivity {
         return true;
     }
 
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.addItem:
-                View addItemView = findViewById(R.id.addItem);
-                EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
-                        descriptionEditText = (EditText) findViewById(R.id.description);
-                addItemView.setOnClickListener(AddThingController.getInstance().getSaveOnClickListener(this,itemNameEditText,descriptionEditText));
-                addItemView.performClick();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to

@@ -77,20 +77,20 @@ public abstract class ElasticModel extends Observable implements Serializable, I
         return published;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof ElasticModel) {
-            return getId().equals(((ElasticModel) obj).getId());
-        }
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (obj instanceof ElasticModel) {
+//            return getId().equals(((ElasticModel) obj).getId());
+//        }
+//
+//        return super.equals(obj);
+//    }
 
-        return super.equals(obj);
-    }
-
+    // TODO: Use within offline storage logic
     private boolean zombie = false;
     public boolean isZombie() {
         return zombie;
     }
-
     public void kill() {
         zombie = true;
     }
@@ -327,17 +327,20 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                 // update
                                 // OMG PANIC. :j No "updates" allowed. k?
 
+                                System.out.println("[ElasticModel.commit] " +
+                                        "updating model with id: " + model.getId());
+
                                 // todo: offline storage
                                 model.published = true;
                                 String type = typeName(model);
 
-                                String idCopy = model.getId();
-                                model.setId(null);
+                                //String idCopy = model.getId();
+                                //model.setId(null);
 
                                 Index index = new Index.Builder(model)
                                         .index(ElasticModel.index)
                                         .type(type)
-                                        .id(idCopy)
+                                        .id(model.getId())
                                         .build();
 
                                 try {

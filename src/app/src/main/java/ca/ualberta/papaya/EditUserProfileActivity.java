@@ -37,11 +37,6 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-
-//        FloatingActionButton saveButton = (FloatingActionButton) findViewById(R.id.saveProfile);
-//        saveButton.setOnClickListener(EditUserProfileController.getInstance().getSaveOnClickListener(this, userEmailEditText));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

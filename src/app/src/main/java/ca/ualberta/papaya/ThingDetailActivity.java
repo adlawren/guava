@@ -57,18 +57,6 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             }
         }, Thing.class, id);
 
-//        Observable<Thing> observable = new Observable<>();
-//        observable.addObserver(new IObserver<Thing>() {
-//            @Override
-//            public void update(Thing data) {
-//                System.out.println("In other obersver: Thing id: " + thing.getId());
-//            }
-//        });
-//
-//        ThrowawayElasticSearchController.GetThingTask getThingTask =
-//                new ThrowawayElasticSearchController.GetThingTask(observable);
-//        getThingTask.execute(id);
-
         TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);
         thingDetailTextView.setText(thing.getDescription());
 

@@ -44,17 +44,6 @@ public class EditThingActivity extends AbstractPapayaActivity {
         itemNameEditText.setText(thing.getTitle());
         descriptionEditText.setText(thing.getDescription());
 
-
-
-//        FloatingActionButton editItemFloatingActionButton = (FloatingActionButton)
-//                findViewById(R.id.editItem);
-//        editItemFloatingActionButton.setOnClickListener(EditThingController.getInstance()
-//                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
-//
-//        Button availableButton = (Button) findViewById(R.id.available);
-//        availableButton.setOnClickListener(EditThingController.getInstance()
-//                .getAvailableOnClickListener(this, thing));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -90,35 +79,6 @@ public class EditThingActivity extends AbstractPapayaActivity {
         return true;
     }
 
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.editItem:
-                View editItemView = findViewById(R.id.addItem);
-                Intent intent = getIntent();
-                Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
-
-                EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
-                        descriptionEditText = (EditText) findViewById(R.id.description);
-                editItemView.setOnClickListener(EditThingController.getInstance().getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
-                editItemView.performClick();
-                return true;
-            case R.id.available:
-                View availableView = findViewById(R.id.addItem);
-                Intent intent2 = getIntent();
-                Thing thingy = (Thing) intent2.getSerializableExtra(THING_EXTRA);
-                availableView.setOnClickListener(EditThingController.getInstance().getAvailableOnClickListener(this, thingy));
-                availableView.performClick();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
