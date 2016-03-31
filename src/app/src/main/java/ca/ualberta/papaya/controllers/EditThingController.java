@@ -5,15 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-
-import java.util.ArrayList;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
-import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.User;
 
 /**
  * Created by adlawren on 13/03/16.
@@ -51,7 +49,8 @@ public class EditThingController {
 
         private EditText itemNameEditText, descriptionEditText;
 
-        public EditItemOnClickListener(Context initialContext, Thing initialThing,
+        public EditItemOnClickListener(Context initialContext,
+                                       Thing initialThing,
                                        EditText initialItemNameEditText,
                                        EditText initialDescriptionEditText,
                                        Bitmap initialImage) {
@@ -70,23 +69,7 @@ public class EditThingController {
             thing.setTitle(itemNameEditText.getText().toString());
             thing.setDescription(descriptionEditText.getText().toString());
 
-            ArrayList<Thing> things = ThrowawayDataManager.getInstance()
-                    .getCurrentUserThings(context);
-
-            Thing match = null;
-            for (Thing nextThing : things) {
-                if (nextThing.getId().equals(thing.getId())) {
-                    match = nextThing;
-                }
-            }
-
-            if (match != null) {
-                things.set(things.indexOf(match), thing);
-            } else {
-                System.err.println("[ThingDetailController.DeleteItemOnClickListener] ERROR: Thing not found.");
-            }
-
-            ThrowawayDataManager.getInstance().setCurrentUserThings(context, things);
+            thing.publish();
 
             transitionToActivity(context, ThingListActivity.class);
 
@@ -134,9 +117,39 @@ public class EditThingController {
         return new AvailableOnClickListener(initialContext, initialThing);
     }
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+    private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+
+        private Context context;
+
+        private Thing thing;
+
+        public SetPictureOnClickListener(Context initialContext, Thing initialThing) {
+            context = initialContext;
+            thing = initialThing;
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent intent = new Intent(context, AddPictureActivity.class);
+            intent.putExtra(AddPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
+
+            ((Activity)context).startActivityForResult(intent, PHOTO_RESULT);
+
+            return true;
+        }
+    }
+
+    // return the onClickListener for setPicture
+    public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Thing initialThing) {
+        return new SetPictureOnClickListener(initialContext, initialThing);
+    }
+>>>>>>> 819e427a0c6c68d5a36022e66baca221c1bc7203
 }

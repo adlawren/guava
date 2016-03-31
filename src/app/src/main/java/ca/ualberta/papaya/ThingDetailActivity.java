@@ -15,8 +15,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import ca.ualberta.papaya.controllers.ThingDetailController;
+import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.ElasticModel;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.util.Observable;
 
 /**
  * An activity representing a single Thing detail screen. This
@@ -27,6 +31,9 @@ import ca.ualberta.papaya.models.Thing;
 public class ThingDetailActivity extends AbstractPapayaActivity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.thing.detail.thing.extra";
+
+    // Test
+    public static final String ID_EXTRA = "ca.papaya.ualberta.thing.detail.id.extra";
 
     Intent intent = null;
     Thing thing = null;
@@ -43,6 +50,16 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         intent = getIntent();
         thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
+        // Alternatively
+        String id = intent.getStringExtra(ID_EXTRA);
+        System.out.println("Intent passed id: " + id);
+
+        ElasticModel.getById(new IObserver<Thing>() {
+            @Override
+            public void update(Thing data) {
+                System.out.println("In observer: Thing id: " + data.getId());
+            }
+        }, Thing.class, id);
 
 
         TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);

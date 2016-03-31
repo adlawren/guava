@@ -52,17 +52,6 @@ public class EditThingActivity extends AbstractPapayaActivity {
             image.setImageBitmap(thing.getPhoto().getImage());
         }
 
-
-
-//        FloatingActionButton editItemFloatingActionButton = (FloatingActionButton)
-//                findViewById(R.id.editItem);
-//        editItemFloatingActionButton.setOnClickListener(EditThingController.getInstance()
-//                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
-//
-//        Button availableButton = (Button) findViewById(R.id.available);
-//        availableButton.setOnClickListener(EditThingController.getInstance()
-//                .getAvailableOnClickListener(this, thing));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -101,11 +90,20 @@ public class EditThingActivity extends AbstractPapayaActivity {
 
         menu.findItem(R.id.editItem).setOnMenuItemClickListener(EditThingController.getInstance()
                 .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, picture));
-        menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
-                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, picture));
+        //menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
+
+                //bgodley: i still have to do fiddle with this
+                //.getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, picture));
+                //.getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
+
+        // TODO: Uncomment; testing - seems to cause null pointer exception
+//        menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(EditThingController.getInstance()
+//                .getSetPictureOnClickListener(this, thing));
+
 
         return true;
     }
+
 
     /*
     @Override
@@ -136,6 +134,7 @@ public class EditThingActivity extends AbstractPapayaActivity {
         }
     }
     */
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -3,6 +3,8 @@ package ca.ualberta.papaya.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by martin on 10/02/16.
  *
@@ -10,6 +12,18 @@ import java.util.List;
  * @see ElasticModel
  */
 public class Tag extends ElasticModel {
+    @JestId
+    protected String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String newId) {
+        id = newId;
+    }
 
     protected transient Class<?> kind;
 

@@ -21,6 +21,7 @@ import io.searchbox.annotations.JestId;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
+import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
@@ -45,16 +46,54 @@ public abstract class ElasticModel extends Observable implements Serializable, I
     // protected transient Class<?> kind;
 
     // the id of this object.
-    @JestId
-    protected String id;
+//    @JestId
+//    protected String id;
 
+    /**
+     * Return the id of this object.
+     * @return this object's unique id. Null if not yet committed.
+     */
+    public abstract String getId();
+//    {
+//        return id;
+//    }
+
+    public abstract void setId(String newId);
 
     // is this model supposed to be pushed to database?
-    protected transient boolean publish = false;
+
+    // TODO: Sort out
+    // Not sure what the goal is for how the activities fetch data but since the models are passed
+    // around in intents these values need to not be transient
+
+    // protected transient boolean publish = false;
+    protected boolean publish = false;
 
     // has this model been pushed to database?
-    protected transient boolean published = false;
+    // protected transient boolean published = false; // See note above
+    protected boolean published = false;
 
+    public boolean isPublished() {
+        return published;
+    }
+
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (obj instanceof ElasticModel) {
+//            return getId().equals(((ElasticModel) obj).getId());
+//        }
+//
+//        return super.equals(obj);
+//    }
+
+    // TODO: Use within offline storage logic
+    private boolean zombie = false;
+    public boolean isZombie() {
+        return zombie;
+    }
+    public void kill() {
+        zombie = true;
+    }
 
     /**
      * return lowercase class name
@@ -71,7 +110,8 @@ public abstract class ElasticModel extends Observable implements Serializable, I
         else if (model instanceof Tag){ k = ((Tag) model).kind; }
         else if (model instanceof Thing){ k = ((Thing) model).kind; }
         else if (model instanceof User){ k = ((User) model).kind; }
-        return typeName(k);
+        // return typeName(k); // TODO: Fix; causes null pointer exception
+        return typeName(model.getClass());
     }
 
     /**
@@ -105,8 +145,17 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                 @Override
                 public void run() {
                     try {
-                        Get get = new Get.Builder(ElasticModel.index, id).type(typeName(kind)).build();
-                        observer.update(getClient().execute(get).getSourceAsObject(kind));
+                        Get get = new Get.Builder(ElasticModel.index, id).type(typeName(kind))
+                                .build();
+
+                        JestResult result = getClient().execute(get);
+
+                        if (!result.isSucceeded()) {
+                            System.err.println("[ElasticModel.getById] " +
+                                    "ERROR: REST get unsuccessful.");
+                        } else {
+                            observer.update(result.getSourceAsObject(kind));
+                        }
                     } catch (IOException e) {
                         // TODO: make more robust
                         e.printStackTrace();
@@ -119,7 +168,7 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                 observer.update(kind.newInstance());
             } catch(InstantiationException e) {
                 e.printStackTrace();
-            } catch (IllegalAccessException e){
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
@@ -137,8 +186,16 @@ public abstract class ElasticModel extends Observable implements Serializable, I
             public void run() {
                 try {
                     Search search = new Search.Builder(query).addIndex(index).addType(typeName(kind)).build();
-                    observer.update(getClient().execute(search).getSourceAsObjectList(kind));
-                } catch (IOException e){
+                    List<Thing> things = (List<Thing>) getClient().execute(search).getSourceAsObjectList(kind);
+
+                    // TODO: Remove; test
+                    System.out.println("SEARCH: List size: " + things.size());
+                    for (Thing thing : things) {
+                        thing.published = true;
+                    }
+
+                    observer.update(things);
+                } catch (IOException e) {
                     // todo: make more robust
                     e.printStackTrace();
                 }
@@ -155,12 +212,22 @@ public abstract class ElasticModel extends Observable implements Serializable, I
             @Override
             public void run() {
                 try {
-                    getClient().execute(new Delete.Builder(model.getId())
-                            .index(index)
-                            .type(typeName(kind))
-                            .build());
+                    System.out.println("[ElasticModel.delete] id: " + model.getId());
+
+                    Delete delete = new Delete.Builder(model.getId()).index(index)
+                            .type(typeName(kind)).build();
+
+                    System.out.println(delete.toString());
+
+                    JestResult result = getClient().execute(delete);
+                    if (!result.isSucceeded()) {
+                        System.err.println("[ElasticModel.delete] " +
+                                "ERROR: REST delete unsuccessful.");
+                    } else {
+                        System.out.println("YAY!");
+                    }
                 } catch (IOException e){
-                    // todo: make more robust
+                    // Todo: make more robust
                     e.printStackTrace();
                 }
             }
@@ -177,22 +244,21 @@ public abstract class ElasticModel extends Observable implements Serializable, I
     /**
      * publish this model object to database.
      */
-    public void publish(){
+    public void publish() {
         publish = true;
         changed();
     }
 
-    /**
-     * Return the id of this object.
-     * @return this object's unique id. Null if not yet committed.
-     */
-    public String getId(){
-        return id;
-    }
-
-    protected void changed(){
+    protected void changed() {
         if (publish) {
-            ElasticChangeSet.add(this);
+            // TODO: Find alternative method
+            if (published) {
+                ElasticChangeSet.add(this);
+            } else {
+                ElasticChangeSet.add(this);
+            }
+
+            // ElasticChangeSet.add(this);
         }
     }
 
@@ -200,14 +266,13 @@ public abstract class ElasticModel extends Observable implements Serializable, I
 
         private static String changeListFile = "change_list.sav";
 
-
         private static List<ElasticModel> changeList = new ArrayList<ElasticModel>();
 
-        public static Boolean contains(ElasticModel model){
+        public static Boolean contains(ElasticModel model) {
             return changeList.contains(model);
         }
 
-        public static void add(ElasticModel model){
+        public static void add(ElasticModel model) {
             if (!changeList.contains(model)) {
                 changeList.add(model);
             }
@@ -216,32 +281,42 @@ public abstract class ElasticModel extends Observable implements Serializable, I
 
         public static Boolean committing = false;
 
-        public static void commit(){
-
-            if(!committing){
+        public static void commit() {
+            if(!committing) {
                 committing = true;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-
                         List<ElasticModel> toRemove = new ArrayList<ElasticModel>();
-
-                        for (int i = 0; i < changeList.size(); i++){
+                        for (int i = 0; i < changeList.size(); i++) {
                             ElasticModel model = changeList.get(i);
-                            if (model.publish && !model.published){
-                                //insert
+                            if (model.publish && !model.published) {
+                                // insert
                                 // todo: offline storage
                                 model.published = true;
                                 String type = typeName(model);
+
+                                // TODO: Remove; test
+                                System.out.println("Typename: " + type);
+
                                 Index index = new Index.Builder(model)
                                         .index(ElasticModel.index)
                                         .type(type).build();
+
                                 try {
-                                    String send = index.getData(new Gson());
-                                    System.err.print(send);
-                                    JestResult resp = ElasticModel.getClient().execute(index);
-                                    String result = resp.getJsonString();
-                                    System.err.print(result);
+                                    // String send = index.getData(new Gson());
+
+                                    // JestResult resp = ElasticModel.getClient().execute(index);
+                                    DocumentResult resp = ElasticModel.getClient().execute(index);
+                                    if (!resp.isSucceeded()) {
+                                        System.err.println("[ElasticModel.commit] " +
+                                                "ERROR: REST push unsuccessful.");
+                                    }
+
+                                    // model.id = resp.getId();
+
+                                    // String result = resp.getJsonString();
+
                                     toRemove.add(model);
                                 } catch (IOException e){
                                     // todo: make more robust
@@ -251,6 +326,38 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                             } else {
                                 // update
                                 // OMG PANIC. :j No "updates" allowed. k?
+
+                                System.out.println("[ElasticModel.commit] " +
+                                        "updating model with id: " + model.getId());
+
+                                // todo: offline storage
+                                model.published = true;
+                                String type = typeName(model);
+
+                                //String idCopy = model.getId();
+                                //model.setId(null);
+
+                                Index index = new Index.Builder(model)
+                                        .index(ElasticModel.index)
+                                        .type(type)
+                                        .id(model.getId())
+                                        .build();
+
+                                try {
+                                    JestResult resp = ElasticModel.getClient().execute(index);
+                                    if (!resp.isSucceeded()) {
+                                        System.err.println("[ElasticModel.commit] " +
+                                                "ERROR: REST update unsuccessful.");
+                                    }
+
+                                    toRemove.add(model);
+                                } catch (IOException e) {
+                                    // todo: make more robust
+                                    model.published = false;
+                                    e.printStackTrace();
+                                }
+
+                                // System.err.println("TODO: Implement updates.");
                             }
                         }
 
@@ -287,8 +394,5 @@ public abstract class ElasticModel extends Observable implements Serializable, I
 
             // todo: offline
         }
-
     }
-
-
 }

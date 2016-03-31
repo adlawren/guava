@@ -23,15 +23,17 @@ import android.widget.TextView;
 import android.support.v7.app.ActionBarActivity;
 
 
-
 import ca.ualberta.papaya.controllers.ThingListController;
 import ca.ualberta.papaya.dummy.DummyContent;
 import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
+import ca.ualberta.papaya.data.MyThingsDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.util.Ctx;
+import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
 import java.util.ArrayList;
@@ -96,14 +98,22 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        // TODO: Remove; test
+//        System.out.println("I'm resuming!");
+//
+//        View recyclerView = findViewById(R.id.thing_list);
+//        assert recyclerView != null;
+//        setupRecyclerView((RecyclerView) recyclerView);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_thing_list, menu);
-
-
-
         return true;
     }
 
@@ -129,7 +139,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
 
         return true;
-
     }
 
 
@@ -185,8 +194,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 });
 
             }
-        }, Thing.class, "{}"); // todo: add proper search query
-
+        }, Thing.class, "{ \"size\" : \"50\" }"); // todo: add proper search query
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -229,6 +237,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ThingDetailActivity.class);
                         intent.putExtra(ThingDetailActivity.THING_EXTRA, holder.mItem);
+                        intent.putExtra(ThingDetailActivity.ID_EXTRA, holder.mItem.getId());
                         intent.putExtra(ThingDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
                         //intent.putExtra("position", position);
 

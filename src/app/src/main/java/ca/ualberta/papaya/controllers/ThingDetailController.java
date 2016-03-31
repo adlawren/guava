@@ -14,6 +14,7 @@ import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.ViewPictureActivity;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 13/03/16.
@@ -82,23 +83,14 @@ public class ThingDetailController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            ArrayList<Thing> things = ThrowawayDataManager.getInstance()
-                    .getCurrentUserThings(context);
+            Thing.delete(new Observer<Thing>() {
+                @Override
+                public void update(Thing thing) {
 
-            Thing match = null;
-            for (Thing nextThing : things) {
-                if (nextThing.getId().equals(thing.getId())) {
-                    match = nextThing;
+                    // TODO: Remove; test
+                    // System.out.println("[EditThingController.delete] In update.");
                 }
-            }
-
-            if (match != null) {
-                things.remove(things.indexOf(match));
-            } else {
-                System.err.println("[ThingDetailController.DeleteItemOnClickListener] ERROR: Thing not found.");
-            }
-
-            ThrowawayDataManager.getInstance().setCurrentUserThings(context, things);
+            }, Thing.class, thing);
 
             transitionToActivity(context, ThingListActivity.class);
 

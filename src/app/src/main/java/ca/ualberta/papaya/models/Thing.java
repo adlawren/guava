@@ -10,6 +10,7 @@ import java.util.UUID;
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.util.Observer;
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by martin on 10/02/16.
@@ -18,6 +19,18 @@ import ca.ualberta.papaya.util.Observer;
  * @see ElasticModel
  */
 public class Thing extends ElasticModel {
+    @JestId
+    protected String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String newId) {
+        id = newId;
+    }
 
     public transient Class<?> kind;
 
@@ -57,7 +70,7 @@ public class Thing extends ElasticModel {
         photo = new Photo();
 
         ownerId = owner.getId();
-        id = UUID.randomUUID().toString();
+        //id = UUID.randomUUID().toString();
     }
 
     public void getOwner(IObserver observer){

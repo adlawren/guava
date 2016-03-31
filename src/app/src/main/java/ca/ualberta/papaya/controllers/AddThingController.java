@@ -5,17 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-
-import java.util.ArrayList;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
-import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.User;
 
 /**
@@ -65,28 +61,34 @@ public class AddThingController {
             String description = descriptionEditText.getText().toString();
             Bitmap image = imageView.getDrawingCache();
 
-            //Thing thing = new Thing(ThrowawayDataManager.getInstance().getCurrentUser(context));
-
             User testUser = new User();
             testUser.setFirstName("Testy").setLastName("McTesterface");
-            Thing thing = new Thing(testUser);
 
+            Thing thing = new Thing(testUser);
             thing.setTitle(itemName);
             thing.setDescription(description);
 
 
+<<<<<<< HEAD
             //if( image != null){
             Photo photo = new Photo();
             photo.setImage(image);
             thing.setPhoto(photo);
             //}
 
+=======
+            if( image != null) {
+                thing.getPhoto().setImage(image);
+            }
+>>>>>>> 819e427a0c6c68d5a36022e66baca221c1bc7203
 
-            testUser.publish();
+            // testUser.publish();
+
             thing.publish();
 
             transitionToActivity(context, ThingListActivity.class);
 
+<<<<<<< HEAD
             /*
 
             new Thread(new Runnable(){
@@ -118,6 +120,8 @@ public class AddThingController {
 
             */
 
+=======
+>>>>>>> 819e427a0c6c68d5a36022e66baca221c1bc7203
             return true;
         }
     }

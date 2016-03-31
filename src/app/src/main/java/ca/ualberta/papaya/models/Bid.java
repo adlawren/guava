@@ -9,6 +9,7 @@ import java.util.List;
 import ca.ualberta.papaya.exceptions.BidNegativeException;
 import ca.ualberta.papaya.exceptions.InvalidLocationException;
 import ca.ualberta.papaya.interfaces.IObserver;
+import io.searchbox.annotations.JestId;
 
 /**
  * Model class representing a Bid on a Thing owned by a User
@@ -17,6 +18,18 @@ import ca.ualberta.papaya.interfaces.IObserver;
  * Created by martin on 10/02/16.
  */
 public class Bid extends ElasticModel {
+    @JestId
+    protected String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String newId) {
+        id = newId;
+    }
 
     public transient Class<?> kind;
 
