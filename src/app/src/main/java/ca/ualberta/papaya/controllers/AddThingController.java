@@ -68,19 +68,15 @@ public class AddThingController {
             thing.setTitle(itemName);
             thing.setDescription(description);
 
+//            //if( image != null){
+//                Photo photo = new Photo();
+//                photo.setImage(image);
+//                thing.setPhoto(photo);
+//            //}
 
-<<<<<<< HEAD
-            //if( image != null){
-            Photo photo = new Photo();
-            photo.setImage(image);
-            thing.setPhoto(photo);
-            //}
-
-=======
             if( image != null) {
                 thing.getPhoto().setImage(image);
             }
->>>>>>> 819e427a0c6c68d5a36022e66baca221c1bc7203
 
             // testUser.publish();
 
@@ -88,40 +84,6 @@ public class AddThingController {
 
             transitionToActivity(context, ThingListActivity.class);
 
-<<<<<<< HEAD
-            /*
-
-            new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    try {
-
-                        String itemName = itemNameEditText.getText().toString();
-                        String description = descriptionEditText.getText().toString();
-
-                        User user = new User();
-                        user.setFirstName("Emily");
-                        user.setLastName("Jones");
-                        user.setEmail("ejones@ualberta.ca");
-
-                        user.publish();
-
-                        Thing newThing = new Thing(user);
-                        newThing.setTitle(itemName);
-                        newThing.setDescription(description);
-
-                        newThing.publish();
-
-                        transitionToActivity(context, ThingListActivity.class);
-                    }
-                    catch (Exception e) { e.printStackTrace(); }
-                }
-            }).start();
-
-            */
-
-=======
->>>>>>> 819e427a0c6c68d5a36022e66baca221c1bc7203
             return true;
         }
     }

@@ -117,13 +117,6 @@ public class EditThingController {
         return new AvailableOnClickListener(initialContext, initialThing);
     }
 
-<<<<<<< HEAD
-
-
-
-
-
-=======
     private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
@@ -151,5 +144,4 @@ public class EditThingController {
     public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Thing initialThing) {
         return new SetPictureOnClickListener(initialContext, initialThing);
     }
->>>>>>> 819e427a0c6c68d5a36022e66baca221c1bc7203
 }
