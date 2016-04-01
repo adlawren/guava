@@ -157,7 +157,7 @@ public class ThrowawayElasticSearchController {
 
             List<SearchResult.Hit<User, Void>> test = null;
 
-            Search search = new Search.Builder("{}").addIndex("papaya").addType("user").build();
+            Search search = new Search.Builder(params[0]).addIndex("papaya").addType("user").build();
             try {
                 SearchResult seachResult = client.execute(search);
                 if (seachResult.isSucceeded()) {
@@ -222,7 +222,7 @@ public class ThrowawayElasticSearchController {
             try {
                 DocumentResult execute = client.execute(index);
                 if (execute.isSucceeded()) {
-                    // users[0].setId(execute.getId());
+                    users[0].setId(execute.getId());
                 } else {
                     System.err.println("[ThrowawayElasticSearchController.AddUserTask] " +
                             "Client execution failed");
@@ -239,6 +239,7 @@ public class ThrowawayElasticSearchController {
         protected void onPostExecute(User user) {
             super.onPostExecute(user);
 
+            // TODO: Remove; test
             System.out.println("In post execute, User id: " + user.getId());
 
             observable.setData(user);

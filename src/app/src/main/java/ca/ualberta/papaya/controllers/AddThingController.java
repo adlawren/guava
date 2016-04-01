@@ -13,6 +13,9 @@ import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.LocalUser;
+import ca.ualberta.papaya.util.Observable;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 10/03/16.
@@ -25,6 +28,7 @@ import ca.ualberta.papaya.models.User;
  */
 public class AddThingController {
     private static AddThingController ourInstance = new AddThingController();
+    public static final int PHOTO_RESULT = 10;
 
     public static AddThingController getInstance() {
         return ourInstance;
@@ -74,9 +78,9 @@ public class AddThingController {
 //                thing.setPhoto(photo);
 //            //}
 
-            if( image != null) {
-                thing.getPhoto().setImage(image);
-            }
+            // if( image != null) {
+            //     thing.getPhoto().setImage(image);
+            // }
 
             // testUser.publish();
 
@@ -97,5 +101,32 @@ public class AddThingController {
                 initialDescriptionEditText, imageView);
     }
 
+    private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
+        private Context context;
+
+        private Bitmap image;
+
+        public SetPictureOnClickListener(Context initialContext, Bitmap initialImage) {
+            context = initialContext;
+            image = initialImage;
+
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent intent = new Intent(context, AddPictureActivity.class);
+            intent.putExtra(AddPictureActivity.PICTURE_EXTRA, image);
+
+            ((Activity)context).startActivityForResult(intent, PHOTO_RESULT);
+
+            return true;
+        }
+    }
+
+    // return the onClickListener for setPicture
+    public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Bitmap initialImage) {
+        return new SetPictureOnClickListener(initialContext, initialImage);
+    }
 }

@@ -58,5 +58,4 @@
         android:background="#f95f22"
         android:layout_centerHorizontal="true" />
 
-
 </RelativeLayout>
