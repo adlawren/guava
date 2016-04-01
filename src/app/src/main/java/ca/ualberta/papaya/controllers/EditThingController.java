@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.data.MyThingsDataManager;
+import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 
@@ -45,29 +49,40 @@ public class EditThingController {
         private Context context;
 
         private Thing thing;
-        private Bitmap image;
+
 
         private EditText itemNameEditText, descriptionEditText;
+        private ImageView imageView;
 
         public EditItemOnClickListener(Context initialContext,
                                        Thing initialThing,
                                        EditText initialItemNameEditText,
                                        EditText initialDescriptionEditText,
-                                       Bitmap initialImage) {
+                                       ImageButton initialImageView ) {
             context = initialContext;
 
             thing = initialThing;
-            image = initialImage;
 
             itemNameEditText = initialItemNameEditText;
             descriptionEditText = initialDescriptionEditText;
+            imageView = initialImageView;
+
         }
+
 
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
             thing.setTitle(itemNameEditText.getText().toString());
             thing.setDescription(descriptionEditText.getText().toString());
+            Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+
+            Photo photo = new Photo();
+            photo.setImage(image);
+            thing.setPhoto(photo);
+
+
+
 
             thing.publish();
 
@@ -82,9 +97,9 @@ public class EditThingController {
                                                               Thing initialThing,
                                                               EditText initialItemNameEditText,
                                                               EditText initialDescriptionEditText,
-                                                              Bitmap initialImage) {
+                                                              ImageButton initialImageView) {
         return new EditItemOnClickListener(initialContext, initialThing, initialItemNameEditText,
-                initialDescriptionEditText, initialImage);
+                initialDescriptionEditText, initialImageView);
     }
 
     // Button to change a Thing back to available once it is no being borrowed anymore
@@ -117,39 +132,10 @@ public class EditThingController {
         return new AvailableOnClickListener(initialContext, initialThing);
     }
 
-<<<<<<< HEAD
 
 
 
 
 
-=======
-    private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
-        private Context context;
-
-        private Thing thing;
-
-        public SetPictureOnClickListener(Context initialContext, Thing initialThing) {
-            context = initialContext;
-            thing = initialThing;
-        }
-
-        @Override
-        // public void onClick(View view) {
-        public boolean onMenuItemClick(MenuItem item) {
-            Intent intent = new Intent(context, AddPictureActivity.class);
-            intent.putExtra(AddPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
-
-            ((Activity)context).startActivityForResult(intent, PHOTO_RESULT);
-
-            return true;
-        }
-    }
-
-    // return the onClickListener for setPicture
-    public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Thing initialThing) {
-        return new SetPictureOnClickListener(initialContext, initialThing);
-    }
->>>>>>> 819e427a0c6c68d5a36022e66baca221c1bc7203
 }

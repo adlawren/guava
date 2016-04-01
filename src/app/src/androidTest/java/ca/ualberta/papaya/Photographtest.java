@@ -1,13 +1,15 @@
 package ca.ualberta.papaya;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.test.ActivityInstrumentationTestCase2;
 
+import android.test.ActivityInstrumentationTestCase2;
+import android.widget.ImageView;
+
+import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 
-import android.view.ImageView;
+
 
 /**
  * Created by bgodley on 3/11/16.
@@ -20,39 +22,52 @@ public class Photographtest extends ActivityInstrumentationTestCase2 {
 
     public void testAddPicture() {
         Thing thing = new Thing(new User());
-        Bitmap testpic = BitmapFactory.decodeResource(getResources(),
-                R.drawable.blue_pushpin);
-        thing.addPicture(pic);
-        assertEquals(thing.getPicture(), pic);
+        Bitmap testpic = ;//Todo initialize bitmap
+
+        Photo photo = new Photo();
+        photo.setImage(testpic);
+        thing.setPhoto(photo);
+
+        assertEquals(thing.getPhoto().getImage(), testpic);
     }
 
     public void testDeletePic() {
         Thing thing = new Thing(new User());
-        ImageView pic = (ImageView) findViewById(R.id.image1);
-        thing.addPicture(pic);
-        assertEquals(thing.getPicture(), pic);
-        thing.deletePicture();
-        assertEquals(thing.getPicture(), null);
+        Bitmap testpic = ;//Todo initialize bitmap
+
+        Photo photo = new Photo();
+        photo.setImage(testpic);
+        thing.setPhoto(photo);
+
+        photo.setImage(null);
+        thing.setPhoto(photo);
+        assertEquals(thing.getPhoto().getImage(), null);
 
     }
 
     public void testViewPic() {
         Thing thing = new Thing(new User());
-        ImageView pic = (ImageView) findViewById(R.id.image1);
-        thing.addPicture(pic);
+        Bitmap testpic = ;//Todo initialize bitmap
 
-        showPicture();
-        ImageView screen = (ImageView) findViewById(R.id.showImage);
-        assertEquals(pic, screen);
+
+        ImageView screen = (ImageView) findViewById(R.id.imageView);
+        screen.setImageBitmap(testpic);
+        Bitmap onScreen = screen.getDrawingCache();
+        assertEquals(testpic, onScreen);
 
     }
 
     public void testPicSize() {
         // check to see if picture that is too big gets declined
         Thing thing = new Thing(new User());
-        ImageView pic = (ImageView) findViewById(R.id.image2big);
+        Bitmap testpic = ;//Todo initialize bitmap
+
+        Photo photo = new Photo();
+        photo.setImage(testpic);
+
+
         try {
-            thing.addPicture(pic);
+            thing.setPhoto(testpic);
             assertTrue(false);
         } catch (exeption e) {
             assertTrue(true);

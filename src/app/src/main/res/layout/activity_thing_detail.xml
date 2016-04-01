@@ -37,8 +37,8 @@
 
         <include layout="@layout/bid_list"
             android:layout_height="213dp"
-            android:layout_width="fill_parent"
-            android:layout_gravity="center_horizontal|bottom" />
+            android:layout_width="292dp"
+            android:layout_gravity="left|bottom" />
 
 
     </FrameLayout>

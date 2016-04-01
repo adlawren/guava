@@ -1,6 +1,7 @@
 package ca.ualberta.papaya.models;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 
 import java.security.acl.Owner;
 import java.util.ArrayList;
@@ -48,7 +49,8 @@ public class Thing extends ElasticModel {
 
     private String description = "";
 
-    private Photo photo;      // todo: initialize with default blank photo.
+    private Photo photo;
+    private Location location;
 
     /*
     public static List<Thing> getMyThings(){
@@ -167,4 +169,8 @@ public class Thing extends ElasticModel {
     public void setPhoto(Photo newPhoto){
         this.photo = newPhoto;
     }
+
+    public Location getLocation(){return location;}
+    public void setLocation( Location location){this.location = location;}
+
 }

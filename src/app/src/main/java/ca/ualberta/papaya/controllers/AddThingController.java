@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,7 +60,7 @@ public class AddThingController {
         public boolean onMenuItemClick(MenuItem item) {
             String itemName = itemNameEditText.getText().toString();
             String description = descriptionEditText.getText().toString();
-            Bitmap image = imageView.getDrawingCache();
+            Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
             User testUser = new User();
             testUser.setFirstName("Testy").setLastName("McTesterface");
@@ -68,19 +69,10 @@ public class AddThingController {
             thing.setTitle(itemName);
             thing.setDescription(description);
 
-
-<<<<<<< HEAD
-            //if( image != null){
             Photo photo = new Photo();
             photo.setImage(image);
             thing.setPhoto(photo);
-            //}
 
-=======
-            if( image != null) {
-                thing.getPhoto().setImage(image);
-            }
->>>>>>> 819e427a0c6c68d5a36022e66baca221c1bc7203
 
             // testUser.publish();
 
@@ -88,7 +80,7 @@ public class AddThingController {
 
             transitionToActivity(context, ThingListActivity.class);
 
-<<<<<<< HEAD
+
             /*
 
             new Thread(new Runnable(){
@@ -120,8 +112,7 @@ public class AddThingController {
 
             */
 
-=======
->>>>>>> 819e427a0c6c68d5a36022e66baca221c1bc7203
+
             return true;
         }
     }

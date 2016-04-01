@@ -51,7 +51,6 @@ public class ViewPictureActivity extends AbstractPapayaActivity {
         intent = getIntent();
         picture = intent.getParcelableExtra(PICTURE_EXTRA);
         updateView();
-
     }
 
     private void updateView(){

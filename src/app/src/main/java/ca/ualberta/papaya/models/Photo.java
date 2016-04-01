@@ -44,16 +44,27 @@ public class Photo extends ElasticModel {
     }
 
     public void setImage(Bitmap original){
-        if(original != null){
+        if(original != null) {
             image = original;
 
-            ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-            original.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
+            int height = image.getHeight();
+            int width = image.getWidth();
+            if ((height * width) / 8 > 65536) {
+                //Todo need to put what happens when this error happens
+            } else{
 
-            byte[] b = byteArrayBitmapStream.toByteArray();
-            imageBase64 = Base64.encodeToString(b, Base64.DEFAULT);
+                ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+                original.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
+
+                byte[] b = byteArrayBitmapStream.toByteArray();
+                imageBase64 = Base64.encodeToString(b, Base64.DEFAULT);
+            }
+        }else {
+            image = null;
+            imageBase64 = null;
         }
     }
+
 
 
     public Bitmap getImage(){

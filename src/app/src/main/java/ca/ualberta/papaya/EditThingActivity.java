@@ -1,18 +1,15 @@
 package ca.ualberta.papaya;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import ca.ualberta.papaya.controllers.EditThingController;
 import ca.ualberta.papaya.models.Photo;
@@ -24,6 +21,7 @@ import ca.ualberta.papaya.models.Thing;
  * Calls EditThingController for all of the button implementations.
  * @see EditThingActivity
  */
+
 public class EditThingActivity extends AbstractPapayaActivity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.edit.thing.thing.extra";
@@ -32,6 +30,8 @@ public class EditThingActivity extends AbstractPapayaActivity {
     Thing thing = null;
     public static final int PHOTO_RESULT = 10;
     Bitmap picture = null;
+
+    ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +43,18 @@ public class EditThingActivity extends AbstractPapayaActivity {
 
         EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
                 descriptionEditText = (EditText) findViewById(R.id.description);
-        ImageButton image = (ImageButton) findViewById(R.id.viewPicture);
+        imageButton = (ImageButton) findViewById(R.id.viewPicture);
 
 
         itemNameEditText.setText(thing.getTitle());
         descriptionEditText.setText(thing.getDescription());
         if( thing.getPhoto().getImage() != null){
-            image.setImageBitmap(thing.getPhoto().getImage());
+            picture = thing.getPhoto().getImage();
+            imageButton.setImageBitmap(picture);
+        } else{
+            imageButton.setImageBitmap(picture);
         }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,10 +64,10 @@ public class EditThingActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
-        image.setOnClickListener(new View.OnClickListener() {
+        imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditThingActivity.this, ViewPictureActivity.class);
+                Intent intent = new Intent(EditThingActivity.this, AddPictureActivity.class);
                 intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, picture);
 
                 startActivityForResult(intent, PHOTO_RESULT);
@@ -88,17 +92,15 @@ public class EditThingActivity extends AbstractPapayaActivity {
         EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
                 descriptionEditText = (EditText) findViewById(R.id.description);
 
+
+
         menu.findItem(R.id.editItem).setOnMenuItemClickListener(EditThingController.getInstance()
-                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, picture));
+                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, imageButton));
         //menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
 
                 //bgodley: i still have to do fiddle with this
                 //.getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, picture));
                 //.getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
-
-        // TODO: Uncomment; testing - seems to cause null pointer exception
-//        menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(EditThingController.getInstance()
-//                .getSetPictureOnClickListener(this, thing));
 
 
         return true;
@@ -143,10 +145,13 @@ public class EditThingActivity extends AbstractPapayaActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 picture = data.getParcelableExtra(AddPictureActivity.PICTURE_EXTRA);
-                ImageButton imageButton =(ImageButton) findViewById(R.id.viewPicture);
                 imageButton.setImageBitmap(picture);
+                Photo photo = new Photo();
+                photo.setImage(picture);
+                thing.setPhoto(photo);
+
             }
         }
     }
-
+//Todo picture doesn't work
 }

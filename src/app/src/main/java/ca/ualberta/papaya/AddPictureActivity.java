@@ -37,6 +37,7 @@ public class AddPictureActivity extends AbstractPapayaActivity {
 
 
 
+
     public static final String PICTURE_EXTRA = "ca.papaya.ualberta.edit.Picture";
     private static final int REQUEST_CAPTURING_IMAGE = 1234;
 
@@ -58,9 +59,17 @@ public class AddPictureActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
-        // Button for saving the current picture to the selected thing
+        intent = getIntent();
+
+        picture = intent.getParcelableExtra(PICTURE_EXTRA);
+
+
+        updateView();
     }
 
+
+
+    // Button for saving the current picture to the selected thing
     void savePic() {
 
         Intent returnIntent = new Intent();
@@ -150,8 +159,9 @@ public class AddPictureActivity extends AbstractPapayaActivity {
         intent = getIntent();
         if(picture == null) {
             picture = intent.getParcelableExtra(PICTURE_EXTRA);
-            updateView();
+
         }
+        updateView();
     }
 
     private void updateView(){
