@@ -32,6 +32,7 @@ import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.util.Ctx;
+import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
@@ -94,6 +95,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
         //updateView();
 
+        // TODO: Remove; test
+        System.out.println("[ThingListActivity] User id: " + LocalUser.getId());
     }
 
 //    @Override

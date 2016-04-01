@@ -11,16 +11,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
-
         <activity
             android:name=".ThingDetailActivity"
             android:parentActivityName=".ThingListActivity"
@@ -29,87 +29,94 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
-
-        <activity android:name=".EditUserProfileActivity"
+        <activity
+            android:name=".EditUserProfileActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
-
-        <activity android:name=".UserProfileActivity"
+        <activity
+            android:name=".UserProfileActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
-
-        <activity android:name=".AddThingActivity"
+        <activity
+            android:name=".AddThingActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
-
-        <activity android:name=".ThingSearchActivity"
-            android:parentActivityName=".ThingListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="ca.ualberta.papaya.ThingListActivity" />
-        </activity>
-
-        <activity android:name=".EditThingActivity"
+        <activity
+            android:name=".ThingSearchActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
-
-        <activity android:name=".ThingSearchDetailActivity"
+        <activity
+            android:name=".EditThingActivity"
+            android:parentActivityName=".ThingListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+        <activity
+            android:name=".ThingSearchDetailActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingSearchActivity" />
         </activity>
-
-        <activity android:name=".AddPictureActivity"
+        <activity
+            android:name=".AddPictureActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingSearchActivity" />
         </activity>
-
-        <activity android:name=".ViewPictureActivity"
+        <activity
+            android:name=".ViewPictureActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingSearchActivity" />
         </activity>
-
-        <activity android:name=".ThingBidsActivity"
+        <activity
+            android:name=".ThingBidsActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
-
-        <activity android:name=".ThingBorrowingActivity"
+        <activity
+            android:name=".ThingBorrowingActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
-
+        <activity
+            android:name=".LogInActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

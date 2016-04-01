@@ -21,6 +21,7 @@ public class LocalUser {
             SharedPreferences sharedPref = Ctx.get().getSharedPreferences(PREF_NAME, Ctx.get().MODE_PRIVATE);
             userId = sharedPref.getString(USER_ID_KEY, null);
         }
+
         return userId;
     }
 
@@ -49,5 +50,4 @@ public class LocalUser {
             }
         }
     }
-
 }
