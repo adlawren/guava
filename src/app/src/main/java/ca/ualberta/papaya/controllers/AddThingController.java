@@ -11,6 +11,9 @@ import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.LocalUser;
+import ca.ualberta.papaya.util.Observable;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 10/03/16.
@@ -35,6 +38,20 @@ public class AddThingController {
     // Save Button
     private class SaveOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
+        private class UserObserver extends Observer {
+
+            private Thing thing = null;
+
+            public UserObserver(Thing initialThing) {
+                thing = initialThing;
+            }
+
+            @Override
+            public void update(Object data) {
+                // ...
+            }
+        }
+
         private Context context;
         private EditText itemNameEditText, descriptionEditText;
         private Bitmap image;
@@ -56,24 +73,22 @@ public class AddThingController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            String itemName = itemNameEditText.getText().toString();
-            String description = descriptionEditText.getText().toString();
+            LocalUser.getUser(new Observer() {
+                @Override
+                public void update(Object data) {
+                    User user = (User) data;
 
-            User testUser = new User();
-            testUser.setFirstName("Testy").setLastName("McTesterface");
+                    Thing thing = new Thing(user);
+                    thing.setTitle(itemNameEditText.getText().toString());
+                    thing.setDescription(descriptionEditText.getText().toString());
 
-            Thing thing = new Thing(testUser);
-            thing.setTitle(itemName);
-            thing.setDescription(description);
+                    if(image != null) {
+                        thing.getPhoto().setImage(image);
+                    }
 
-
-            if( image != null) {
-                thing.getPhoto().setImage(image);
-            }
-
-            // testUser.publish();
-
-            thing.publish();
+                    thing.publish();
+                }
+            });
 
             transitionToActivity(context, ThingListActivity.class);
 

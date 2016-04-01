@@ -2,7 +2,6 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.interfaces.IObserver;
-import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observable;
@@ -39,7 +37,6 @@ public class LogInController {
 
         private Context context;
         private EditText userNameEditText, passwordEditText;
-        private Bitmap image;
 
         public SubmitOnClickListener(Context initialContext, EditText initialUserNameEditText,
                                      EditText initialPasswordEditText) {
@@ -56,17 +53,14 @@ public class LogInController {
         @Override
         public void onClick(View view) {
             final String userName = userNameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
+            final String password = passwordEditText.getText().toString();
 
             Observable<ArrayList<User>> observable = new Observable<>();
             observable.addObserver(new IObserver<ArrayList<User>>() {
                 @Override
                 public void update(ArrayList<User> data) {
                     User currentUser = null;
-
-                    System.out.println("User list:");
                     for (User user : data) {
-                        System.out.println("Next user: id: " + user.getId());
                         if (user.getEmail().equals(userName)) {
                             currentUser = user;
                             LocalUser.setId(user.getId());
@@ -79,19 +73,14 @@ public class LogInController {
                         userObservable.addObserver(new IObserver<User>() {
                             @Override
                             public void update(User data) {
-
-                                // TODO: Remove; test
-                                System.out.println("Added user: id: " + data.getId());
-
                                 LocalUser.setId(data.getId());
-
                                 transitionToActivity(context, ThingListActivity.class);
                             }
                         });
 
                         currentUser = new User();
 
-                        // TODO: Remove; test
+                        // TODO: Update; test
                         currentUser.setFirstName("Things");
                         currentUser.setLastName("McGee");
 
