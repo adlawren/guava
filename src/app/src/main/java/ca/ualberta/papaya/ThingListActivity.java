@@ -40,6 +40,7 @@ import ca.ualberta.papaya.util.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * An activity representin
@@ -93,6 +94,26 @@ public class ThingListActivity extends AbstractPapayaActivity {
         }
 
         //updateView();
+
+        // TODO: Remove; test
+//        Observable<ArrayList<Thing>> observable = new Observable<>();
+//        observable.addObserver(new IObserver<ArrayList<Thing>>() {
+//            @Override
+//            public void update(ArrayList<Thing> data) {
+//                // ...
+//            }
+//        });
+//
+//        MyThingsDataManager.getInstance().getData(observable);
+        Observable<Vector<Thing>> observable = new Observable<>();
+        observable.addObserver(new IObserver<Vector<Thing>>() {
+            @Override
+            public void update(Vector<Thing> data) {
+                // ...
+            }
+        });
+
+        MyThingsDataManager.getInstance().getData(observable);
     }
 
 //    @Override
@@ -154,7 +175,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
             }
         }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"match\" : { \"ownerId\" : " +
-                "\"OJ_Degt7Slu9rdjHOSOQUw\" } } }");
+                "\"" + LocalUser.getId() + "\" } } }");
     }
 
     public class SimpleItemRecyclerViewAdapter

@@ -73,6 +73,8 @@ public class EditThingController {
 
             transitionToActivity(context, ThingListActivity.class);
 
+            MyThingsDataManager.getInstance().update(thing);
+
             return true;
         }
     }
