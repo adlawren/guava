@@ -23,21 +23,8 @@ public class LogInActivity extends AppCompatActivity {
         // Initialize shared context
         Ctx.set(getApplicationContext());
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//            actionBar.setDisplayShowTitleEnabled(false);
-//        }
-
         String id =  LocalUser.getId();
         if (id != null) {
-
-            // TODO: Remove; test
-            System.out.println("[LogInActivity] User id: " + id);
-
             Intent intent = new Intent(this, ThingListActivity.class);
             startActivity(intent);
         }

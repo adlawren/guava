@@ -30,6 +30,7 @@ public class LocalUser {
         SharedPreferences sharedPref = Ctx.get().getSharedPreferences(PREF_NAME, Ctx.get().MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(USER_ID_KEY, userId);
+        editor.commit();
     }
 
     public static void getUser(final Observer observer){

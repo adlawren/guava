@@ -23,6 +23,7 @@ import android.support.v7.app.ActionBarActivity;
 
 
 import ca.ualberta.papaya.controllers.ThingListController;
+import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.dummy.DummyContent;
 import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
@@ -97,6 +98,13 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
         // TODO: Remove; test
         System.out.println("[ThingListActivity] User id: " + LocalUser.getId());
+        LocalUser.getUser(new Observer() {
+            @Override
+            public void update(Object data) {
+                User user = (User) data;
+                System.out.println("[ThingListActivity] Retrieved user id: " + user.getId());
+            }
+        });
     }
 
 //    @Override

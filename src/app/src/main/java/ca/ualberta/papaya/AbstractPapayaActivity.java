@@ -22,11 +22,12 @@ public abstract class AbstractPapayaActivity extends AppCompatActivity {
         Ctx.set(getApplicationContext());
     }
 
+    // TODO: Update
     protected String loadUserId() {
         Context context = this;
         SharedPreferences sharedPref = context.getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
-        return LocalUser.getId();
+        return null;
     }
 }
