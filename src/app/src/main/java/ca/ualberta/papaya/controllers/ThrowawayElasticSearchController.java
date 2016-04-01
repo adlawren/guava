@@ -11,6 +11,7 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.xml.transform.Result;
 
@@ -141,6 +142,52 @@ public class ThrowawayElasticSearchController {
         }
     }
 
+    public static class VectorSearchThingTask extends AsyncTask<String,Void,Vector<Thing>> {
+
+        private Observable<Vector<Thing>> observable;
+
+        public VectorSearchThingTask(Observable<Vector<Thing>> initialObservable) {
+            observable = initialObservable;
+        }
+
+        @Override
+        protected Vector<Thing> doInBackground(String... params) {
+            verifyConfiguration();
+
+            Vector<Thing> things = new Vector<>();
+
+            Search search = new Search.Builder(params[0]).addIndex("papaya").addType("thing").build();
+            try {
+                SearchResult seachResult = client.execute(search);
+                if (seachResult.isSucceeded()) {
+                    List<Thing> list = seachResult.getSourceAsObjectList(Thing.class);
+                    things.addAll(list);
+                } else {
+                    System.err.println("[ThrowawayElasticSearchController.SearchUserTask] " +
+                            "Client execution failed");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return things;
+        }
+
+        @Override
+        public void onPostExecute(Vector<Thing> things) {
+            super.onPostExecute(things);
+
+//            // TODO: Update; test
+//            System.out.println("Thing count: " + things.size());
+//            for (Thing thing : things) {
+//                System.out.println("Next thing id: " + thing.getId());
+//                System.out.println("Next thing description: " + thing.getDescription());
+//            }
+
+            observable.setData(things);
+        }
+    }
+
     public static class SearchUserTask extends AsyncTask<String,Void,ArrayList<User>> {
 
         private Observable<ArrayList<User>> observable;
@@ -157,7 +204,7 @@ public class ThrowawayElasticSearchController {
 
             List<SearchResult.Hit<User, Void>> test = null;
 
-            Search search = new Search.Builder("{}").addIndex("papaya").addType("user").build();
+            Search search = new Search.Builder(params[0]).addIndex("papaya").addType("user").build();
             try {
                 SearchResult seachResult = client.execute(search);
                 if (seachResult.isSucceeded()) {
@@ -222,7 +269,7 @@ public class ThrowawayElasticSearchController {
             try {
                 DocumentResult execute = client.execute(index);
                 if (execute.isSucceeded()) {
-                    // users[0].setId(execute.getId());
+                    users[0].setId(execute.getId());
                 } else {
                     System.err.println("[ThrowawayElasticSearchController.AddUserTask] " +
                             "Client execution failed");
@@ -239,6 +286,7 @@ public class ThrowawayElasticSearchController {
         protected void onPostExecute(User user) {
             super.onPostExecute(user);
 
+            // TODO: Remove; test
             System.out.println("In post execute, User id: " + user.getId());
 
             observable.setData(user);

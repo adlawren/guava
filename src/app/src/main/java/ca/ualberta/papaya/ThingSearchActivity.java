@@ -22,7 +22,9 @@ import java.util.List;
 
 import ca.ualberta.papaya.controllers.ThingSearchController;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observer;
 
 /**
@@ -39,14 +41,12 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
      */
     private boolean mTwoPane;
 
-    private static ArrayList<Thing> thingList;
+    private static ArrayList<Thing> thingList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_search);
-
-        thingList = ThrowawayDataManager.getInstance().getNonCurrentUserThings();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,32 +67,6 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
-
-        EditText keywordsEditText = (EditText) findViewById(R.id.keywords);
-
-//        FloatingActionButton searchFloatingActionButton = (FloatingActionButton) findViewById(R.id.search);
-//        searchFloatingActionButton.setOnClickListener(ThingSearchController.getInstance().getSearchOnClickListener(this,
-//                keywordsEditText, recyclerView, thingList));
-
-        // TODO: Remove; old
-//        searchFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//                EditText keywordsEditText = (EditText) findViewById(R.id.keywords);
-//                String keywords = keywordsEditText.getText().toString();
-//
-//                thingList.clear();
-//                for (Thing thing : ThrowawayDataManager.getInstance().getNonCurrentUserThings()) {
-//                    if (thing.getDescription().contains(keywords)) {
-//                        thingList.add(thing);
-//                    }
-//                }
-//
-//                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
-//                recyclerView.getAdapter().notifyDataSetChanged();
-//            }
-//        });
     }
 
     @Override
@@ -109,32 +83,64 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
         EditText searchValue = (EditText) findViewById(R.id.keywords);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
 
+        Observer<ArrayList<Thing>> thingListObserver = new Observer<ArrayList<Thing>>() {
+            @Override
+            public void update(final ArrayList<Thing> data) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EditText keywordsEditText = (EditText) findViewById(R.id.keywords);
+
+                        thingList.clear();
+                        for (Thing thing : data) {
+                            if (thing.getDescription().contains(keywordsEditText.getText())) {
+                                thingList.add(thing);
+                            }
+                        }
+
+                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                    }
+                });
+            }
+        };
+
         menu.findItem(R.id.search).setOnMenuItemClickListener(ThingSearchController.getInstance()
-                .getSearchOnClickListener(this,searchValue,recyclerView,thingList));
+                .getSearchOnClickListener(this, searchValue, recyclerView, thingList, thingListObserver));
 
         return true;
     }
 
     private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
-
         SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
         recyclerView.setAdapter(va);
 
+        // TODO: Determine if filtering is needed here; depends on if the Activity is loaded with previously used keywords
+        final EditText keywordsEditText = (EditText) findViewById(R.id.keywords);
+
         Thing.search(new Observer<List<Thing>>() {
             @Override
-            public void update(List<Thing> things) {
-                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
+            public void update(List<Thing> data) {
+
+                // TODO: Find a more efficient way to filter by keywords
+                thingList.clear();
+                for (Thing thing : data) {
+                    if (thing.getDescription().contains(keywordsEditText.getText())) {
+                        thingList.add(thing);
+                    }
+                }
+
+                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
                 recyclerView.post(new Runnable() {
                     @Override
                     public void run() {
                         recyclerView.setAdapter(va);
                     }
                 });
-
             }
-        }, Thing.class, "{}"); // todo: add proper search query
-
-        //recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(thingList));
+        }, Thing.class, "{ \"size\" : \"100\", \"query\" : { \"bool\" : { \"must_not\" : " +
+                "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ], \"must\" : " +
+                "[ { \"match\" : { \"status\" : \"AVAILABLE\" } } ] } } }");
     }
 
     public class SimpleItemRecyclerViewAdapter

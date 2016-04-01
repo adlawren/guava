@@ -311,13 +311,13 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                     if (!resp.isSucceeded()) {
                                         System.err.println("[ElasticModel.commit] " +
                                                 "ERROR: REST push unsuccessful.");
+                                    } else {
+                                        toRemove.add(model);
                                     }
 
                                     // model.id = resp.getId();
 
                                     // String result = resp.getJsonString();
-
-                                    toRemove.add(model);
                                 } catch (IOException e){
                                     // todo: make more robust
                                     model.published = false;

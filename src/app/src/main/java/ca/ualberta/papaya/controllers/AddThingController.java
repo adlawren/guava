@@ -14,6 +14,9 @@ import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.LocalUser;
+import ca.ualberta.papaya.util.Observable;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 10/03/16.
@@ -26,6 +29,7 @@ import ca.ualberta.papaya.models.User;
  */
 public class AddThingController {
     private static AddThingController ourInstance = new AddThingController();
+    public static final int PHOTO_RESULT = 10;
 
     public static AddThingController getInstance() {
         return ourInstance;
@@ -69,6 +73,7 @@ public class AddThingController {
             thing.setTitle(itemName);
             thing.setDescription(description);
 
+
             Photo photo = new Photo();
             photo.setImage(image);
             thing.setPhoto(photo);
@@ -79,38 +84,6 @@ public class AddThingController {
             thing.publish();
 
             transitionToActivity(context, ThingListActivity.class);
-
-
-            /*
-
-            new Thread(new Runnable(){
-                @Override
-                public void run() {
-                    try {
-
-                        String itemName = itemNameEditText.getText().toString();
-                        String description = descriptionEditText.getText().toString();
-
-                        User user = new User();
-                        user.setFirstName("Emily");
-                        user.setLastName("Jones");
-                        user.setEmail("ejones@ualberta.ca");
-
-                        user.publish();
-
-                        Thing newThing = new Thing(user);
-                        newThing.setTitle(itemName);
-                        newThing.setDescription(description);
-
-                        newThing.publish();
-
-                        transitionToActivity(context, ThingListActivity.class);
-                    }
-                    catch (Exception e) { e.printStackTrace(); }
-                }
-            }).start();
-
-            */
 
 
             return true;
@@ -126,5 +99,32 @@ public class AddThingController {
                 initialDescriptionEditText, imageView);
     }
 
+    private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
+        private Context context;
+
+        private Bitmap image;
+
+        public SetPictureOnClickListener(Context initialContext, Bitmap initialImage) {
+            context = initialContext;
+            image = initialImage;
+
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent intent = new Intent(context, AddPictureActivity.class);
+            intent.putExtra(AddPictureActivity.PICTURE_EXTRA, image);
+
+            ((Activity)context).startActivityForResult(intent, PHOTO_RESULT);
+
+            return true;
+        }
+    }
+
+    // return the onClickListener for setPicture
+    public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Bitmap initialImage) {
+        return new SetPictureOnClickListener(initialContext, initialImage);
+    }
 }

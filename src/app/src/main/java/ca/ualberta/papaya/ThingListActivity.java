@@ -24,6 +24,7 @@ import android.support.v7.app.ActionBarActivity;
 
 
 import ca.ualberta.papaya.controllers.ThingListController;
+import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.dummy.DummyContent;
 import ca.ualberta.papaya.fixtures.Country;
 import ca.ualberta.papaya.fixtures.Province;
@@ -33,11 +34,13 @@ import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.util.Ctx;
+import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * An activity representin
@@ -63,9 +66,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
     private boolean mTwoPane;
 
     private int FILTER; //0 all, 1 borrowed,2 bidded
-    //TODO: Remove usage of tempThings
-    //ArrayList<Thing> tempThings = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
-
 
         View recyclerView = findViewById(R.id.thing_list);
         assert recyclerView != null;
@@ -96,6 +95,25 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
         //updateView();
 
+        // TODO: Remove; test
+//        Observable<ArrayList<Thing>> observable = new Observable<>();
+//        observable.addObserver(new IObserver<ArrayList<Thing>>() {
+//            @Override
+//            public void update(ArrayList<Thing> data) {
+//                // ...
+//            }
+//        });
+//
+//        MyThingsDataManager.getInstance().getData(observable);
+        Observable<Vector<Thing>> observable = new Observable<>();
+        observable.addObserver(new IObserver<Vector<Thing>>() {
+            @Override
+            public void update(Vector<Thing> data) {
+                // ...
+            }
+        });
+
+        MyThingsDataManager.getInstance().getData(observable);
     }
 
 //    @Override
@@ -141,44 +159,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
         return true;
     }
 
-
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //http://developer.android.com/reference/android/view/View.html#performClick()
-
-        switch (item.getItemId()) {
-            case R.id.otherItems:
-                View otherItemsView = findViewById(R.id.otherItems);
-                otherItemsView.setOnClickListener(ThingListController.getInstance().getOtherItemsOnClickListener(this));
-                otherItemsView.performClick();
-                return true;
-            case R.id.addItem:
-                View addItemView = findViewById(R.id.addItem);
-                addItemView.setOnClickListener(ThingListController.getInstance().getAddItemOnClickListener(this));
-                addItemView.performClick();
-                return true;
-            case R.id.profile:
-                View profileView = findViewById(R.id.profile);
-                profileView.setOnClickListener(ThingListController.getInstance().getProfileOnClickListener(this));
-                profileView.performClick();
-                return true;
-            case R.id.search:
-                View searchView = findViewById(R.id.search);
-                searchView.setOnClickListener(ThingListController.getInstance().getSearchOnClickListener(this));
-                searchView.performClick();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    */
-
-
     private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
         SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
         recyclerView.setAdapter(va);
@@ -194,7 +174,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 });
 
             }
-        }, Thing.class, "{ \"size\" : \"50\" }"); // todo: add proper search query
+        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"match\" : { \"ownerId\" : " +
+                "\"" + LocalUser.getId() + "\" } } }");
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -287,10 +268,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
         updateView();
     }
 
-
-
-
-
     public void updateView(){
         MenuItem filterButton =(MenuItem) findViewById(R.id.filter);
         if( FILTER == 0){
@@ -304,6 +281,4 @@ public class ThingListActivity extends AbstractPapayaActivity {
         //Todo put the code to change items per filter here
 
     }
-
-
 }

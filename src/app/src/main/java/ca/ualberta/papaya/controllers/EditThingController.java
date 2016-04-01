@@ -88,6 +88,8 @@ public class EditThingController {
 
             transitionToActivity(context, ThingListActivity.class);
 
+            MyThingsDataManager.getInstance().update(thing);
+
             return true;
         }
     }
@@ -131,11 +133,6 @@ public class EditThingController {
     public AvailableOnClickListener getAvailableOnClickListener(Context initialContext, Thing initialThing) {
         return new AvailableOnClickListener(initialContext, initialThing);
     }
-
-
-
-
-
 
 
 }
