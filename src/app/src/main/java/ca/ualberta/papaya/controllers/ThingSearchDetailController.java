@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import ca.ualberta.papaya.UserProfileActivity;
+import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 
 /**
@@ -27,34 +28,48 @@ public class ThingSearchDetailController {
     private ThingSearchDetailController() {
     }
 
-    // button for displaying the owner (User) of the Thing
-    // private class UserOnClickListener implements MenuItem.OnMenuItemClickListener {
-    private class UserOnClickListener implements View.OnClickListener {
+    // The onClickMenuItem for placing a bid
+    private class UserBidOnClickListener implements MenuItem.OnMenuItemClickListener {
 
-        private Context context;
 
-        private User user;
+        private Thing thing;
 
-        public UserOnClickListener(Context initialContext, User initialUser) {
-            context = initialContext;
-            user = initialUser;
+        public UserBidOnClickListener(Thing theThing) {
+            thing = theThing;
         }
 
         @Override
-        // public boolean onMenuItemClick(MenuItem item) {
-        public void onClick(View view) {
-            Intent intent = new Intent(context, UserProfileActivity.class);
-            intent.putExtra(UserProfileActivity.USER_EXTRA, user);
-
-            context.startActivity(intent);
-            // return true;
+        public boolean onMenuItemClick(MenuItem item) {
+            return true;
         }
+
     }
 
-    // return the onClickListener for user
-    public UserOnClickListener getUserOnClickListener(Context initialContext,
-                                                            User initialUser) {
-        return new UserOnClickListener(initialContext, initialUser);
+    // return the onMenuItemListener for user bids
+    public UserBidOnClickListener getUserBidOnClickListener(Thing theThing) {
+        return new UserBidOnClickListener(theThing);
+    }
+
+
+    // The onClick listener for user info
+    private class UserInfoOnClickListener implements View.OnClickListener {
+
+        private User user;
+
+        public UserInfoOnClickListener(User theUser) {
+            user = theUser;
+        }
+
+        @Override
+        public void onClick(View view) {
+
+        }
+
+    }
+
+    // return the onClickListener for user bids
+    public UserInfoOnClickListener getUserInfoOnClickListener(User theUser) {
+        return new UserInfoOnClickListener(theUser);
     }
 
 

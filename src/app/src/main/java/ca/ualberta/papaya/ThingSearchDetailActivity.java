@@ -37,6 +37,8 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.thing.search.detail.thing.extra";
 
+    private Thing thing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +69,7 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
                         public void run() {
                             userInformationTextView.setText(owner.getFullName());
                             userInformationTextView.setOnClickListener(ThingSearchDetailController.getInstance()
-                                    .getUserOnClickListener(Ctx.get(), owner));
+                                    .getUserInfoOnClickListener(owner));
                         }
                     });
                 }
@@ -88,8 +90,8 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        //menu.findItem(R.id.bid).setOnMenuItemClickListener(ThingSearchDetailController.getInstance()
-                //.getUserOnClickListener(this, thing.getOwner()));
+        menu.findItem(R.id.bid).setOnMenuItemClickListener(ThingSearchDetailController.getInstance()
+                .getUserBidOnClickListener(thing));
 
         return true;
     }
