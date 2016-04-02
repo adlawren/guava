@@ -2,8 +2,9 @@
 <!--http://stackoverflow.com/questions/3496269/how-to-put-a-border-around-an-android-textview-->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle" >
+    android:shape="rectangle">
 
+    <solid android:color="#e9eeeb" />
 
     <!-- view border color and width -->
     <stroke
@@ -15,5 +16,6 @@
     <corners
         android:radius="2dp"   >
     </corners>
+
 
 </shape>

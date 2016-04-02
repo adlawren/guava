@@ -44,7 +44,10 @@ public class AddThingActivity extends AbstractPapayaActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
+
         }
+
+        toolbar.setNavigationIcon("ic_menu_home");
 
         imageView = (ImageButton) findViewById(R.id.viewPicture);
         imageView.setImageBitmap(picture);
