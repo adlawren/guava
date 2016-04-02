@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.papaya.interfaces.IKind;
 import ca.ualberta.papaya.interfaces.IObserver;
@@ -171,7 +172,7 @@ public abstract class ElasticModel extends Observable implements Serializable, I
      * Constructor.
      */
     public ElasticModel(){
-
+        id = UUID.randomUUID().toString();
     }
 
     /**
@@ -235,7 +236,7 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                 String type = typeName(model);
                                 Index index = new Index.Builder(model)
                                         .index(ElasticModel.index)
-                                        .type(type).build();
+                                        .type(type).id(model.getId()).build();
                                 try {
                                     String send = index.getData(new Gson());
                                     System.err.print(send);

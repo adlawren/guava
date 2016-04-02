@@ -20,6 +20,9 @@ import android.widget.TextView;
 import android.support.v7.app.ActionBarActivity;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import ca.ualberta.papaya.controllers.ThingListController;
 import ca.ualberta.papaya.dummy.DummyContent;
 import ca.ualberta.papaya.fixtures.Country;
@@ -146,6 +149,14 @@ public class ThingListActivity extends AbstractPapayaActivity {
     private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
         SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
         recyclerView.setAdapter(va);
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("from", 0);
+            json.put("size", 1000);
+        } catch(JSONException e){}
+
+
         Thing.search(new Observer<List<Thing>>() {
             @Override
             public void update(List<Thing> things) {
@@ -158,7 +169,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 });
 
             }
-        }, Thing.class, "{}"); // todo: add proper search query
+        }, Thing.class, json.toString()); // todo: add proper search query
 
     }
 

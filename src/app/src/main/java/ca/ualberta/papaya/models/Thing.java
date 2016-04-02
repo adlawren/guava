@@ -56,7 +56,7 @@ public class Thing extends ElasticModel {
         kind = Thing.class;
 
         ownerId = owner.getId();
-        id = UUID.randomUUID().toString();
+
     }
 
     public void getOwner(IObserver observer){

@@ -59,7 +59,7 @@ public class ThingListController {
         }
     }
 
-    // returnt the onClickListener for OtherItems
+    // return the onClickListener for OtherItems
     public OtherItemsOnClickListener getOtherItemsOnClickListener(Context initialContext) {
         return new OtherItemsOnClickListener(initialContext);
     }

@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,6 +118,11 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
         SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
         recyclerView.setAdapter(va);
 
+        JSONObject json = new JSONObject();
+        try {
+            json.put("from", 0);
+            json.put("size", 1000);
+        } catch(JSONException e){}
         Thing.search(new Observer<List<Thing>>() {
             @Override
             public void update(List<Thing> things) {
@@ -127,7 +135,7 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
                 });
 
             }
-        }, Thing.class, "{}"); // todo: add proper search query
+        }, Thing.class, json.toString()); // todo: add proper search query
 
         //recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(thingList));
     }
