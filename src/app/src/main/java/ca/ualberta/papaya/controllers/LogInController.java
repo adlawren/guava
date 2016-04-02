@@ -6,13 +6,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.ualberta.papaya.EditUserProfileActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Ctx;
 import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observable;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 31/03/16.
@@ -29,6 +36,7 @@ public class LogInController {
 
     private void transitionToActivity(Context context, Class activityClass) {
         Intent intent = new Intent(context, activityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
@@ -47,6 +55,7 @@ public class LogInController {
 
         private void transitionToActivity(Context context, Class activityClass) {
             Intent intent = new Intent(context, activityClass);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
 
@@ -55,49 +64,65 @@ public class LogInController {
             final String userName = userNameEditText.getText().toString();
             final String password = passwordEditText.getText().toString();
 
-            Observable<ArrayList<User>> observable = new Observable<>();
-            observable.addObserver(new IObserver<ArrayList<User>>() {
-                @Override
-                public void update(ArrayList<User> data) {
-                    User currentUser = null;
-                    for (User user : data) {
-                        if (user.getEmail().equals(userName)) {
-                            currentUser = user;
-                            LocalUser.setId(user.getId());
-                            break;
-                        }
-                    }
+            try {
 
-                    if (currentUser == null) {
-                        Observable<User> userObservable = new Observable<>();
-                        userObservable.addObserver(new IObserver<User>() {
-                            @Override
-                            public void update(User data) {
-                                LocalUser.setId(data.getId());
-                                transitionToActivity(context, ThingListActivity.class);
+                JSONObject jsonUsername = new JSONObject();
+                jsonUsername.put("username", userName);
+                JSONObject jsonMatch = new JSONObject();
+                jsonMatch.put("match", jsonUsername);
+                JSONObject query = new JSONObject();
+                query.put("query", jsonMatch);
+
+                User.search(new Observer<List<User>>() {
+                    @Override
+                    public void update(List<User> users) {
+
+                        User currentUser = null;
+                        boolean badPassword = false;
+
+                        for (User user : users) {
+                            if (user.getUsername().equals(userName) ) {
+                                if(user.checkPassword(password)) {
+                                    currentUser = user;
+                                    LocalUser.setId(user.getId());
+                                    break;
+                                } else {
+                                    badPassword = true;
+                                }
                             }
-                        });
+                        }
 
-                        currentUser = new User();
+                        if (currentUser == null && !badPassword) {
 
-                        // TODO: Update; test
-                        currentUser.setFirstName("Things");
-                        currentUser.setLastName("McGee");
+                            currentUser = new User();
 
-                        currentUser.setEmail(userName);
+                            currentUser.setUsername(userName);
+                            currentUser.setPassword(password);
 
-                        ThrowawayElasticSearchController.AddUserTask addUserTask =
-                                new ThrowawayElasticSearchController.AddUserTask(userObservable);
-                        addUserTask.execute(currentUser);
-                    } else {
-                        transitionToActivity(context, ThingListActivity.class);
+                            currentUser.publish(new Observer<User>() {
+                                @Override
+                                public void update(User addedUser) {
+                                    LocalUser.setId(addedUser.getId());
+                                    System.err.println("BEFORE USER PROFILE EDIT TRANSITION");
+                                    System.err.println(addedUser.getId() + " " + LocalUser.getId());
+                                    transitionToActivity(Ctx.get(), EditUserProfileActivity.class);
+                                }
+                            });
+
+                        } else if(currentUser == null && badPassword ) {
+                            // show we do something about this?
+                        } else {
+                            transitionToActivity(context, ThingListActivity.class);
+                        }
+
                     }
-                }
-            });
+                }, User.class, query.toString());
 
-            ThrowawayElasticSearchController.SearchUserTask searchUserTask =
-                    new ThrowawayElasticSearchController.SearchUserTask(observable);
-            searchUserTask.execute("{}");
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
         }
     }
 

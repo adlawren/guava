@@ -17,6 +17,7 @@ import ca.ualberta.papaya.interfaces.IKind;
 import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.util.Ctx;
 import ca.ualberta.papaya.util.Observable;
+import ca.ualberta.papaya.util.Observer;
 import io.searchbox.annotations.JestId;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
@@ -186,15 +187,9 @@ public abstract class ElasticModel extends Observable implements Serializable, I
             public void run() {
                 try {
                     Search search = new Search.Builder(query).addIndex(index).addType(typeName(kind)).build();
-                    List<Thing> things = (List<Thing>) getClient().execute(search).getSourceAsObjectList(kind);
+                    List models = getClient().execute(search).getSourceAsObjectList(kind);
 
-                    // TODO: Remove; test
-                    System.out.println("SEARCH: List size: " + things.size());
-                    for (Thing thing : things) {
-                        thing.published = true;
-                    }
-
-                    observer.update(things);
+                    observer.update(models);
                 } catch (IOException e) {
                     // todo: make more robust
                     e.printStackTrace();
@@ -249,16 +244,20 @@ public abstract class ElasticModel extends Observable implements Serializable, I
         changed();
     }
 
+    public void publish(Observer observer) {
+        publish = true;
+        changed(observer);
+    }
+
     protected void changed() {
         if (publish) {
-            // TODO: Find alternative method
-            if (published) {
-                ElasticChangeSet.add(this);
-            } else {
-                ElasticChangeSet.add(this);
-            }
+            ElasticChangeSet.add(this);
+        }
+    }
 
-            // ElasticChangeSet.add(this);
+    protected void changed(Observer observer) {
+        if (publish) {
+            ElasticChangeSet.add(this, observer);
         }
     }
 
@@ -279,9 +278,20 @@ public abstract class ElasticModel extends Observable implements Serializable, I
             commit();
         }
 
+        public static void add(ElasticModel model, Observer observer) {
+            if (!changeList.contains(model)) {
+                changeList.add(model);
+            }
+            commit(model, observer);
+        }
+
         public static Boolean committing = false;
 
-        public static void commit() {
+        public static void commit(){
+            commit(null, null);
+        }
+
+        public static void commit(final ElasticModel model, final Observer callback) {
             if(!committing) {
                 committing = true;
                 new Thread(new Runnable() {
@@ -315,7 +325,7 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                         toRemove.add(model);
                                     }
 
-                                    // model.id = resp.getId();
+                                    model.setId(resp.getId());
 
                                     // String result = resp.getJsonString();
                                 } catch (IOException e){
@@ -363,6 +373,11 @@ public abstract class ElasticModel extends Observable implements Serializable, I
 
                         changeList.removeAll(toRemove);
                         committing = false;
+
+                        if(callback != null){
+                            callback.update(model);
+                        }
+
                     }
                 }).start();
             }

@@ -35,19 +35,38 @@ public class User extends ElasticModel {
 
     public transient Class<?> kind;
 
+    private String username = "";
+    private String password = "";
+
     private String firstName = "";
     private String lastName = "";
-    private String email = "";
 
+    private String email = "";
+    private String phone = "";
     private String address1 = "";
     private String address2 = "";
-    private Province province = null;
-    private Country country = null;
+    private String province = null;
+    private String country = null;
     private String postal = "";
 
     public User(){
         super();
         kind = User.class;
+    }
+
+    public String getUsername(){ return username; }
+    public User setUsername(String username){
+        this.username = username;
+        changed();
+        return this;
+    }
+
+    // todo: hash
+    public boolean checkPassword(String password){ return true; }
+    public User setPassword(String password){
+        this.password = password;
+        changed();
+        return this;
     }
 
     public String getFirstName(){ return firstName; }
@@ -74,6 +93,13 @@ public class User extends ElasticModel {
         return this;
     }
 
+    public String getPhone(){ return phone; }
+    public User setPhone(String phone){
+        this.phone = phone;
+        changed();
+        return this;
+    }
+
     public String getAddress1(){ return address1; }
     public User setAddress1(String address){
         this.address1 = address1;
@@ -88,28 +114,28 @@ public class User extends ElasticModel {
         return this;
     }
 
-    public Province getProvince(){ return province; }
-    public User setProvince(Province province) throws NullPointerException{
-        if (province == null){
-            throw new NullPointerException();
-        }
+    public String getProvince(){ return province; }
+    public User setProvince(String province) { //} throws NullPointerException{
+        //if (province == null){
+        //    throw new NullPointerException();
+        //}
         this.province = province;
         changed();
         return this;
     }
 
-    public Country getCountry(){ return country; }
-    public User setCountry(Country country) throws NullPointerException{
-        if (country == null){
-            throw new NullPointerException();
-        }
+    public String getCountry(){ return country; }
+    public User setCountry(String country) { // throws NullPointerException{
+        // if (country == null){
+        //    throw new NullPointerException();
+        // }
         this.country = country;
         changed();
         return this;
     }
 
     public String getPostal(){ return postal; }
-    public User setPostal(String postal) throws UserInvalidPostalException {
+    public User setPostal(String postal) { // throws UserInvalidPostalException {
         // todo: verify
         this.postal = postal;
         changed();

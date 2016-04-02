@@ -6,10 +6,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.HashMap;
+
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.LocalUser;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 07/03/16.
@@ -30,6 +34,7 @@ public class EditUserProfileController {
 
     private void transitionToActivity(Context context, Class activityClass) {
         Intent intent = new Intent(context, activityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
@@ -37,33 +42,43 @@ public class EditUserProfileController {
     private class SaveOnClickListener implements MenuItem.OnMenuItemClickListener {
 
         private Context context;
-        private EditText emailEditText;
+        private HashMap<String, EditText> editTexts;
 
-        public SaveOnClickListener(Context initialContext,
-                                   EditText initialEmailEditText) {
+        public SaveOnClickListener(Context initialContext, HashMap<String, EditText> editTexts) {
             context = initialContext;
-            emailEditText = initialEmailEditText;
+            this.editTexts = editTexts;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem item)  {
-            String email = emailEditText.getText().toString();
 
-            User user = ThrowawayDataManager.getInstance().getCurrentUser(context);
-            user.setEmail(email);
+            LocalUser.getUser(new Observer<User>() {
+                @Override
+                public void update(User user) {
+                    user.setFirstName(editTexts.get("firstName").getText().toString());
+                    user.setLastName(editTexts.get("lastName").getText().toString());
+                    user.setEmail(editTexts.get("email").getText().toString());
+                    user.setPhone(editTexts.get("phone").getText().toString());
+                    user.setAddress1(editTexts.get("address1").getText().toString());
+                    user.setAddress2(editTexts.get("address2").getText().toString());
+                    user.setProvince(editTexts.get("province").getText().toString());
+                    user.setCountry(editTexts.get("country").getText().toString());
+                    user.setPostal(editTexts.get("postal").getText().toString());
 
-            ThrowawayDataManager.getInstance().setCurrentUser(context, user);
+                    transitionToActivity(context, ThingListActivity.class);
+                }
+            });
 
-            transitionToActivity(context, ThingListActivity.class);
+
+
             return true;
         }
     }
 
     //return the onClickListener for save button
     public SaveOnClickListener getSaveOnClickListener(Context initialContext,
-                                                      EditText initialEmailEditText) {
-        return new SaveOnClickListener(initialContext,
-                initialEmailEditText);
+                                                      HashMap<String, EditText> editTexts) {
+        return new SaveOnClickListener(initialContext, editTexts);
     }
 
     // button to cancel the edit

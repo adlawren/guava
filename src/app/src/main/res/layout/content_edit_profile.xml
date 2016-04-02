@@ -18,20 +18,146 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:id="@+id/textContactInfo"
+        android:id="@+id/labelFirstName"
         android:textColor="#000000"
-        android:text="Contact Information:" />
+        android:text="First Name:" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/contactInfo"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textContactInfo"
+        android:id="@+id/firstName"
         android:textColor="#000000"
         android:background="@drawable/rectangle"
-        android:hint="Enter contact information here."
-        android:textColorHint="#000000"
-        android:layout_alignParentLeft="true" />
+        android:hint="First name..."
+        android:textColorHint="#aaa" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/labelLastName"
+        android:textColor="#000000"
+        android:text="Last Name:" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lastName"
+        android:textColor="#000000"
+        android:background="@drawable/rectangle"
+        android:hint="Last name..."
+        android:textColorHint="#aaa" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/labelEmail"
+        android:textColor="#000000"
+        android:text="Email:" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/email"
+        android:textColor="#000000"
+        android:background="@drawable/rectangle"
+        android:hint="john.doe@example.com"
+        android:textColorHint="#aaa" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/labelPhone"
+        android:textColor="#000000"
+        android:text="Phone:" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phone"
+        android:textColor="#000000"
+        android:background="@drawable/rectangle"
+        android:hint="123 555 1234"
+        android:textColorHint="#aaa" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/labelAddress"
+        android:textColor="#000000"
+        android:text="Address:" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/address1"
+        android:textColor="#000000"
+        android:background="@drawable/rectangle"
+        android:hint="123 Fake Street"
+        android:textColorHint="#aaa" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/address2"
+        android:textColor="#000000"
+        android:background="@drawable/rectangle"
+        android:hint=""
+        android:textColorHint="#aaa" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/labelProvince"
+        android:textColor="#000000"
+        android:text="State/Province:" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/province"
+        android:textColor="#000000"
+        android:background="@drawable/rectangle"
+        android:hint=""
+        android:textColorHint="#aaa" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/labelCountry"
+        android:textColor="#000000"
+        android:text="Country:" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/country"
+        android:textColor="#000000"
+        android:background="@drawable/rectangle"
+        android:hint=""
+        android:textColorHint="#aaa" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/labelPostal"
+        android:textColor="#000000"
+        android:text="Postal/Zip Code:" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/postal"
+        android:textColor="#000000"
+        android:background="@drawable/rectangle"
+        android:hint=""
+        android:textColorHint="#aaa" />
 
 </LinearLayout>
