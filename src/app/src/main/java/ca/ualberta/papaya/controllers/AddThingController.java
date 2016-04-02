@@ -62,29 +62,27 @@ public class AddThingController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            String itemName = itemNameEditText.getText().toString();
-            String description = descriptionEditText.getText().toString();
-            Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            final String itemName = itemNameEditText.getText().toString();
+            final String description = descriptionEditText.getText().toString();
+            final Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
-            User testUser = new User();
-            testUser.setFirstName("Testy").setLastName("McTesterface");
+            LocalUser.getUser(new Observer<User>() {
+                @Override
+                public void update(User user) {
 
-            Thing thing = new Thing(testUser);
-            thing.setTitle(itemName);
-            thing.setDescription(description);
+                    Thing thing = new Thing(user);
+                    thing.setTitle(itemName);
+                    thing.setDescription(description);
 
+                    Photo photo = new Photo();
+                    photo.setImage(image);
+                    thing.setPhoto(photo);
 
-            Photo photo = new Photo();
-            photo.setImage(image);
-            thing.setPhoto(photo);
+                    thing.publish();
 
-
-            // testUser.publish();
-
-            thing.publish();
-
-            transitionToActivity(context, ThingListActivity.class);
-
+                    transitionToActivity(context, ThingListActivity.class);
+                }
+            });
 
             return true;
         }
