@@ -37,7 +37,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 
     Intent intent = null;
     Thing thing = null;
-    //public static final int PHOTO_RESULT = 10;
+    public static final int PHOTO_RESULT = 10;
     Bitmap picture = null;
 
     @Override
@@ -71,22 +71,21 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-
-        ImageButton imageButton = (ImageButton) findViewById(R.id.viewPicture);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton image = (ImageButton) findViewById(R.id.viewPicture);
+        image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ThingDetailActivity.this, ViewPictureActivity.class);
                 intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, picture);
 
-                startActivity(intent);
+                startActivityForResult(intent, PHOTO_RESULT);
 
             }
         });
 
-        picture = thing.getPhoto().getImage();
-        if( picture != null){
-            imageButton.setImageBitmap(picture);
+        if( thing.getPhoto().getImage() != null){
+            picture = thing.getPhoto().getImage();
+            image.setImageBitmap(picture);
         }
 //        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
 //        editItemButton.setOnClickListener(ThingDetailController.getInstance()
@@ -133,6 +132,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
                 .getEditItemOnClickListener(this, thing));
         menu.findItem(R.id.delete).setOnMenuItemClickListener(ThingDetailController.getInstance()
                 .getDeleteItemOnClickListener(this, thing));
+        //menu.findItem(R.id.viewPicture).setOnMenuItemClickListener(ThingDetailController.getInstance()
+        //        .getPictureOnClickListener(this, thing)); //Todo fill in button id
 
         return true;
     }
@@ -175,5 +176,3 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 //        return super.onOptionsItemSelected(item);
 //    }
 }
-
-//Todo imagebutton doesn't work

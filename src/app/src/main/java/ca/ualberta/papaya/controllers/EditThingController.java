@@ -4,18 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.data.MyThingsDataManager;
-import ca.ualberta.papaya.models.Photo;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Observable;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 13/03/16.
@@ -49,46 +48,46 @@ public class EditThingController {
         private Context context;
 
         private Thing thing;
-
+        private Bitmap image;
 
         private EditText itemNameEditText, descriptionEditText;
-        private ImageView imageView;
 
         public EditItemOnClickListener(Context initialContext,
                                        Thing initialThing,
                                        EditText initialItemNameEditText,
                                        EditText initialDescriptionEditText,
-                                       ImageButton initialImageView ) {
+                                       Bitmap initialImage) {
             context = initialContext;
 
             thing = initialThing;
+            image = initialImage;
 
             itemNameEditText = initialItemNameEditText;
             descriptionEditText = initialDescriptionEditText;
-            imageView = initialImageView;
-
         }
-
 
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
             thing.setTitle(itemNameEditText.getText().toString());
             thing.setDescription(descriptionEditText.getText().toString());
-            Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
-            Photo photo = new Photo();
-            photo.setImage(image);
-            thing.setPhoto(photo);
+            // thing.publish();
 
+            // transitionToActivity(context, ThingListActivity.class);
 
+            // MyThingsDataManager.getInstance().update(thing);
 
+            Observable<Thing> thingObservable = new Observable<>();
+            thingObservable.setData(thing);
+            thingObservable.addObserver(new IObserver<Thing>() {
+                @Override
+                public void update(Thing data) {
+                    transitionToActivity(context, ThingListActivity.class);
+                }
+            });
 
-            thing.publish();
-
-            transitionToActivity(context, ThingListActivity.class);
-
-            MyThingsDataManager.getInstance().update(thing);
+            MyThingsDataManager.getInstance().update(thingObservable);
 
             return true;
         }
@@ -99,9 +98,9 @@ public class EditThingController {
                                                               Thing initialThing,
                                                               EditText initialItemNameEditText,
                                                               EditText initialDescriptionEditText,
-                                                              ImageButton initialImageView) {
+                                                              Bitmap initialImage) {
         return new EditItemOnClickListener(initialContext, initialThing, initialItemNameEditText,
-                initialDescriptionEditText, initialImageView);
+                initialDescriptionEditText, initialImage);
     }
 
     // Button to change a Thing back to available once it is no being borrowed anymore
@@ -134,5 +133,31 @@ public class EditThingController {
         return new AvailableOnClickListener(initialContext, initialThing);
     }
 
+    private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
+        private Context context;
+
+        private Thing thing;
+
+        public SetPictureOnClickListener(Context initialContext, Thing initialThing) {
+            context = initialContext;
+            thing = initialThing;
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent intent = new Intent(context, AddPictureActivity.class);
+            intent.putExtra(AddPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
+
+            ((Activity)context).startActivityForResult(intent, PHOTO_RESULT);
+
+            return true;
+        }
+    }
+
+    // return the onClickListener for setPicture
+    public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Thing initialThing) {
+        return new SetPictureOnClickListener(initialContext, initialThing);
+    }
 }

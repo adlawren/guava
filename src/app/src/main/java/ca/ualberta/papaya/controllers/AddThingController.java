@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
+import ca.ualberta.papaya.data.MyThingsDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
@@ -62,29 +63,48 @@ public class AddThingController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            String itemName = itemNameEditText.getText().toString();
-            String description = descriptionEditText.getText().toString();
-            Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            final String itemName = itemNameEditText.getText().toString();
+            final String description = descriptionEditText.getText().toString();
+            final Bitmap image = imageView.getDrawingCache();
 
-            User testUser = new User();
-            testUser.setFirstName("Testy").setLastName("McTesterface");
+//            User testUser = new User();
+//            testUser.setFirstName("Testy").setLastName("McTesterface");
 
-            Thing thing = new Thing(testUser);
-            thing.setTitle(itemName);
-            thing.setDescription(description);
+            LocalUser.getUser(new Observer() {
+                @Override
+                public void update(Object data) {
+                    Thing thing = new Thing((User) data);
+                    thing.setTitle(itemName);
+                    thing.setDescription(description);
 
+                    Observable<Thing> observable = new Observable<>();
+                    observable.setData(thing);
+                    observable.addObserver(new IObserver<Thing>() {
+                        @Override
+                        public void update(Thing data) {
+                            transitionToActivity(context, ThingListActivity.class);
+                        }
+                    });
 
-            Photo photo = new Photo();
-            photo.setImage(image);
-            thing.setPhoto(photo);
+                    MyThingsDataManager.getInstance().update(observable);
+                }
+            });
 
+//            //if( image != null){
+//                Photo photo = new Photo();
+//                photo.setImage(image);
+//                thing.setPhoto(photo);
+//            //}
+
+            // if( image != null) {
+            //     thing.getPhoto().setImage(image);
+            // }
 
             // testUser.publish();
 
-            thing.publish();
+            // thing.publish();
 
-            transitionToActivity(context, ThingListActivity.class);
-
+            // transitionToActivity(context, ThingListActivity.class);
 
             return true;
         }

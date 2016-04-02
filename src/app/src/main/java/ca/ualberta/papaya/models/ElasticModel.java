@@ -45,18 +45,11 @@ public abstract class ElasticModel extends Observable implements Serializable, I
     // The java class representing the child objects. Implement in subclasses
     // protected transient Class<?> kind;
 
-    // the id of this object.
-//    @JestId
-//    protected String id;
-
     /**
      * Return the id of this object.
      * @return this object's unique id. Null if not yet committed.
      */
     public abstract String getId();
-//    {
-//        return id;
-//    }
 
     public abstract void setId(String newId);
 
@@ -75,24 +68,6 @@ public abstract class ElasticModel extends Observable implements Serializable, I
 
     public boolean isPublished() {
         return published;
-    }
-
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (obj instanceof ElasticModel) {
-//            return getId().equals(((ElasticModel) obj).getId());
-//        }
-//
-//        return super.equals(obj);
-//    }
-
-    // TODO: Use within offline storage logic
-    private boolean zombie = false;
-    public boolean isZombie() {
-        return zombie;
-    }
-    public void kill() {
-        zombie = true;
     }
 
     /**
@@ -147,7 +122,6 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                     try {
                         Get get = new Get.Builder(ElasticModel.index, id).type(typeName(kind))
                                 .build();
-
                         JestResult result = getClient().execute(get);
 
                         if (!result.isSucceeded()) {
@@ -188,8 +162,7 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                     Search search = new Search.Builder(query).addIndex(index).addType(typeName(kind)).build();
                     List<Thing> things = (List<Thing>) getClient().execute(search).getSourceAsObjectList(kind);
 
-                    // TODO: Remove; test
-                    System.out.println("SEARCH: List size: " + things.size());
+                    // TODO: Find alternative method
                     for (Thing thing : things) {
                         thing.published = true;
                     }
@@ -212,19 +185,13 @@ public abstract class ElasticModel extends Observable implements Serializable, I
             @Override
             public void run() {
                 try {
-                    System.out.println("[ElasticModel.delete] id: " + model.getId());
-
                     Delete delete = new Delete.Builder(model.getId()).index(index)
                             .type(typeName(kind)).build();
-
-                    System.out.println(delete.toString());
 
                     JestResult result = getClient().execute(delete);
                     if (!result.isSucceeded()) {
                         System.err.println("[ElasticModel.delete] " +
                                 "ERROR: REST delete unsuccessful.");
-                    } else {
-                        System.out.println("YAY!");
                     }
                 } catch (IOException e){
                     // Todo: make more robust
@@ -252,11 +219,11 @@ public abstract class ElasticModel extends Observable implements Serializable, I
     protected void changed() {
         if (publish) {
             // TODO: Find alternative method
-            if (published) {
-                ElasticChangeSet.add(this);
-            } else {
-                ElasticChangeSet.add(this);
-            }
+//            if (published) {
+//                ElasticChangeSet.add(this);
+//            } else {
+//                ElasticChangeSet.add(this);
+//            }
 
             // ElasticChangeSet.add(this);
         }
@@ -296,17 +263,11 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                 model.published = true;
                                 String type = typeName(model);
 
-                                // TODO: Remove; test
-                                System.out.println("Typename: " + type);
-
                                 Index index = new Index.Builder(model)
                                         .index(ElasticModel.index)
                                         .type(type).build();
 
                                 try {
-                                    // String send = index.getData(new Gson());
-
-                                    // JestResult resp = ElasticModel.getClient().execute(index);
                                     DocumentResult resp = ElasticModel.getClient().execute(index);
                                     if (!resp.isSucceeded()) {
                                         System.err.println("[ElasticModel.commit] " +
@@ -314,10 +275,6 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                     } else {
                                         toRemove.add(model);
                                     }
-
-                                    // model.id = resp.getId();
-
-                                    // String result = resp.getJsonString();
                                 } catch (IOException e){
                                     // todo: make more robust
                                     model.published = false;
@@ -325,11 +282,6 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                 }
                             } else {
                                 // update
-                                // OMG PANIC. :j No "updates" allowed. k?
-
-                                System.out.println("[ElasticModel.commit] " +
-                                        "updating model with id: " + model.getId());
-
                                 // todo: offline storage
                                 model.published = true;
                                 String type = typeName(model);
@@ -356,8 +308,6 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                     model.published = false;
                                     e.printStackTrace();
                                 }
-
-                                // System.err.println("TODO: Implement updates.");
                             }
                         }
 
