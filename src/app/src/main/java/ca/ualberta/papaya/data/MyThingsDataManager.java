@@ -46,10 +46,6 @@ public class MyThingsDataManager {
 
     private static ArrayList<Thing> myThings = new ArrayList<>(), zombieThings = new ArrayList<>();
 
-//    public void setData(ArrayList<Thing> newThings) {
-//        myThings = newThings;
-//    }
-
     // TODO: Remove; used for debugging
     private void printThing(Thing thing) {
         System.out.println("Next thing: id: " + thing.getId() + ", title: " +
@@ -70,7 +66,7 @@ public class MyThingsDataManager {
         }
 
         // Get local data
-        // loadFromFile();
+        loadFromFile();
 
         // Get online data
         Observable<ArrayList<Thing>> thingListObservable = new Observable<>();
@@ -82,29 +78,22 @@ public class MyThingsDataManager {
                     System.out.println("[MyThingsDataManager.getData] Things:");
                     printThingList(data);
 
-                    // TODO: ************ Remove; test **************
-                    myThings.clear();
-
-                    if (false) { // (myThings.size() > 0) {
-                        Observable<ArrayList<Thing>> thingsObservable = new Observable<>();
-                        thingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
-                            @Override
-                            public void update(ArrayList<Thing> data) {
-
-                            }
-                        });
-
-                        resolve(data, thingsObservable);
+                    if (myThings.size() > 0) {
+                        resolve(data);
                     } else {
                         myThings.addAll(data);
+                        saveToFile();
                     }
                 }
+
+                System.out.println("[MyThingsDataManager.getData] Things after resolve:");
+                printThingList(myThings);
 
                 observable.setData(myThings);
             }
         });
 
-         ThrowawayElasticSearchController.SearchThingTask thingSearchTask =
+        ThrowawayElasticSearchController.SearchThingTask thingSearchTask =
                  new ThrowawayElasticSearchController.SearchThingTask(thingListObservable);
         thingSearchTask.execute("{ \"size\" : \"500\", \"query\" : { \"match\" : { \"ownerId\" : " +
                 "\"" + LocalUser.getId() + "\" } } }");
@@ -115,21 +104,6 @@ public class MyThingsDataManager {
         // TODO: See if myThings.contains(...) works, also see if myThings.get(...) works
         if (observable.getData().getId() == null) {
             myThings.add(observable.getData());
-
-            Observable<ArrayList<Thing>> thingsObservable = new Observable<>();
-            thingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
-                @Override
-                public void update(ArrayList<Thing> data) {
-                    System.out.println("[MyThingsDataManager.update] Added things:");
-                    printThingList(data);
-
-                    observable.setData(observable.getData());
-                }
-            });
-
-            ThrowawayElasticSearchController.AddThingTask addThingTask =
-                    new ThrowawayElasticSearchController.AddThingTask(thingsObservable);
-            addThingTask.execute(observable.getData());
         } else {
             for (Thing thing : myThings) {
                 if (thing.getId().equals(observable.getData().getId())) {
@@ -138,22 +112,12 @@ public class MyThingsDataManager {
                     break;
                 }
             }
-
-            Observable<ArrayList<Thing>> thingsObservable = new Observable<>();
-            thingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
-                @Override
-                public void update(ArrayList<Thing> data) {
-                    System.out.println("[MyThingsDataManager.update] Updated things:");
-                    printThingList(data);
-
-                    observable.setData(observable.getData());
-                }
-            });
-
-            ThrowawayElasticSearchController.UpdateThingTask updateThingTask =
-                    new ThrowawayElasticSearchController.UpdateThingTask(thingsObservable);
-            updateThingTask.execute(observable.getData());
         }
+
+        saveToFile();
+
+        // TODO: May not need this pattern anymore
+        observable.setData(observable.getData());
     }
 
     public void delete(final Observable<Thing> observable) {
@@ -167,107 +131,116 @@ public class MyThingsDataManager {
             }
         }
 
-        Observable<Thing> thingObservable = new Observable<>();
-        thingObservable.addObserver(new IObserver<Thing>() {
-            @Override
-            public void update(Thing data) {
-                if (data != null) {
+        saveToFile();
 
-                    // TODO: Test; might need to use remove([index])
-                    zombieThings.remove(data);
-                }
-
-                observable.setData(observable.getData());
-            }
-        });
-
-        // Note assumption
-        Thing toDelete = zombieThings.get(0);
-
-        ThrowawayElasticSearchController.DeleteThingTask deleteThingTask =
-                new ThrowawayElasticSearchController.DeleteThingTask(thingObservable);
-        deleteThingTask.execute(toDelete);
+        // TODO: May not need this pattern anymore
+        observable.setData(observable.getData());
     }
 
     // Used to resolve differences between the local contents and the remote contents
-    private void resolve(ArrayList<Thing> remoteThings, final Observable<ArrayList<Thing>> thingsObservable) {
-        final ArrayList<Thing> localThings = new ArrayList<>();
-        final ArrayList<Thing> newThings = new ArrayList<>();
+    private void resolve(ArrayList<Thing> remoteThings) { // , final Observable<ArrayList<Thing>> thingsObservable) {
+        ArrayList<Thing> uniqueLocalThings = new ArrayList<>(),
+                commonThings = new ArrayList<>();
 
-        localThings.addAll(myThings);
-        myThings.clear();
+        uniqueLocalThings.addAll(myThings);
 
-        System.out.println("[MyThingsDataManager.resolve] Things:");
-        printThingList(localThings);
+        for (Thing remoteThing : remoteThings) {
 
-        if (remoteThings.size() > 0) {
-            for (Thing nextRemoteThing : remoteThings) {
-                int i;
-                for (i = 0; i < localThings.size(); ++i) {
-                    if (localThings.get(i).getId().equals(nextRemoteThing.getId())) {
+            System.out.println("[MyThingsDataManager.resolve] Next remote thing:");
+            printThing(remoteThing);
 
-                        // TODO: Update the elastic search object
-                        // ...
+            Integer index = null;
+            for (int i = 0; i < uniqueLocalThings.size(); ++i) {
+                if (uniqueLocalThings.get(i).getId() == null) continue;
 
-                        newThings.add(localThings.get(i));
+                if (uniqueLocalThings.get(i).getId().equals(remoteThing.getId())) {
+                    index = i;
+                    break;
+                }
+            }
 
-                        localThings.remove(i);
+            if (index != null) {
+                commonThings.add(uniqueLocalThings.get(index));
+                uniqueLocalThings.remove(index);
+            } else {
+                int j;
+                for (j = 0; j < zombieThings.size(); ++j) {
+                    if (zombieThings.get(j).getId().equals(remoteThing.getId())) {
+
+                        // Deleted thing
                         break;
                     }
                 }
 
-                if (i == localThings.size()) {
-                    System.out.println("[MyThingsDataManager.resolve] Did not find thing: id: " +
-                            remoteThings.get(i).getId());
-                    newThings.add(nextRemoteThing);
-                }
+                // Unique remote thing
+                if (j == zombieThings.size()) myThings.add(remoteThing);
             }
         }
 
-        // Add remaining local contents to elastic search
-        Observable<ArrayList<Thing>> observable = new Observable<>();
-        observable.addObserver(new IObserver<ArrayList<Thing>>() {
+        // Add newly created local things
+        Observable<ArrayList<Thing>> addedThingsObservable = new Observable<>();
+        addedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
             @Override
             public void update(ArrayList<Thing> data) {
-                System.out.println("[MyThingsDataManager.resolve.update] Data:");
+                System.out.println("[MyThingsDataManager.resolve] Added things:");
                 printThingList(data);
 
-                myThings.addAll(data);
-
-                System.out.println("[MyThingsDataManager.resolve.update] Things:");
-                printThingList(myThings);
-
-                // saveToFile();
-
-                thingsObservable.setData(myThings);
+                if (data.size() > 0) {
+                    saveToFile();
+                }
             }
         });
 
-        Thing[] newThingsArray = new Thing[ newThings.size() ];
-        newThingsArray = newThings.toArray(newThingsArray);
-
         ThrowawayElasticSearchController.AddThingTask addThingTask =
-                new ThrowawayElasticSearchController.AddThingTask(observable);
-        addThingTask.execute(newThingsArray);
+                new ThrowawayElasticSearchController.AddThingTask(addedThingsObservable);
 
-        // TODO: Iterate through local things to add things which were not successfully added to elastic search
-        // ...
+        Thing[] uniqueLocalThingsArray = new Thing[ uniqueLocalThings.size() ];
+        uniqueLocalThingsArray = uniqueLocalThings.toArray(uniqueLocalThingsArray);
 
-        // Delete zombie contents
-        for (Thing deletedThing : zombieThings) {
+        addThingTask.execute(uniqueLocalThingsArray);
 
-            // TODO: Remove deleted things from elastic search
-            // ...
+        // Update common things
+        Observable<ArrayList<Thing>> updatedThingsObservable = new Observable<>();
+        updatedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+            @Override
+            public void update(ArrayList<Thing> data) {
+                System.out.println("[MyThingsDataManager.resolve] Updated things:");
+                printThingList(data);
+            }
+        });
 
-            // zombieThings.remove(deletedThing);
-        }
+        ThrowawayElasticSearchController.UpdateThingTask updateThingTask =
+                new ThrowawayElasticSearchController.UpdateThingTask(updatedThingsObservable);
+
+        Thing[] commonThingsArray = new Thing[ commonThings.size() ];
+        commonThingsArray = commonThings.toArray(commonThingsArray);
+
+        updateThingTask.execute(commonThingsArray);
+
+        // Delete removed things
+        Observable<ArrayList<Thing>> deletedThingsObservable = new Observable<>();
+        deletedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+            @Override
+            public void update(ArrayList<Thing> data) {
+                System.out.println("[MyThingsDataManager.resolve] Deleted things:");
+                printThingList(data);
+
+                // zombieThings.removeAll(data);
+            }
+        });
+
+        ThrowawayElasticSearchController.DeleteThingTask deleteThingTask =
+                new ThrowawayElasticSearchController.DeleteThingTask(deletedThingsObservable);
+
+        Thing[] zombieThingsArray = new Thing[ zombieThings.size() ];
+        zombieThingsArray = zombieThings.toArray(zombieThingsArray);
+
+        deleteThingTask.execute(zombieThingsArray);
+
+        saveToFile();
     }
 
     private void loadFromFile() {
-
-        // TODO: Remove; test
-        System.out.println("[MyThingsDataManager.loadFromFile]");
-
         ArrayList<Thing> tempThings = null;
 
         try {
@@ -295,18 +268,19 @@ public class MyThingsDataManager {
             myThings.clear();
             myThings.addAll(tempThings);
         }
+
+        // TODO: Remove; test
+        System.out.println("[MyThingsDataManager.loadFromFile] Things:");
     }
 
     private void saveToFile() {
 
-        // TODO: Remove; test
-        System.out.println("[MyThingsDataManager.saveToFile]");
-
+        // TODO: Determine if the copy is needed
         ArrayList<Thing> tempThings = new ArrayList<>();
-        for (Thing thing : myThings) {
-            Thing newThing = new Thing(thing);
-            tempThings.add(newThing);
-        }
+        tempThings.addAll(myThings);
+
+        // TODO: Remove; test
+        System.out.println("[MyThingsDataManager.saveToFile] Things:");
 
         try {
 

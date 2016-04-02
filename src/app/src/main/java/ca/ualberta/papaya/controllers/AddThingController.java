@@ -70,25 +70,43 @@ public class AddThingController {
 //            User testUser = new User();
 //            testUser.setFirstName("Testy").setLastName("McTesterface");
 
-            LocalUser.getUser(new Observer() {
+//            LocalUser.getUser(new Observer() {
+//                @Override
+//                public void update(Object data) {
+//                    Thing thing = new Thing((User) data);
+//                    thing.setTitle(itemName);
+//                    thing.setDescription(description);
+//
+//                    Observable<Thing> observable = new Observable<>();
+//                    observable.setData(thing);
+//                    observable.addObserver(new IObserver<Thing>() {
+//                        @Override
+//                        public void update(Thing data) {
+//                            transitionToActivity(context, ThingListActivity.class);
+//                        }
+//                    });
+//
+//                    MyThingsDataManager.getInstance().update(observable);
+//                }
+//            });
+
+            User user = new User();
+            user.setId(LocalUser.getId());
+
+            Thing thing = new Thing(user);
+            thing.setTitle(itemName);
+            thing.setDescription(description);
+
+            Observable<Thing> observable = new Observable<>();
+            observable.setData(thing);
+            observable.addObserver(new IObserver<Thing>() {
                 @Override
-                public void update(Object data) {
-                    Thing thing = new Thing((User) data);
-                    thing.setTitle(itemName);
-                    thing.setDescription(description);
-
-                    Observable<Thing> observable = new Observable<>();
-                    observable.setData(thing);
-                    observable.addObserver(new IObserver<Thing>() {
-                        @Override
-                        public void update(Thing data) {
-                            transitionToActivity(context, ThingListActivity.class);
-                        }
-                    });
-
-                    MyThingsDataManager.getInstance().update(observable);
+                public void update(Thing data) {
+                    transitionToActivity(context, ThingListActivity.class);
                 }
             });
+
+            MyThingsDataManager.getInstance().update(observable);
 
 //            //if( image != null){
 //                Photo photo = new Photo();

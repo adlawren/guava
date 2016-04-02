@@ -50,20 +50,6 @@ public class Thing extends ElasticModel {
 
     private Photo photo;      // todo: initialize with default blank photo.
 
-    /*
-    public static List<Thing> getMyThings(){
-        return new ArrayList<Thing>();
-    }
-
-    public static List<Thing> getThings(){
-        return (List<Thing>) Thing.search(Thing.class, "{}", null);
-    }
-
-    public static List<Thing> getThings(List<String> keywords){
-        return new ArrayList<Thing>();
-    }
-    */
-
     public Thing(User owner){
         super();
         kind = Thing.class;

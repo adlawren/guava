@@ -191,39 +191,42 @@ public class ThrowawayElasticSearchController {
         }
     }
 
-    public static class DeleteThingTask extends AsyncTask<Thing,Void,Thing> {
+    public static class DeleteThingTask extends AsyncTask<Thing,Void,ArrayList<Thing>> {
 
-        private Observable<Thing> observable;
+        private Observable<ArrayList<Thing>> observable;
 
-        public DeleteThingTask(Observable<Thing> initialObservable) {
+        public DeleteThingTask(Observable<ArrayList<Thing>> initialObservable) {
             observable = initialObservable;
         }
 
         @Override
-        protected Thing doInBackground(Thing... things) {
+        protected ArrayList<Thing> doInBackground(Thing... things) {
             verifyConfiguration();
 
-            try {
-                Delete delete = new Delete.Builder(things[0].getId()).index(INDEX)
-                        .type("thing").build();
-                JestResult result = client.execute(delete);
-                if (!result.isSucceeded()) {
-                    System.err.println("[ThrowawayElasticSearchController.DeleteThingTask] " +
-                            "Client execution failed");
-                } else {
-                    return things[0];
+            ArrayList<Thing> deleted = new ArrayList<>();
+            for (Thing toDelete : things) {
+                try {
+                    Delete delete = new Delete.Builder(toDelete.getId()).index(INDEX)
+                            .type("thing").build();
+                    JestResult result = client.execute(delete);
+                    if (!result.isSucceeded()) {
+                        System.err.println("[ThrowawayElasticSearchController.DeleteThingTask] " +
+                                "Client execution failed");
+                    } else {
+                        deleted.add(toDelete);
+                    }
+                } catch (IOException e){
+                    e.printStackTrace();
                 }
-            } catch (IOException e){
-                e.printStackTrace();
             }
 
-            return null;
+            return deleted;
         }
 
         @Override
-        public void onPostExecute(Thing thing) {
-            super.onPostExecute(thing);
-            observable.setData(thing);
+        public void onPostExecute(ArrayList<Thing> deleted) {
+            super.onPostExecute(deleted);
+            observable.setData(deleted);
         }
     }
 
