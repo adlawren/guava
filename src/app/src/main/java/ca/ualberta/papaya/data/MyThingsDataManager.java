@@ -73,14 +73,8 @@ public class MyThingsDataManager {
         thingListObservable.addObserver(new IObserver<ArrayList<Thing>>() {
             @Override
             public void update(ArrayList<Thing> data) {
-                System.out.println("[MyThingsDataManager.getData] Things:");
-                printThingList(data);
-
                 resolve(data);
                 saveToFile();
-
-                System.out.println("[MyThingsDataManager.getData] Things after resolve:");
-                printThingList(myThings);
 
                 observable.setData(myThings);
             }
@@ -93,20 +87,6 @@ public class MyThingsDataManager {
     }
 
     public void update(final Observable<Thing> observable) {
-
-        // TODO: See if myThings.contains(...) works, also see if myThings.get(...) works
-//        if (observable.getData().getId() == null) {
-//            myThings.add(observable.getData());
-//        } else {
-//            for (Thing thing : myThings) {
-//                if (thing.getId().equals(observable.getData().getId())) {
-//                    thing.setTitle(observable.getData().getTitle());
-//                    thing.setDescription(observable.getData().getDescription());
-//                    break;
-//                }
-//            }
-//        }
-
         boolean found = false;
         for (Thing thing : myThings) {
             if (thing.getUuid().equals(observable.getData().getUuid())) {
@@ -124,15 +104,11 @@ public class MyThingsDataManager {
 
         saveToFile();
 
-        // TODO: May not need this pattern anymore
         observable.setData(observable.getData());
     }
 
     public void delete(final Observable<Thing> observable) {
         for (int i = 0; i < myThings.size(); ++i) {
-            // if (myThings.get(i).getId() == null) continue;
-
-            // if (myThings.get(i).getId().equals(observable.getData().getId())) {
             if (myThings.get(i).getUuid().equals(observable.getData().getUuid())) {
                 zombieThings.add(myThings.get(i));
                 myThings.remove(i);
@@ -140,36 +116,19 @@ public class MyThingsDataManager {
             }
         }
 
-//        Integer index = null;
-//        for (int i = 0; i < myThings.size(); ++i) {
-//            if (myThings.get(i).getUuid().equals(observable.getData().getUuid())) {
-//                zombieThings.add(myThings.get(i));
-//
-//                index = i;
-//                break;
-//            }
-//        }
-//
-//        if (index != null) myThings.remove(index);
-
         saveToFile();
 
-        // TODO: May not need this pattern anymore
         observable.setData(observable.getData());
     }
 
     // Used to resolve differences between the local contents and the remote contents
-    private void resolve(ArrayList<Thing> remoteThings) { // , final Observable<ArrayList<Thing>> thingsObservable) {
+    private void resolve(ArrayList<Thing> remoteThings) {
         ArrayList<Thing> uniqueLocalThings = new ArrayList<>(),
                 commonThings = new ArrayList<>();
 
         uniqueLocalThings.addAll(myThings);
 
         for (Thing remoteThing : remoteThings) {
-
-            System.out.println("[MyThingsDataManager.resolve] Next remote thing:");
-            printThing(remoteThing);
-
             Integer index = null;
             for (int i = 0; i < uniqueLocalThings.size(); ++i) {
                 if (uniqueLocalThings.get(i).getId() == null) continue;
@@ -187,7 +146,6 @@ public class MyThingsDataManager {
                 int j;
                 for (j = 0; j < zombieThings.size(); ++j) {
                     if (zombieThings.get(j).getId().equals(remoteThing.getId())) {
-                    // if (zombieThings.get(j).getUuid().equals(remoteThing.getUuid())) {
 
                         // Deleted thing
                         break;
@@ -204,9 +162,6 @@ public class MyThingsDataManager {
         addedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
             @Override
             public void update(ArrayList<Thing> data) {
-                System.out.println("[MyThingsDataManager.resolve] Added things:");
-                printThingList(data);
-
                 if (data.size() > 0) {
                     saveToFile();
                 }
@@ -226,8 +181,6 @@ public class MyThingsDataManager {
         updatedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
             @Override
             public void update(ArrayList<Thing> data) {
-                System.out.println("[MyThingsDataManager.resolve] Updated things:");
-                printThingList(data);
             }
         });
 
@@ -244,10 +197,6 @@ public class MyThingsDataManager {
         deletedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
             @Override
             public void update(ArrayList<Thing> data) {
-                System.out.println("[MyThingsDataManager.resolve] Deleted things:");
-                printThingList(data);
-
-                // zombieThings.removeAll(data);
             }
         });
 
@@ -290,9 +239,6 @@ public class MyThingsDataManager {
             myThings.clear();
             myThings.addAll(tempThings);
         }
-
-        // TODO: Remove; test
-        System.out.println("[MyThingsDataManager.loadFromFile] Things:");
     }
 
     private void saveToFile() {
@@ -300,9 +246,6 @@ public class MyThingsDataManager {
         // TODO: Determine if the copy is needed
         ArrayList<Thing> tempThings = new ArrayList<>();
         tempThings.addAll(myThings);
-
-        // TODO: Remove; test
-        System.out.println("[MyThingsDataManager.saveToFile] Things:");
 
         try {
 
@@ -312,8 +255,6 @@ public class MyThingsDataManager {
 
             // Write the Json to the given file
             Gson gson = new Gson();
-
-            // tempThings.addAll(myThings);
 
             gson.toJson(tempThings, writer);
             writer.flush();
