@@ -11,6 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.hsbarker.myfirstapp.DisplayMessageActivity"
     tools:showIn="@layout/activity_thing_search_detail"
+    android:background="#ffffff"
     android:id="@+id/content">
 
     <TextView
@@ -31,6 +32,7 @@
         android:textIsSelectable="true"
         tools:context="ca.ualberta.papaya.ThingDetailFragment"
         android:textColor="#000000"
+        android:background="@drawable/rectangle"
         android:layout_below="@+id/textUserInfo" />
 
     <TextView
@@ -52,6 +54,7 @@
         tools:context="ca.ualberta.papaya.ThingDetailFragment"
         android:layout_alignParentStart="true"
         android:textColor="#000000"
+        android:background="@drawable/rectangle"
         android:layout_below="@+id/textThingDetail" />
 
     <TextView

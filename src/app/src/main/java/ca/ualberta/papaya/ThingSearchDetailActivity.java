@@ -1,8 +1,20 @@
 package ca.ualberta.papaya;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
@@ -21,7 +33,7 @@ import ca.ualberta.papaya.util.Observer;
  * @see ThingSearchDetailController
  */
 
-public class ThingSearchDetailActivity extends Activity {
+public class ThingSearchDetailActivity extends AbstractPapayaActivity {
 
     public static final String THING_EXTRA = "ca.papaya.ualberta.thing.search.detail.thing.extra";
 
@@ -30,10 +42,18 @@ public class ThingSearchDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thing_search_detail);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+
         Intent intent = getIntent();
         final Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
-        if(thing != null) {
+        if (thing != null) {
 
             TextView itemInformationTextView = (TextView) findViewById(R.id.thingDetail);
             itemInformationTextView.setText(thing.getDescription());
@@ -55,6 +75,15 @@ public class ThingSearchDetailActivity extends Activity {
         } else {
             System.err.print("No thing specified!!? (ThingSearchDetailActivity)");
         }
+    }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        //menu.findItem(R.id.bid).setOnMenuItemClickListener(ThingSearchDetailController.getInstance()
+                //.getUserOnClickListener(this, thing.getOwner()));
+
+        return true;
     }
 }
