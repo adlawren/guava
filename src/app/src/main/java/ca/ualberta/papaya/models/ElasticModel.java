@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.papaya.interfaces.IKind;
 import ca.ualberta.papaya.interfaces.IObserver;
@@ -33,6 +34,12 @@ import io.searchbox.core.search.sort.Sort;
  * Created by martin on 10/02/16.
  */
 public abstract class ElasticModel extends Observable implements Serializable, IKind {
+
+    private String uuid = UUID.randomUUID().toString();
+
+    public String getUuid() {
+        return uuid;
+    }
 
     private static JestClient client = null;
 

@@ -73,18 +73,11 @@ public class MyThingsDataManager {
         thingListObservable.addObserver(new IObserver<ArrayList<Thing>>() {
             @Override
             public void update(ArrayList<Thing> data) {
-                if (data.size() > 0) {
+                System.out.println("[MyThingsDataManager.getData] Things:");
+                printThingList(data);
 
-                    System.out.println("[MyThingsDataManager.getData] Things:");
-                    printThingList(data);
-
-                    if (myThings.size() > 0) {
-                        resolve(data);
-                    } else {
-                        myThings.addAll(data);
-                        saveToFile();
-                    }
-                }
+                resolve(data);
+                saveToFile();
 
                 System.out.println("[MyThingsDataManager.getData] Things after resolve:");
                 printThingList(myThings);
@@ -102,16 +95,31 @@ public class MyThingsDataManager {
     public void update(final Observable<Thing> observable) {
 
         // TODO: See if myThings.contains(...) works, also see if myThings.get(...) works
-        if (observable.getData().getId() == null) {
-            myThings.add(observable.getData());
-        } else {
-            for (Thing thing : myThings) {
-                if (thing.getId().equals(observable.getData().getId())) {
-                    thing.setTitle(observable.getData().getTitle());
-                    thing.setDescription(observable.getData().getDescription());
-                    break;
-                }
+//        if (observable.getData().getId() == null) {
+//            myThings.add(observable.getData());
+//        } else {
+//            for (Thing thing : myThings) {
+//                if (thing.getId().equals(observable.getData().getId())) {
+//                    thing.setTitle(observable.getData().getTitle());
+//                    thing.setDescription(observable.getData().getDescription());
+//                    break;
+//                }
+//            }
+//        }
+
+        boolean found = false;
+        for (Thing thing : myThings) {
+            if (thing.getUuid().equals(observable.getData().getUuid())) {
+                thing.setTitle(observable.getData().getTitle());
+                thing.setDescription(observable.getData().getDescription());
+
+                found = true;
+                break;
             }
+        }
+
+        if (!found) {
+            myThings.add(observable.getData());
         }
 
         saveToFile();
@@ -121,15 +129,28 @@ public class MyThingsDataManager {
     }
 
     public void delete(final Observable<Thing> observable) {
-
-        // TODO: See if myThings.contains(...) works, also see if myThings.get(...) works
         for (int i = 0; i < myThings.size(); ++i) {
-            if (myThings.get(i).getId().equals(observable.getData().getId())) {
+            // if (myThings.get(i).getId() == null) continue;
+
+            // if (myThings.get(i).getId().equals(observable.getData().getId())) {
+            if (myThings.get(i).getUuid().equals(observable.getData().getUuid())) {
                 zombieThings.add(myThings.get(i));
                 myThings.remove(i);
                 break;
             }
         }
+
+//        Integer index = null;
+//        for (int i = 0; i < myThings.size(); ++i) {
+//            if (myThings.get(i).getUuid().equals(observable.getData().getUuid())) {
+//                zombieThings.add(myThings.get(i));
+//
+//                index = i;
+//                break;
+//            }
+//        }
+//
+//        if (index != null) myThings.remove(index);
 
         saveToFile();
 
@@ -166,6 +187,7 @@ public class MyThingsDataManager {
                 int j;
                 for (j = 0; j < zombieThings.size(); ++j) {
                     if (zombieThings.get(j).getId().equals(remoteThing.getId())) {
+                    // if (zombieThings.get(j).getUuid().equals(remoteThing.getUuid())) {
 
                         // Deleted thing
                         break;
