@@ -85,6 +85,10 @@ public class Bid extends ElasticModel {
     }
 
 
+    public String getBidderId() {
+        return bidderId;
+    }
+
     public void getThing(IObserver observer){
         Thing.getById(observer, Thing.class, thingId);
     }
@@ -93,6 +97,10 @@ public class Bid extends ElasticModel {
         thing.placeBid(this);
         changed();
         return this;
+    }
+
+    public String getThingId() {
+        return thingId;
     }
 
     public int getAmount(){ return amount; }
