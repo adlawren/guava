@@ -33,8 +33,11 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'io.searchbox:jest-droid:2.0.1'
-    //compile 'com.google.android.gms:play-services:8.3.0'
+
     compile 'com.google.android.gms:play-services-maps:8.4.0'
+
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+
 }
 
 

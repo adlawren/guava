@@ -17,10 +17,20 @@
     </item>
 
     <item
+<<<<<<< HEAD
         android:id="@+id/display_location"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:title="Location">
     </item>
 
+=======
+        android:id="@+id/image"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="View Item Picture">
+    </item>
+
+
+>>>>>>> c9a5be9abae61ba5316f16650081075f0cc1308c
 </menu>

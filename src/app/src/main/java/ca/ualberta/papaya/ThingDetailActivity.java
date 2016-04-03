@@ -38,7 +38,6 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
     Intent intent = null;
     Thing thing = null;
     //public static final int PHOTO_RESULT = 10;
-    Bitmap picture = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,22 +71,9 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
-        ImageButton imageButton = (ImageButton) findViewById(R.id.viewPicture);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ThingDetailActivity.this, ViewPictureActivity.class);
-                intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, picture);
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
 
-                startActivity(intent);
 
-            }
-        });
-
-        picture = thing.getPhoto().getImage();
-        if( picture != null){
-            imageButton.setImageBitmap(picture);
-        }
 //        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
 //        editItemButton.setOnClickListener(ThingDetailController.getInstance()
 //                .getEditItemOnClickListener(this, thing));
@@ -135,6 +121,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
                 .getDeleteItemOnClickListener(this, thing));
         menu.findItem(R.id.display_location).setOnMenuItemClickListener(ThingDetailController.getInstance()
                 .getDisplayLocationOnClickListener(this, thing));
+        menu.findItem(R.id.image).setOnMenuItemClickListener(ThingDetailController.getInstance()
+                .getImageOnClickListener(this, thing));
 
         return true;
     }
@@ -178,4 +166,3 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 //    }
 }
 
-//Todo imagebutton doesn't work

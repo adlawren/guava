@@ -8,4 +8,11 @@
         android:title="Bid">
     </item>
 
+    <item
+        android:id="@+id/searchPictureView"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="View Item Picture">
+    </item>
+
 </menu>

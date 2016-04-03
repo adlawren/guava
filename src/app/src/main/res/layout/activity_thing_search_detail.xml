@@ -21,7 +21,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <EditText
-            android:layout_width="250dp"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:id="@+id/bidAmount"
             android:layout_alignParentStart="true"
@@ -48,7 +48,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/bid_list"
-            android:layout_height="291dp"
+            android:layout_height="272dp"
             android:layout_width="fill_parent"
             android:layout_gravity="left|bottom" />
     </FrameLayout>

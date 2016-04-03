@@ -81,9 +81,9 @@ public class ThingListActivity extends AbstractPapayaActivity {
         setupRecyclerView((RecyclerView) recyclerView);
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-        }
+//        if (actionBar != null) {
+//            actionBar.setDisplayShowTitleEnabled(false);
+//        }
 
         if (findViewById(R.id.thing_detail_container) != null) {
             // The detail container view will be present only in the

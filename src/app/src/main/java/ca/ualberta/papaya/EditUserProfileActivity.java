@@ -128,6 +128,8 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
                             actionBar.setDisplayShowTitleEnabled(false);
                         }
                     });
+
+                    toolbar.setNavigationIcon(R.drawable.ic_action_home);
                 }
             }
         });
