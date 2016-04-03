@@ -11,6 +11,8 @@ import android.widget.ImageView;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
+import ca.ualberta.papaya.data.MyThingsDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
@@ -66,23 +68,50 @@ public class AddThingController {
             final String description = descriptionEditText.getText().toString();
             final Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
-            LocalUser.getUser(new Observer<User>() {
+//            LocalUser.getUser(new Observer() {
+//                @Override
+//                public void update(Object data) {
+//                    Thing thing = new Thing((User) data);
+//                    thing.setTitle(itemName);
+//                    thing.setDescription(description);
+//
+//                    Observable<Thing> observable = new Observable<>();
+//                    observable.setData(thing);
+//                    observable.addObserver(new IObserver<Thing>() {
+//                        @Override
+//                        public void update(Thing data) {
+//                            transitionToActivity(context, ThingListActivity.class);
+//                        }
+//                    });
+//
+//                    MyThingsDataManager.getInstance().update(observable);
+//                }
+//            });
+
+	    User user = new User();
+            user.setId(LocalUser.getId());
+
+            Thing thing = new Thing(user);
+            thing.setTitle(itemName);
+            thing.setDescription(description);
+
+
+            Photo photo = new Photo();
+            photo.setImage(image);
+            thing.setPhoto(photo);
+
+
+	    Observable<Thing> observable = new Observable<>();
+            observable.setData(thing);
+            observable.addObserver(new IObserver<Thing>() {
                 @Override
-                public void update(User user) {
-
-                    Thing thing = new Thing(user);
-                    thing.setTitle(itemName);
-                    thing.setDescription(description);
-
-                    Photo photo = new Photo();
-                    photo.setImage(image);
-                    thing.setPhoto(photo);
-
-                    thing.publish();
-
+                public void update(Thing data) {
                     transitionToActivity(context, ThingListActivity.class);
                 }
             });
+
+            MyThingsDataManager.getInstance().update(observable);
+
 
             return true;
         }

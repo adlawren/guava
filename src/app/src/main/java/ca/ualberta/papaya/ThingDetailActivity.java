@@ -38,6 +38,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
     Intent intent = null;
     Thing thing = null;
     //public static final int PHOTO_RESULT = 10;
+    Bitmap picture = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
