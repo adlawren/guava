@@ -66,7 +66,9 @@ public class AddThingController {
         public boolean onMenuItemClick(MenuItem item) {
             final String itemName = itemNameEditText.getText().toString();
             final String description = descriptionEditText.getText().toString();
-            final Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+            final Bitmap image = (bitmapDrawable == null) ? null : bitmapDrawable.getBitmap();
 
 //            LocalUser.getUser(new Observer() {
 //                @Override

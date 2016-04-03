@@ -129,7 +129,12 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
                         }
                     });
 
-                    toolbar.setNavigationIcon(R.drawable.ic_action_home);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            toolbar.setNavigationIcon(R.drawable.ic_action_home);
+                        }
+                    });
                 }
             }
         });

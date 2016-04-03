@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.util.Observable;
@@ -48,7 +52,8 @@ public class EditThingController {
         private Context context;
 
         private Thing thing;
-        private Bitmap image;
+        // private Bitmap image;
+        private ImageView imageView;
 
         private EditText itemNameEditText, descriptionEditText;
 
@@ -56,11 +61,13 @@ public class EditThingController {
                                        Thing initialThing,
                                        EditText initialItemNameEditText,
                                        EditText initialDescriptionEditText,
-                                       Bitmap initialImage) {
+                                       ImageButton initialImageButton) {
+                                       // Bitmap initialImage) {
             context = initialContext;
 
             thing = initialThing;
-            image = initialImage;
+            // image = initialImage;
+            imageView = initialImageButton;
 
             itemNameEditText = initialItemNameEditText;
             descriptionEditText = initialDescriptionEditText;
@@ -71,12 +78,11 @@ public class EditThingController {
         public boolean onMenuItemClick(MenuItem item) {
             thing.setTitle(itemNameEditText.getText().toString());
             thing.setDescription(descriptionEditText.getText().toString());
+            Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
-            // thing.publish();
-
-            // transitionToActivity(context, ThingListActivity.class);
-
-            // MyThingsDataManager.getInstance().update(thing);
+            Photo photo = new Photo();
+            photo.setImage(image);
+            thing.setPhoto(photo);
 
             Observable<Thing> thingObservable = new Observable<>();
             thingObservable.setData(thing);
@@ -98,9 +104,10 @@ public class EditThingController {
                                                               Thing initialThing,
                                                               EditText initialItemNameEditText,
                                                               EditText initialDescriptionEditText,
-                                                              Bitmap initialImage) {
+                                                              ImageButton initialImageButton) {
+                                                              // Bitmap initialImage) {
         return new EditItemOnClickListener(initialContext, initialThing, initialItemNameEditText,
-                initialDescriptionEditText, initialImage);
+                initialDescriptionEditText, initialImageButton); // initialImage);
     }
 
     // Button to change a Thing back to available once it is no being borrowed anymore
