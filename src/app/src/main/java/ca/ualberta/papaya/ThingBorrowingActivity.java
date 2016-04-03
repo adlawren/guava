@@ -19,6 +19,7 @@ import java.util.List;
 
 import ca.ualberta.papaya.controllers.ThingBorrowingController;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observer;
 
 /**
@@ -91,8 +92,8 @@ public class ThingBorrowingActivity extends AbstractPapayaActivity{
                 });
 
             }
-        }, Thing.class, "{}"); // todo: add proper search query
-
+        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"match\" : { \"borrowerId\" : \"" +
+                LocalUser.getId() + "\" } } }"); // TODO: Test query
     }
 
     public class SimpleItemRecyclerViewAdapter

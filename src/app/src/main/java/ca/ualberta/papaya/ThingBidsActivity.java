@@ -18,7 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualberta.papaya.controllers.ThingBidsController;
+import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
+import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.LocalUser;
+import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
 /**
@@ -80,22 +86,37 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
     }
 
     private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
-        SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
-        recyclerView.setAdapter(va);
-        Thing.search(new Observer<List<Thing>>() {
+        LocalUser.getUser(new Observer() {
             @Override
-            public void update(List<Thing> things) {
-                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
-                recyclerView.post(new Runnable() {
+            public void update(Object data) {
+                User user = (User) data;
+                user.getBids(new IObserver() {
                     @Override
-                    public void run() {
-                        recyclerView.setAdapter(va);
+                    public void update(Object data) {
+                        ArrayList<Bid> bids = (ArrayList<Bid>) data;
+
+                        String[] ids = new String[ bids.size() ];
+                        for (int i = 0; i < ids.length; ++i) {
+                            ids[i] = bids.get(i).getThingId();
+                        }
+
+                        Observable<ArrayList<Thing>> thingsObservable = new Observable<>();
+                        thingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+                            @Override
+                            public void update(ArrayList<Thing> data) {
+                                SimpleItemRecyclerViewAdapter va =
+                                        new SimpleItemRecyclerViewAdapter(data);
+                                recyclerView.setAdapter(va);
+                            }
+                        });
+
+                        ThrowawayElasticSearchController.GetThingTask getThingTask =
+                                new ThrowawayElasticSearchController.GetThingTask(thingsObservable);
+                        getThingTask.execute(ids);
                     }
                 });
-
             }
-        }, Thing.class, "{}"); // todo: add proper search query
-
+        });
     }
 
     public class SimpleItemRecyclerViewAdapter

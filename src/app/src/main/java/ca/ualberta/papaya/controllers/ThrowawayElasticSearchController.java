@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.util.Observable;
@@ -31,8 +32,8 @@ public class ThrowawayElasticSearchController {
     private static void verifyConfiguration() {
         if (client == null) {
             DroidClientConfig.Builder builder = new DroidClientConfig.Builder(
-                    "http://cmput301.softwareprocess.es:8080/");
-                    // "http://adlawren-papayatest.rhcloud.com/");
+                    //"http://cmput301.softwareprocess.es:8080/");
+                    "http://adlawren-papayatest.rhcloud.com/");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
@@ -80,38 +81,41 @@ public class ThrowawayElasticSearchController {
         }
     }
 
-    public static class GetThingTask extends AsyncTask<String,Void,Thing> {
+    public static class GetThingTask extends AsyncTask<String,Void,ArrayList<Thing>> {
 
-        private Observable<Thing> observable;
+        private Observable<ArrayList<Thing>> observable;
 
-        public GetThingTask(Observable<Thing> initialObservable) {
+        public GetThingTask(Observable<ArrayList<Thing>> initialObservable) {
             observable = initialObservable;
         }
 
         @Override
-        protected Thing doInBackground(String... params) {
+        protected ArrayList<Thing> doInBackground(String... ids) {
             verifyConfiguration();
 
-            Get get = new Get.Builder(INDEX, params[0]).type("thing").build();
-            try {
-                JestResult getResult = client.execute(get);
-                if (getResult.isSucceeded()) {
-                    return getResult.getSourceAsObject(Thing.class);
-                } else {
-                    System.err.println("[ThrowawayElasticSearchController.SearchUserTask] " +
-                            "Client execution failed");
+            ArrayList<Thing> things = new ArrayList<>();
+            for (String nextId : ids) {
+                Get get = new Get.Builder(INDEX, nextId).type("thing").build();
+                try {
+                    JestResult getResult = client.execute(get);
+                    if (getResult.isSucceeded()) {
+                        things.add(getResult.getSourceAsObject(Thing.class));
+                    } else {
+                        System.err.println("[ThrowawayElasticSearchController.GetThingTask] " +
+                                "Client execution failed");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
-            return null;
+            return things;
         }
 
         @Override
-        public void onPostExecute(Thing thing) {
-            super.onPostExecute(thing);
-            observable.setData(thing);
+        public void onPostExecute(ArrayList<Thing> things) {
+            super.onPostExecute(things);
+            observable.setData(things);
         }
     }
 
@@ -227,6 +231,45 @@ public class ThrowawayElasticSearchController {
         public void onPostExecute(ArrayList<Thing> deleted) {
             super.onPostExecute(deleted);
             observable.setData(deleted);
+        }
+    }
+
+    // TODO: Test
+    public static class GetBidTask extends AsyncTask<String,Void,ArrayList<Bid>> {
+
+        private Observable<ArrayList<Bid>> observable;
+
+        public GetBidTask(Observable<ArrayList<Bid>> initialObservable) {
+            observable = initialObservable;
+        }
+
+        @Override
+        protected ArrayList<Bid> doInBackground(String... ids) {
+            verifyConfiguration();
+
+            ArrayList<Bid> bids = new ArrayList<>();
+            for (String nextId : ids) {
+                Get get = new Get.Builder(INDEX, nextId).type("thing").build();
+                try {
+                    JestResult getResult = client.execute(get);
+                    if (getResult.isSucceeded()) {
+                        bids.add(getResult.getSourceAsObject(Bid.class));
+                    } else {
+                        System.err.println("[ThrowawayElasticSearchController.SearchUserTask] " +
+                                "Client execution failed");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return bids;
+        }
+
+        @Override
+        public void onPostExecute(ArrayList<Bid> bids) {
+            super.onPostExecute(bids);
+            observable.setData(bids);
         }
     }
 

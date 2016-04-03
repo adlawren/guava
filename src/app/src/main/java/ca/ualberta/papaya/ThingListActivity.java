@@ -121,35 +121,15 @@ public class ThingListActivity extends AbstractPapayaActivity {
         //menu.findItem(R.id.borrowed).setOnMenuItemClickListener(ThingListController.getInstance()
               // .getBorrewedFilterOnClickListener(this));
         //menu.findItem(R.id.bidded).setOnMenuItemClickListener(ThingListController.getInstance()
-        //  .getBiddidFilterOnClickListener(this));
+              // .getBiddidFilterOnClickListener(this));
 
 
         return true;
     }
 
     private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
-        // SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
-
         SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
         recyclerView.setAdapter(va);
-
-//        Thing.search(new Observer<List<Thing>>() {
-//            @Override
-//            public void update(List<Thing> data) {
-////                thingList.clear();
-////                thingList.addAll(data);
-//
-//                // final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
-//                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
-//                recyclerView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        recyclerView.setAdapter(va);
-//                    }
-//                });
-//            }
-//        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"match\" : { \"ownerId\" : " +
-//                "\"" + LocalUser.getId() + "\" } } }");
     }
 
     public class SimpleItemRecyclerViewAdapter
