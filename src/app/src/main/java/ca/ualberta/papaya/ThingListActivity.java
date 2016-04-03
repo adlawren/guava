@@ -116,18 +116,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
         MyThingsDataManager.getInstance().getData(observable);
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        // TODO: Remove; test
-//        System.out.println("I'm resuming!");
-//
-//        View recyclerView = findViewById(R.id.thing_list);
-//        assert recyclerView != null;
-//        setupRecyclerView((RecyclerView) recyclerView);
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
