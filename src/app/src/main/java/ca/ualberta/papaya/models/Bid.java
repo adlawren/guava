@@ -8,6 +8,7 @@ import java.util.List;
 
 import ca.ualberta.papaya.exceptions.BidNegativeException;
 import ca.ualberta.papaya.exceptions.InvalidLocationException;
+import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.interfaces.IObserver;
 import io.searchbox.annotations.JestId;
 
@@ -47,7 +48,7 @@ public class Bid extends ElasticModel {
      * @param bidder the User performing making the Bid.
      * @param amount how much is being bid. (in cents)
      */
-    public Bid(Thing thing, User bidder, int amount){
+    public Bid(Thing thing, User bidder, int amount) throws ThingUnavailableException {
         super();
         kind = Bid.class;
         setAmount(amount);
@@ -62,7 +63,7 @@ public class Bid extends ElasticModel {
      * @param amount how much is being bid. (in cents)
      * @param per the time per amount cost (hours, days, etc)
      */
-    public Bid(Thing thing, User bidder, int amount, Per per){
+    public Bid(Thing thing, User bidder, int amount, Per per) throws ThingUnavailableException {
         super();
         setThing(thing);
         setBidder(bidder);
@@ -83,8 +84,9 @@ public class Bid extends ElasticModel {
     public void getThing(IObserver observer){
         Thing.getById(observer, kind, thingId);
     }
-    public Bid setThing(Thing thing){
+    public Bid setThing(Thing thing) throws ThingUnavailableException {
         thingId = thing.getId();
+        thing.placeBid(this);
         changed();
         return this;
     }

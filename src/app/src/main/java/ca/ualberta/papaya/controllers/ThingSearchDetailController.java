@@ -73,11 +73,9 @@ public class ThingSearchDetailController {
             LocalUser.getUser(new Observer<User>() {
                 @Override
                 public void update(User bidder) {
-                    BigDecimal cents = BigDecimal.valueOf(100);
-                    Bid bid = new Bid(thing, bidder, money.multiply(cents).intValue());
-
                     try {
-                        thing.placeBid(bid);
+                        BigDecimal cents = BigDecimal.valueOf(100);
+                        Bid bid = new Bid(thing, bidder, money.multiply(cents).intValue());
                         System.err.println("Bid Placed");
                         bid.publish(new Observer<Bid>() {
                             @Override
