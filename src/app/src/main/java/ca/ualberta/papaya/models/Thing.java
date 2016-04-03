@@ -2,6 +2,11 @@ package ca.ualberta.papaya.models;
 
 import android.graphics.Bitmap;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,8 +153,27 @@ public class Thing extends ElasticModel {
         }
     }
 
-    public List<Bid> getBids(){
-        return new ArrayList<Bid>();
+    public void getBids(Observer observer){
+        try {
+            JSONObject json = new JSONObject();
+            json.put("from", 0);
+            json.put("size", 1000);
+
+            JSONObject queryJson = new JSONObject();
+            json.put("query", queryJson);
+
+            JSONObject termJson = new JSONObject();
+            queryJson.put("term", termJson);
+
+            termJson.put("thingId", getId());
+
+            System.err.println("(getBids) " + json.toString());
+
+            Bid.search(observer, Bid.class, json.toString());
+
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
 

@@ -9,6 +9,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import ca.ualberta.papaya.AddPictureActivity;
+import ca.ualberta.papaya.DisplayLocationActivity;
 import ca.ualberta.papaya.EditThingActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.ViewPictureActivity;
@@ -165,18 +166,15 @@ public class ThingDetailController {
         }
     }
 
-    // return the onClickListener for getPicture
-    public ViewPictureOnClickListener getPictureOnClickListener(Context initialContext, Thing initialThing) {
-        return new ViewPictureOnClickListener(initialContext, initialThing);
-    }
+    */
 
-    private class ViewPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+    private class DisplayLocationOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
 
         private Thing thing;
 
-        public ViewPictureOnClickListener(Context initialContext, Thing initialThing) {
+        public DisplayLocationOnClickListener(Context initialContext, Thing initialThing) {
             context = initialContext;
             thing = initialThing;
         }
@@ -184,8 +182,9 @@ public class ThingDetailController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            Intent intent = new Intent(context, AddPictureActivity.class);
-            intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
+            Intent intent = new Intent(context, DisplayLocationActivity.class);
+            //Todo put in the right data
+            //intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
 
             context.startActivity(intent);
 
@@ -194,36 +193,8 @@ public class ThingDetailController {
     }
 
     // return the onClickListener for getPicture
-    public ViewPictureOnClickListener getPictureOnClickListener(Context initialContext, Thing initialThing) {
-        return new ViewPictureOnClickListener(initialContext, initialThing);
+    public DisplayLocationOnClickListener getDisplayLocationOnClickListener(Context initialContext, Thing initialThing) {
+        return new DisplayLocationOnClickListener(initialContext, initialThing);
     }
 
-    private class ViewPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
-
-        private Context context;
-
-        private Thing thing;
-
-        public ViewPictureOnClickListener(Context initialContext, Thing initialThing) {
-            context = initialContext;
-            thing = initialThing;
-        }
-
-        @Override
-        // public void onClick(View view) {
-        public boolean onMenuItemClick(MenuItem item) {
-            Intent intent = new Intent(context, AddPictureActivity.class);
-            intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
-
-            context.startActivity(intent);
-
-            return true;
-        }
-    }
-
-    // return the onClickListener for getPicture
-    public ViewPictureOnClickListener getPictureOnClickListener(Context initialContext, Thing initialThing) {
-        return new ViewPictureOnClickListener(initialContext, initialThing);
-    }
-*/
 }

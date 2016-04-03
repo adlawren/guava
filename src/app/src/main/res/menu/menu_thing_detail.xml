@@ -17,11 +17,20 @@
     </item>
 
     <item
+
+        android:id="@+id/display_location"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Location">
+    </item>
+
+    <item
         android:id="@+id/image"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:title="View Item Picture">
     </item>
+
 
 
 </menu>

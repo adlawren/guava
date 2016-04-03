@@ -176,6 +176,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
             holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
             holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
             holder.mPictureView.setImageBitmap(mValues.get(position).getPhoto().getImage());
+            holder.mStatusView.setText("Status: " + mValues.get(position).getStatus().toString());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -212,6 +213,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
             public final TextView mIdView;
             public final TextView mContentView;
             public final ImageView mPictureView;
+            public final TextView mStatusView;
             public Thing mItem;
 
             public ViewHolder(View view) {
@@ -220,6 +222,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
                 mPictureView = (ImageView) view.findViewById(R.id.picture);
+                mStatusView = (TextView) view.findViewById(R.id.status);
             }
 
             @Override

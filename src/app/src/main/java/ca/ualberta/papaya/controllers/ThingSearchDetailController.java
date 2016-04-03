@@ -38,9 +38,9 @@ public class ThingSearchDetailController {
         return ourInstance;
     }
 
-    private void transitionToActivity(Class activityClass) {
-        Intent intent = new Intent(Ctx.get(), activityClass);
-        Ctx.get().startActivity(intent);
+    private void transitionToActivity(Context context, Class activityClass) {
+        Intent intent = new Intent(context, activityClass);
+        context.startActivity(intent);
     }
 
     private ThingSearchDetailController() {
@@ -52,10 +52,12 @@ public class ThingSearchDetailController {
 
         private Thing thing;
         private EditText bidAmount;
+        private Context context;
 
-        public UserBidOnClickListener(Thing theThing, EditText bidAmountText) {
+        public UserBidOnClickListener(Thing theThing, EditText bidAmountText, Context theContext) {
             thing = theThing;
             bidAmount = bidAmountText;
+            context = theContext;
         }
 
         private BigDecimal parseCurrency(String value){
@@ -71,18 +73,16 @@ public class ThingSearchDetailController {
             LocalUser.getUser(new Observer<User>() {
                 @Override
                 public void update(User bidder) {
-                    BigDecimal cents = BigDecimal.valueOf(100);
-                    Bid bid = new Bid(thing, bidder, money.multiply(cents).intValue());
-
                     try {
-                        thing.placeBid(bid);
+                        BigDecimal cents = BigDecimal.valueOf(100);
+                        Bid bid = new Bid(thing, bidder, money.multiply(cents).intValue());
                         System.err.println("Bid Placed");
                         bid.publish(new Observer<Bid>() {
                             @Override
                             public void update(Bid bidSent) {
                                 // todo: update bid list instead.
                                 System.err.println("Bid Published");
-                                transitionToActivity(ThingSearchActivity.class);
+                                transitionToActivity(context, ThingSearchActivity.class);
                             }
                         });
 
@@ -99,8 +99,8 @@ public class ThingSearchDetailController {
     }
 
     // return the onMenuItemListener for user bids
-    public UserBidOnClickListener getUserBidOnClickListener(Thing theThing, EditText bidAmount) {
-        return new UserBidOnClickListener(theThing, bidAmount);
+    public UserBidOnClickListener getUserBidOnClickListener(Thing theThing, EditText bidAmount, Context theContext) {
+        return new UserBidOnClickListener(theThing, bidAmount, theContext);
     }
 
 

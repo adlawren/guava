@@ -120,8 +120,11 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
                 .getEditItemOnClickListener(this, thing));
         menu.findItem(R.id.delete).setOnMenuItemClickListener(ThingDetailController.getInstance()
                 .getDeleteItemOnClickListener(this, thing));
+        menu.findItem(R.id.display_location).setOnMenuItemClickListener(ThingDetailController.getInstance()
+                .getDisplayLocationOnClickListener(this, thing));
         menu.findItem(R.id.image).setOnMenuItemClickListener(ThingDetailController.getInstance()
                 .getImageOnClickListener(this, thing));
+
         return true;
     }
 
@@ -164,4 +167,3 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 //    }
 }
 
-//Todo imagebutton doesn't work
