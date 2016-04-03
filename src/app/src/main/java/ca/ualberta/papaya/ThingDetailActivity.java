@@ -28,6 +28,7 @@ import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.ElasticModel;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.util.Ctx;
 import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
@@ -190,12 +191,10 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             holder.mContentView.setText(mValues.get(position).getBidderName());
 
 
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // do nothing on click for now
-                }
-            });
+            holder.mView.setOnClickListener(
+                    ThingDetailController.getInstance()
+                        .getBidOnClickListener(thing, holder.mItem)
+            );
         }
 
         @Override

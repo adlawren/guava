@@ -38,7 +38,7 @@ public class ThingBorrowingActivity extends AbstractPapayaActivity{
         //toolbar.setTitle(getTitle());
 
 
-        View recyclerView = findViewById(R.id.thing_list);
+        View recyclerView = findViewById(R.id.borrowing_thing_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
@@ -109,7 +109,7 @@ public class ThingBorrowingActivity extends AbstractPapayaActivity{
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.thing_list_content, parent, false);
+                    .inflate(R.layout.borrowing_thing_list_content, parent, false);
             return new ViewHolder(view);
         }
 
@@ -120,6 +120,7 @@ public class ThingBorrowingActivity extends AbstractPapayaActivity{
             holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
             holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
             holder.mPictureView.setImageBitmap(mValues.get(position).getPhoto().getImage());
+            holder.mBorrowerBidView.setText("Paying: ");
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -156,7 +157,9 @@ public class ThingBorrowingActivity extends AbstractPapayaActivity{
             public final TextView mIdView;
             public final TextView mContentView;
             public final ImageView mPictureView;
+            public final TextView mBorrowerBidView;
             public Thing mItem;
+
 
             public ViewHolder(View view) {
                 super(view);
@@ -164,6 +167,7 @@ public class ThingBorrowingActivity extends AbstractPapayaActivity{
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
                 mPictureView = (ImageView) view.findViewById(R.id.picture);
+                mBorrowerBidView = (TextView) view.findViewById(R.id.borrowerBid);
             }
 
             @Override

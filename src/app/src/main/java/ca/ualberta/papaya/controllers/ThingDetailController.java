@@ -9,6 +9,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import ca.ualberta.papaya.AddPictureActivity;
+import ca.ualberta.papaya.BidProfileActivity;
 import ca.ualberta.papaya.DisplayLocationActivity;
 import ca.ualberta.papaya.EditThingActivity;
 import ca.ualberta.papaya.ThingListActivity;
@@ -16,6 +17,7 @@ import ca.ualberta.papaya.ViewPictureActivity;
 import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
@@ -108,7 +110,7 @@ public class ThingDetailController {
         return new DeleteItemOnClickListener(initialContext, initialThing);
     }
 
-    // The onClickMenuItem for placing a bid
+    // The onClickMenuItem for viewing the picture
     private class ImageOnClickListener implements MenuItem.OnMenuItemClickListener {
 
         private Context context;
@@ -133,11 +135,45 @@ public class ThingDetailController {
 
     }
 
-    // return the onMenuItemListener for user bids
+    // return the onMenuItemListener for viewing the thing's picture
     public ImageOnClickListener getImageOnClickListener(Context thisContext, Thing theThing) {
         return new ImageOnClickListener(thisContext, theThing);
     }
 
+
+
+
+
+
+    // The onClickMenuItem for viewing the picture
+    private class BidOnClickListener implements View.OnClickListener {
+
+        private Thing thing;
+        private Bid bid;
+
+        public BidOnClickListener(Thing theThing, Bid theBid) {
+            thing = theThing;
+            bid = theBid;
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            Context context = view.getContext();
+            Intent intent = new Intent(context, BidProfileActivity.class);
+            intent.putExtra(BidProfileActivity.THING_EXTRA, thing);
+            intent.putExtra(BidProfileActivity.BID_EXTRA, bid);
+
+            context.startActivity(intent);
+        }
+
+
+    }
+
+    // return the onMenuItemListener for user bids
+    public BidOnClickListener getBidOnClickListener(Thing theThing, Bid theBid) {
+        return new BidOnClickListener( theThing, theBid);
+    }
 
 
 /*

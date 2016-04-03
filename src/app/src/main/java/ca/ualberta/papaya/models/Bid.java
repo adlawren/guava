@@ -71,8 +71,11 @@ public class Bid extends ElasticModel {
         setPer(per);
     }
 
+    public String getBidderName(){
+        return this.bidderName;
+    }
     public void getBidder(IObserver observer){
-        User.getById(observer, kind, bidderId);
+        User.getById(observer, User.class, bidderId);
     }
     public Bid setBidder(User bidder){
         this.bidderId = bidder.getId();
@@ -81,14 +84,13 @@ public class Bid extends ElasticModel {
         return this;
     }
 
-    public String getBidderName(){ return this.bidderName; }
 
     public String getBidderId() {
         return bidderId;
     }
 
     public void getThing(IObserver observer){
-        Thing.getById(observer, kind, thingId);
+        Thing.getById(observer, Thing.class, thingId);
     }
     public Bid setThing(Thing thing) throws ThingUnavailableException {
         thingId = thing.getId();

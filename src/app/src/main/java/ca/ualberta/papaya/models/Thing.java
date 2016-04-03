@@ -83,6 +83,10 @@ public class Thing extends ElasticModel {
         // TODO: memoize
 	}
 
+    public String viewOwner(){
+        return ownerId;
+    }
+
     public Thing setOwner(User owner){
         ownerId = owner.getId();
         this.owner = owner;
