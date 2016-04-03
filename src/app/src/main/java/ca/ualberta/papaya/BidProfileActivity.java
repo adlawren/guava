@@ -76,7 +76,7 @@ public class BidProfileActivity extends AbstractPapayaActivity {
             intent.putExtra(ThingDetailActivity.THING_EXTRA, thing);
             //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             NavUtils.navigateUpTo(this, intent);
-            
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -92,10 +92,13 @@ public class BidProfileActivity extends AbstractPapayaActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-//        menu.findItem(R.id.otherItems).setOnMenuItemClickListener(BidProfileController.getInstance()
-//                .getAcceptOnClickListener(this));
-//        menu.findItem(R.id.addItem).setOnMenuItemClickListener(BidProfileController.getInstance()
-//                .getDeclineOnClickListener(this));
+        menu.findItem(R.id.accept).setOnMenuItemClickListener(
+                BidProfileController.getInstance()
+                    .getAcceptOnClickListener(this, bid));
+
+        menu.findItem(R.id.decline).setOnMenuItemClickListener(
+                BidProfileController.getInstance()
+                    .getDeclineOnClickListener(this, bid));
 
 
         return true;
