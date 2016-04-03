@@ -13,20 +13,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Vector;
 
-import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.interfaces.IObserver;
-import ca.ualberta.papaya.models.ElasticModel;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.util.Ctx;
 import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observable;
-import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 28/03/16.
@@ -42,7 +37,8 @@ public class MyThingsDataManager {
     private MyThingsDataManager() {
     }
 
-    private static final String FILENAME = "my_things.sav";
+    private static final String SAVED_FILENAME = "my_things.sav";
+    private static final String DELETED_FILENAME = "my_things.del";
 
     private static ArrayList<Thing> myThings = new ArrayList<>(), zombieThings = new ArrayList<>();
 
@@ -145,7 +141,7 @@ public class MyThingsDataManager {
             } else {
                 int j;
                 for (j = 0; j < zombieThings.size(); ++j) {
-                    if (zombieThings.get(j).getId().equals(remoteThing.getId())) {
+                    if (zombieThings.get(j).getUuid().equals(remoteThing.getUuid())) {
 
                         // Deleted thing
                         break;
@@ -212,12 +208,32 @@ public class MyThingsDataManager {
     }
 
     private void loadFromFile() {
-        ArrayList<Thing> tempThings = null;
+        ArrayList<Thing> savedThings = loadArrayListFromFile(SAVED_FILENAME);
+        if (savedThings != null) {
+            myThings.clear();
+            myThings.addAll(savedThings);
+        }
+
+//        ArrayList<Thing> deletedThings = loadArrayListFromFile(DELETED_FILENAME);
+//        if (deletedThings != null) {
+//            zombieThings.clear();
+//            zombieThings.addAll(deletedThings);
+//        }
+    }
+
+    private void saveToFile() {
+        saveArrayListToFile(myThings, SAVED_FILENAME);
+        // saveArrayListToFile(zombieThings, DELETED_FILENAME);
+    }
+
+    // TODO: Use
+    private ArrayList<Thing> loadArrayListFromFile(String filename) {
+        ArrayList<Thing> things = null;
 
         try {
 
             // Initialize BufferedReader using stream from the given file
-            FileInputStream stream = Ctx.get().openFileInput(FILENAME);
+            FileInputStream stream = Ctx.get().openFileInput(filename);
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
             Gson gson = new Gson();
@@ -226,7 +242,7 @@ public class MyThingsDataManager {
             // Parse the Json stored in the file
             Type listType = new TypeToken<ArrayList<Thing>>() {}.getType();
 
-            tempThings = gson.fromJson(reader, listType);
+            things = gson.fromJson(reader, listType);
 
             stream.close();
         } catch (FileNotFoundException e) {
@@ -235,22 +251,19 @@ public class MyThingsDataManager {
             e.printStackTrace();
         }
 
-        if (tempThings != null) {
-            myThings.clear();
-            myThings.addAll(tempThings);
-        }
+        return things;
     }
 
-    private void saveToFile() {
+    private void saveArrayListToFile(ArrayList<Thing> things, String filename) {
 
-        // TODO: Determine if the copy is needed
+        // TODO: Determine if the copies are needed
         ArrayList<Thing> tempThings = new ArrayList<>();
-        tempThings.addAll(myThings);
+        tempThings.addAll(things);
 
         try {
 
             // Initialize BufferedWriter using stream from the given file
-            FileOutputStream stream = Ctx.get().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            FileOutputStream stream = Ctx.get().openFileOutput(filename, Context.MODE_PRIVATE);
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
 
             // Write the Json to the given file
