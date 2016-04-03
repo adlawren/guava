@@ -91,31 +91,29 @@ public class AddThingController {
 //            });
 
 	    User user = new User();
-            user.setId(LocalUser.getId());
+        user.setId(LocalUser.getId());
 
-            Thing thing = new Thing(user);
-            thing.setTitle(itemName);
-            thing.setDescription(description);
+        Thing thing = new Thing(user);
+        thing.setTitle(itemName);
+        thing.setDescription(description);
 
-
-            Photo photo = new Photo();
-            photo.setImage(image);
-            thing.setPhoto(photo);
+        Photo photo = new Photo();
+        photo.setImage(image);
+        thing.setPhoto(photo);
 
 
 	    Observable<Thing> observable = new Observable<>();
-            observable.setData(thing);
-            observable.addObserver(new IObserver<Thing>() {
-                @Override
-                public void update(Thing data) {
-                    transitionToActivity(context, ThingListActivity.class);
-                }
-            });
+        observable.setData(thing);
+        observable.addObserver(new IObserver<Thing>() {
+            @Override
+            public void update(Thing data) {
+                transitionToActivity(context, ThingListActivity.class);
+            }
+        });
 
-            MyThingsDataManager.getInstance().update(observable);
+        MyThingsDataManager.getInstance().update(observable);
 
-
-            return true;
+        return true;
         }
     }
 

@@ -141,7 +141,10 @@ public class MyThingsDataManager {
             } else {
                 int j;
                 for (j = 0; j < zombieThings.size(); ++j) {
-                    if (zombieThings.get(j).getUuid().equals(remoteThing.getUuid())) {
+                    if (zombieThings.get(j).getId() == null) continue;
+
+                    if (zombieThings.get(j).getId().equals(remoteThing.getId())) {
+                    // if (zombieThings.get(j).getUuid().equals(remoteThing.getUuid())) { // Causes issue?
 
                         // Deleted thing
                         break;
