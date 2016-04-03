@@ -34,10 +34,6 @@ public class BidProfileActivity extends AbstractPapayaActivity {
         TextView bidAmountTextView = (TextView) findViewById(R.id.bid);
         bidAmountTextView.setText(bid.toString());
 
-        /* on reserialization we lose the transient .kind property...
-         so .getBidder breaks.
-
-
         bid.getBidder(new Observer<User>() {
             @Override
             public void update(final User bidder) {
@@ -51,7 +47,6 @@ public class BidProfileActivity extends AbstractPapayaActivity {
 
             }
         });
-         */
 
     }
 
