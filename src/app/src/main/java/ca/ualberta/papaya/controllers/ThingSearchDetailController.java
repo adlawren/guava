@@ -6,6 +6,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import ca.ualberta.papaya.UserProfileActivity;
+import ca.ualberta.papaya.ViewPictureActivity;
+import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 
@@ -70,6 +72,36 @@ public class ThingSearchDetailController {
     // return the onClickListener for user bids
     public UserInfoOnClickListener getUserInfoOnClickListener(User theUser) {
         return new UserInfoOnClickListener(theUser);
+    }
+
+    // The onClickMenuItem for placing a bid
+    private class ImageOnClickListener implements MenuItem.OnMenuItemClickListener {
+
+        private Context context;
+
+        private Thing thing;
+
+        public ImageOnClickListener(Context thisContext, Thing theThing) {
+            thing = theThing;
+            context = thisContext;
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+
+            Intent intent = new Intent(context, ViewPictureActivity.class);
+            intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
+
+            context.startActivity(intent);
+            return true;
+        }
+
+
+    }
+
+    // return the onMenuItemListener for user bids
+    public ImageOnClickListener getImageOnClickListener(Context thisContext, Thing theThing) {
+        return new ImageOnClickListener(thisContext, theThing);
     }
 
 

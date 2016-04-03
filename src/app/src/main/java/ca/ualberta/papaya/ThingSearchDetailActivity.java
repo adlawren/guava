@@ -55,7 +55,7 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
         toolbar.setNavigationIcon(R.drawable.ic_action_home);
 
         Intent intent = getIntent();
-        final Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
+        thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
         if (thing != null) {
 
@@ -94,6 +94,9 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
 
         menu.findItem(R.id.bid).setOnMenuItemClickListener(ThingSearchDetailController.getInstance()
                 .getUserBidOnClickListener(thing));
+
+        menu.findItem(R.id.searchPictureView).setOnMenuItemClickListener(ThingSearchDetailController.getInstance()
+                .getImageOnClickListener(this, thing));
 
         return true;
     }
