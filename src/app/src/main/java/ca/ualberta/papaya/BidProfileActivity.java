@@ -5,7 +5,10 @@ import android.view.Menu;
 import android.widget.TextView;
 
 import ca.ualberta.papaya.controllers.BidProfileController;
+import ca.ualberta.papaya.models.Bid;
+import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Activity for displaying a User's profile when viewing a searched Thing.
@@ -14,22 +17,42 @@ import ca.ualberta.papaya.models.User;
 
 public class BidProfileActivity extends AbstractPapayaActivity {
 
-    public static final String USER_EXTRA = "com.papaya.user.profile.user.extra";
+    public static final String THING_EXTRA = "com.papaya.user.profile.thing.extra";
+    public static final String BID_EXTRA = "com.papaya.user.profile.bid.extra";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_user_info);
 
-        User user = (User) getIntent().getSerializableExtra(USER_EXTRA);
+        Thing thing = (Thing) getIntent().getSerializableExtra(THING_EXTRA);
+        Bid bid = (Bid) getIntent().getSerializableExtra(BID_EXTRA);
 
         TextView userNameTextView = (TextView) findViewById(R.id.user);
-        userNameTextView.setText(user.getName());
+        userNameTextView.setText(bid.getBidderName());
 
-        TextView userEmailTextView = (TextView) findViewById(R.id.contactInfo);
-        userEmailTextView.setText(user.getEmail());
+        TextView bidAmountTextView = (TextView) findViewById(R.id.bid);
+        bidAmountTextView.setText(bid.toString());
 
-        TextView userBidView = (TextView) findViewById(R.id.bid);
+        /* on reserialization we lose the transient .kind property...
+         so .getBidder breaks.
+
+
+        bid.getBidder(new Observer<User>() {
+            @Override
+            public void update(final User bidder) {
+                final TextView userEmailTextView = (TextView) findViewById(R.id.contactInfo);
+                userEmailTextView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        userEmailTextView.setText(bidder.getEmail());
+                    }
+                });
+
+            }
+        });
+         */
+
     }
 
     @Override
