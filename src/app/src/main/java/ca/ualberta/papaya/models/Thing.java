@@ -163,7 +163,7 @@ public class Thing extends ElasticModel {
             json.put("query", queryJson);
 
             JSONObject termJson = new JSONObject();
-            queryJson.put("term", termJson);
+            queryJson.put("match", termJson);
 
             termJson.put("thingId", getId());
 
