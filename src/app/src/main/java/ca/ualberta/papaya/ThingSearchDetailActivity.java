@@ -109,18 +109,17 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
         super.onPrepareOptionsMenu(menu);
 
 
-        if (thing != null) {
+
             EditText bidAmount = (EditText) findViewById(R.id.bidAmount);
-            MenuItem bidButton = (MenuItem) findViewById(R.id.bid);
-            if(bidButton != null) {
-                // WHY IS THIS NULL?
-                bidButton.setOnMenuItemClickListener(
+            bidAmount.setText("0");
+
+            if (bidAmount != null) {
+                menu.findItem(R.id.bid).setOnMenuItemClickListener(
                         ThingSearchDetailController.getInstance()
-                                .getUserBidOnClickListener(thing, bidAmount));
+                                .getUserBidOnClickListener(thing, bidAmount, this));
             }
-        } else {
-            System.err.print("No thing specified!!? (ThingSearchDetailActivity)");
-        }
+
+
 
         menu.findItem(R.id.searchPictureView).setOnMenuItemClickListener(ThingSearchDetailController.getInstance()
                 .getImageOnClickListener(this, thing));
