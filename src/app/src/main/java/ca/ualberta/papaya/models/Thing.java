@@ -167,6 +167,8 @@ public class Thing extends ElasticModel {
 
             termJson.put("thingId", getId());
 
+            System.err.println("(getBids) " + json.toString());
+
             Bid.search(observer, Bid.class, json.toString());
 
         } catch (JSONException e){
