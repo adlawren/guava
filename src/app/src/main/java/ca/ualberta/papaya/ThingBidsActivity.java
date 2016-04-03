@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -120,6 +121,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
             holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
+            holder.mPictureView.setImageBitmap(mValues.get(position).getPhoto().getImage());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -136,6 +138,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ThingDetailActivity.class);
                         intent.putExtra(ThingDetailActivity.THING_EXTRA, holder.mItem);
+                        intent.putExtra(ThingDetailActivity.ID_EXTRA, holder.mItem.getId());
                         intent.putExtra(ThingDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
                         //intent.putExtra("position", position);
 
@@ -154,6 +157,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
+            public final ImageView mPictureView;
             public Thing mItem;
 
             public ViewHolder(View view) {
@@ -161,6 +165,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
+                mPictureView = (ImageView) view.findViewById(R.id.picture);
             }
 
             @Override

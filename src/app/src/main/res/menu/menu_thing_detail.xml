@@ -16,4 +16,12 @@
         android:title="Delete">
     </item>
 
+    <item
+        android:id="@+id/image"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="View Item Picture">
+    </item>
+
+
 </menu>

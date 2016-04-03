@@ -104,32 +104,34 @@ public class ThingDetailController {
         return new DeleteItemOnClickListener(initialContext, initialThing);
     }
 
-    private class ViewPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+    // The onClickMenuItem for placing a bid
+    private class ImageOnClickListener implements MenuItem.OnMenuItemClickListener {
 
         private Context context;
 
         private Thing thing;
 
-        public ViewPictureOnClickListener(Context initialContext, Thing initialThing) {
-            context = initialContext;
-            thing = initialThing;
+        public ImageOnClickListener(Context thisContext, Thing theThing) {
+            thing = theThing;
+            context = thisContext;
         }
 
         @Override
-        // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            Intent intent = new Intent(context, AddPictureActivity.class);
+
+            Intent intent = new Intent(context, ViewPictureActivity.class);
             intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
 
             context.startActivity(intent);
-
             return true;
         }
+
+
     }
 
-    // return the onClickListener for getPicture
-    public ViewPictureOnClickListener getPictureOnClickListener(Context initialContext, Thing initialThing) {
-        return new ViewPictureOnClickListener(initialContext, initialThing);
+    // return the onMenuItemListener for user bids
+    public ImageOnClickListener getImageOnClickListener(Context thisContext, Thing theThing) {
+        return new ImageOnClickListener(thisContext, theThing);
     }
 
 
