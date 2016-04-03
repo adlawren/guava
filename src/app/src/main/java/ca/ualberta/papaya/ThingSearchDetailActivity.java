@@ -52,6 +52,8 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
+
         Intent intent = getIntent();
         final Thing thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 

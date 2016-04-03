@@ -49,6 +49,8 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
+
         if (findViewById(R.id.thing_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).

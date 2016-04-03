@@ -72,6 +72,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
+
         ImageButton imageButton = (ImageButton) findViewById(R.id.viewPicture);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override

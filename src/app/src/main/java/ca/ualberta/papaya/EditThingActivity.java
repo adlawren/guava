@@ -64,6 +64,8 @@ public class EditThingActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
+
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

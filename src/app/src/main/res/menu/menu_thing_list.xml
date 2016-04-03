@@ -5,6 +5,7 @@
         android:id="@+id/filter"
         android:orderInCategory="100"
         app:showAsAction="always"
+        android:icon="@drawable/ic_action_filter"
         android:title="Filter">
         <menu>
             <item android:id="@+id/all"
@@ -20,19 +21,21 @@
         android:id="@+id/otherItems"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="Other Items"/>
+        android:title="Items I've bidded on"/>
 
     <item
         android:id="@+id/addItem"
         android:orderInCategory="100"
         app:showAsAction="always"
+        android:icon="@drawable/ic_action_add"
         android:title="Add Item">
     </item>
 
     <item
         android:id="@+id/profile"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_user"
         android:title="Edit Profile">
     </item>
 
@@ -40,6 +43,7 @@
         android:id="@+id/search"
         android:orderInCategory="100"
         app:showAsAction="always"
+        android:icon="@drawable/ic_action_search"
         android:title="Search">
     </item>
 

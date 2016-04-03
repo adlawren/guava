@@ -59,6 +59,8 @@ public class AddPictureActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
+
         intent = getIntent();
 
         picture = intent.getParcelableExtra(PICTURE_EXTRA);

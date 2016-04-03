@@ -38,11 +38,15 @@ public class ViewPictureActivity extends AbstractPapayaActivity {
 
         image = (ImageView) findViewById(R.id.picture);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
     }
 
     @Override

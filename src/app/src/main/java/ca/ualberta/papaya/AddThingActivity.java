@@ -47,7 +47,7 @@ public class AddThingActivity extends AbstractPapayaActivity {
 
         }
 
-        toolbar.setNavigationIcon(R.drawable.ic_menu_home);
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
 
         imageView = (ImageButton) findViewById(R.id.viewPicture);
         imageView.setImageBitmap(picture);

@@ -56,6 +56,8 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
         assert recyclerView != null;
         setupRecyclerView(recyclerView);
