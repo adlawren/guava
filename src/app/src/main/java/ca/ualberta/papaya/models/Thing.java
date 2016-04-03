@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.interfaces.IObserver;
@@ -61,7 +60,6 @@ public class Thing extends ElasticModel {
         photo = new Photo();
 
         ownerId = owner.getId();
-        //id = UUID.randomUUID().toString();
     }
 
     public Thing(Thing otherThing) {

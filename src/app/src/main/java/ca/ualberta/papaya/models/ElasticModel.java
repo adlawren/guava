@@ -36,7 +36,7 @@ import io.searchbox.core.search.sort.Sort;
  */
 public abstract class ElasticModel extends Observable implements Serializable, IKind {
 
-    private String uuid = UUID.randomUUID().toString();
+    private final String uuid = UUID.randomUUID().toString();
 
     public String getUuid() {
         return uuid;

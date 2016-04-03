@@ -106,7 +106,10 @@ public class MyThingsDataManager {
     public void delete(final Observable<Thing> observable) {
         for (int i = 0; i < myThings.size(); ++i) {
             if (myThings.get(i).getUuid().equals(observable.getData().getUuid())) {
-                zombieThings.add(myThings.get(i));
+                if (myThings.get(i).getId() != null) {
+                    zombieThings.add(myThings.get(i));
+                }
+
                 myThings.remove(i);
                 break;
             }
