@@ -103,14 +103,14 @@ public class User extends ElasticModel {
 
     public String getAddress1(){ return address1; }
     public User setAddress1(String address){
-        this.address1 = address1;
+        this.address1 = address;
         changed();
         return this;
     }
 
     public String getAddress2(){ return address2; }
     public User setAddress2(String address){
-        this.address2 = address2;
+        this.address2 = address;
         changed();
         return this;
     }
