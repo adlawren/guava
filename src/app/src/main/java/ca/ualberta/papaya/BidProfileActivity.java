@@ -1,7 +1,12 @@
 package ca.ualberta.papaya;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import ca.ualberta.papaya.controllers.BidProfileController;
@@ -20,13 +25,16 @@ public class BidProfileActivity extends AbstractPapayaActivity {
     public static final String THING_EXTRA = "com.papaya.user.profile.thing.extra";
     public static final String BID_EXTRA = "com.papaya.user.profile.bid.extra";
 
+    private Thing thing;
+    private Bid bid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bid_user_info);
 
-        Thing thing = (Thing) getIntent().getSerializableExtra(THING_EXTRA);
-        Bid bid = (Bid) getIntent().getSerializableExtra(BID_EXTRA);
+        thing = (Thing) getIntent().getSerializableExtra(THING_EXTRA);
+        bid = (Bid) getIntent().getSerializableExtra(BID_EXTRA);
 
         TextView userNameTextView = (TextView) findViewById(R.id.user);
         userNameTextView.setText(bid.getBidderName());
@@ -48,6 +56,29 @@ public class BidProfileActivity extends AbstractPapayaActivity {
             }
         });
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        System.err.println("I AM THERE");
+        if(item.getItemId() == android.R.id.home){
+
+            System.err.println("I AM HERE");
+            Intent intent = NavUtils.getParentActivityIntent(this);
+            intent.putExtra(ThingDetailActivity.THING_EXTRA, thing);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            NavUtils.navigateUpTo(this, intent);
+            
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
