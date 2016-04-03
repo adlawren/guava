@@ -81,6 +81,8 @@ public class Bid extends ElasticModel {
         return this;
     }
 
+    public String getBidderName(){ return this.bidderName; }
+
     public void getThing(IObserver observer){
         Thing.getById(observer, kind, thingId);
     }

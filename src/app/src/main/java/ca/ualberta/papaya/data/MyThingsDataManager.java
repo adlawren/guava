@@ -13,18 +13,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Vector;
 
-import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.util.Ctx;
+import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observable;
-import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 28/03/16.
@@ -40,152 +37,209 @@ public class MyThingsDataManager {
     private MyThingsDataManager() {
     }
 
-    private static final String FILENAME = "my_things.sav";
+    private static final String SAVED_FILENAME = "my_things.sav";
+    private static final String DELETED_FILENAME = "my_things.del";
 
-    // private static ArrayList<Thing> myThings = new ArrayList<>();
-    private static Vector<Thing> myThings = new Vector<>();
+    private static ArrayList<Thing> myThings = new ArrayList<>(), zombieThings = new ArrayList<>();
 
-    // public void getData(final Observable<ArrayList<Thing>> observable) {
-    public void getData(final Observable<Vector<Thing>> observable) {
+    // TODO: Remove; used for debugging
+    private void printThing(Thing thing) {
+        System.out.println("Next thing: id: " + thing.getId() + ", title: " +
+                thing.getTitle() + ", description: " + thing.getDescription());
+    }
+
+    // TODO: Remove; used for debugging
+    private void printThingList(ArrayList<Thing> list) {
+        for (Thing thing : list) {
+            printThing(thing);
+        }
+    }
+
+    public void getData(final Observable<ArrayList<Thing>> observable) {
+        if (observable == null) {
+            System.err.println("[GetThingsObserver.update] ERROR: Observable not initialized");
+            return;
+        }
 
         // Get local data
         loadFromFile();
 
         // Get online data
-        // Observable<ArrayList<Thing>> thingListObservable = new Observable<>();
-        Observable<Vector<Thing>> thingListObservable = new Observable<>();
-        // thingListObservable.addObserver(new IObserver<ArrayList<Thing>>() {
-        thingListObservable.addObserver(new IObserver<Vector<Thing>>() {
+        Observable<ArrayList<Thing>> thingListObservable = new Observable<>();
+        thingListObservable.addObserver(new IObserver<ArrayList<Thing>>() {
             @Override
-            // public void update(ArrayList<Thing> data) {
-            public void update(Vector<Thing> data) {
-                if (observable == null) {
-                    System.err.println("[GetThingsObserver.update] ERROR: Observable not initialized");
-                    return;
-                }
+            public void update(ArrayList<Thing> data) {
+                resolve(data);
+                saveToFile();
 
-                if (data.size() > 0) {
-                    if (myThings.size() > 0) {
-                        MyThingsDataManager.getInstance().resolve(data);
-                    } else {
-                        myThings.addAll(data);
-                    }
-
-                    observable.setData(myThings);
-                }
-
-                System.out.println("[MyThingsDataManager] Things:");
-                for (Thing thing : data) {
-                    System.out.println("Title: " + thing.getTitle() + ", Description: " +
-                            thing.getDescription() + ", id: " + thing.getId());
-                }
+                observable.setData(myThings);
             }
         });
 
-        // ThrowawayElasticSearchController.SearchThingTask thingSearchTask =
-                // new ThrowawayElasticSearchController.SearchThingTask(thingListObservable);
-        ThrowawayElasticSearchController.VectorSearchThingTask vectorSearchThingTask =
-                new ThrowawayElasticSearchController.VectorSearchThingTask(thingListObservable);
-
-        // thingSearchTask.execute("{}");
-        vectorSearchThingTask.execute("{}");
-
-        observable.setData(myThings);
+        ThrowawayElasticSearchController.SearchThingTask thingSearchTask =
+                 new ThrowawayElasticSearchController.SearchThingTask(thingListObservable);
+        thingSearchTask.execute("{ \"size\" : \"500\", \"query\" : { \"match\" : { \"ownerId\" : " +
+                "\"" + LocalUser.getId() + "\" } } }");
     }
 
-    public void update(Thing thing) {
-        if (myThings.contains(thing)) {
+    public void update(final Observable<Thing> observable) {
+        boolean found = false;
+        for (Thing thing : myThings) {
+            if (thing.getUuid().equals(observable.getData().getUuid())) {
+                thing.setTitle(observable.getData().getTitle());
+                thing.setDescription(observable.getData().getDescription());
 
-            // TODO: See if myThings.get(...) works instead
-            for (Thing nextThing : myThings) {
-                if (nextThing.getId().equals(thing.getId())) {
-                    nextThing.setTitle(thing.getTitle());
-                    nextThing.setDescription(thing.getDescription());
-                    break;
-                }
+                found = true;
+                break;
             }
-        } else {
-            myThings.add(thing);
         }
 
-        System.out.println("[MyThingsDataManager.update] Thing list contents:");
-        for (Thing nextThing : myThings) {
-            System.out.println("Thing id: " + nextThing.getId() +
-                    ", Thing title: " + nextThing.getTitle() +
-                    ", Thing description: " + nextThing.getDescription());
+        if (!found) {
+            myThings.add(observable.getData());
         }
 
-        // Get online data
-        // Observable<ArrayList<Thing>> thingListObservable = new Observable<>();
-        Observable<Vector<Thing>> thingListObservable = new Observable<>();
-        // thingListObservable.addObserver(new IObserver<ArrayList<Thing>>() {
-        thingListObservable.addObserver(new IObserver<Vector<Thing>>() {
-            @Override
-            // public void update(ArrayList<Thing> data) {
-            public void update(Vector<Thing> data) {
-                System.out.println("[MyThingsDataManager.update.update] Thing list contents: ");
-                for (Thing localThing : myThings) {
-                    System.out.println("Thing id: " + localThing.getId() +
-                            ", Thing title: " + localThing.getTitle() +
-                            ", Thing description: " + localThing.getDescription());
+        saveToFile();
+
+        observable.setData(observable.getData());
+    }
+
+    public void delete(final Observable<Thing> observable) {
+        for (int i = 0; i < myThings.size(); ++i) {
+            if (myThings.get(i).getUuid().equals(observable.getData().getUuid())) {
+                if (myThings.get(i).getId() != null) {
+                    zombieThings.add(myThings.get(i));
                 }
 
-                resolve(data);
+                myThings.remove(i);
+                break;
             }
-        });
+        }
 
-        // ThrowawayElasticSearchController.SearchThingTask thingSearchTask =
-                // new ThrowawayElasticSearchController.SearchThingTask(thingListObservable);
-        ThrowawayElasticSearchController.VectorSearchThingTask vectorSearchThingTask =
-                new ThrowawayElasticSearchController.VectorSearchThingTask(thingListObservable);
+        saveToFile();
 
-        // thingSearchTask.execute("{}");
-        vectorSearchThingTask.execute("{}");
+        observable.setData(observable.getData());
     }
 
     // Used to resolve differences between the local contents and the remote contents
-    // private void resolve(ArrayList<Thing> remoteThings) {
-    // public void resolve(ArrayList<Thing> remoteThings) {
-    public void resolve(Vector<Thing> remoteThings) {
-        ArrayList<Thing> things = new ArrayList<>();
+    private void resolve(ArrayList<Thing> remoteThings) {
+        ArrayList<Thing> uniqueLocalThings = new ArrayList<>(),
+                commonThings = new ArrayList<>();
 
-        things.addAll(myThings);
+        uniqueLocalThings.addAll(myThings);
 
-        if (remoteThings.size() > 0) {
-            for (Thing nextRemoteThing : remoteThings) {
-                int i;
-                for (i = 0; i < things.size(); ++i) {
-                    if (things.get(i).getId().equals(nextRemoteThing.getId())) {
+        for (Thing remoteThing : remoteThings) {
+            Integer index = null;
+            for (int i = 0; i < uniqueLocalThings.size(); ++i) {
+                if (uniqueLocalThings.get(i).getId() == null) continue;
+
+                if (uniqueLocalThings.get(i).getId().equals(remoteThing.getId())) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index != null) {
+                commonThings.add(uniqueLocalThings.get(index));
+                uniqueLocalThings.remove(index);
+            } else {
+                int j;
+                for (j = 0; j < zombieThings.size(); ++j) {
+                    if (zombieThings.get(j).getId() == null) continue;
+
+                    if (zombieThings.get(j).getId().equals(remoteThing.getId())) {
+                    // if (zombieThings.get(j).getUuid().equals(remoteThing.getUuid())) { // Causes issue?
+
+                        // Deleted thing
                         break;
                     }
                 }
 
-                if (i == things.size()) {
-                    things.add(nextRemoteThing);
-                }
+                // Unique remote thing
+                if (j == zombieThings.size()) myThings.add(remoteThing);
             }
         }
 
-        myThings.clear();
-        myThings.addAll(things);
+        // Add newly created local things
+        Observable<ArrayList<Thing>> addedThingsObservable = new Observable<>();
+        addedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+            @Override
+            public void update(ArrayList<Thing> data) {
+                if (data.size() > 0) {
+                    saveToFile();
+                }
+            }
+        });
 
-        System.out.println("[MyThingsDataManager.resolve] Thing list contents: ");
-        for (Thing thing : myThings) {
-            System.out.println("Thing id: " + thing.getId() +
-                    ", Thing title: " + thing.getTitle() +
-                    ", Thing description: " + thing.getDescription());
-        }
+        ThrowawayElasticSearchController.AddThingTask addThingTask =
+                new ThrowawayElasticSearchController.AddThingTask(addedThingsObservable);
+
+        Thing[] uniqueLocalThingsArray = new Thing[ uniqueLocalThings.size() ];
+        uniqueLocalThingsArray = uniqueLocalThings.toArray(uniqueLocalThingsArray);
+
+        addThingTask.execute(uniqueLocalThingsArray);
+
+        // Update common things
+        Observable<ArrayList<Thing>> updatedThingsObservable = new Observable<>();
+        updatedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+            @Override
+            public void update(ArrayList<Thing> data) {
+            }
+        });
+
+        ThrowawayElasticSearchController.UpdateThingTask updateThingTask =
+                new ThrowawayElasticSearchController.UpdateThingTask(updatedThingsObservable);
+
+        Thing[] commonThingsArray = new Thing[ commonThings.size() ];
+        commonThingsArray = commonThings.toArray(commonThingsArray);
+
+        updateThingTask.execute(commonThingsArray);
+
+        // Delete removed things
+        Observable<ArrayList<Thing>> deletedThingsObservable = new Observable<>();
+        deletedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+            @Override
+            public void update(ArrayList<Thing> data) {
+            }
+        });
+
+        ThrowawayElasticSearchController.DeleteThingTask deleteThingTask =
+                new ThrowawayElasticSearchController.DeleteThingTask(deletedThingsObservable);
+
+        Thing[] zombieThingsArray = new Thing[ zombieThings.size() ];
+        zombieThingsArray = zombieThings.toArray(zombieThingsArray);
+
+        deleteThingTask.execute(zombieThingsArray);
 
         saveToFile();
     }
 
     private void loadFromFile() {
-        ArrayList<Thing> tempThings = null;
+        ArrayList<Thing> savedThings = loadArrayListFromFile(SAVED_FILENAME);
+        if (savedThings != null) {
+            myThings.clear();
+            myThings.addAll(savedThings);
+        }
+
+//        ArrayList<Thing> deletedThings = loadArrayListFromFile(DELETED_FILENAME);
+//        if (deletedThings != null) {
+//            zombieThings.clear();
+//            zombieThings.addAll(deletedThings);
+//        }
+    }
+
+    private void saveToFile() {
+        saveArrayListToFile(myThings, SAVED_FILENAME);
+        // saveArrayListToFile(zombieThings, DELETED_FILENAME);
+    }
+
+    // TODO: Use
+    private ArrayList<Thing> loadArrayListFromFile(String filename) {
+        ArrayList<Thing> things = null;
 
         try {
 
             // Initialize BufferedReader using stream from the given file
-            FileInputStream stream = Ctx.get().openFileInput(FILENAME);
+            FileInputStream stream = Ctx.get().openFileInput(filename);
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
             Gson gson = new Gson();
@@ -194,7 +248,7 @@ public class MyThingsDataManager {
             // Parse the Json stored in the file
             Type listType = new TypeToken<ArrayList<Thing>>() {}.getType();
 
-            tempThings = gson.fromJson(reader, listType);
+            things = gson.fromJson(reader, listType);
 
             stream.close();
         } catch (FileNotFoundException e) {
@@ -203,25 +257,23 @@ public class MyThingsDataManager {
             e.printStackTrace();
         }
 
-        if (tempThings != null) {
-            myThings.clear();
-            myThings.addAll(tempThings);
-        }
+        return things;
     }
 
-    private void saveToFile() {
+    private void saveArrayListToFile(ArrayList<Thing> things, String filename) {
+
+        // TODO: Determine if the copies are needed
         ArrayList<Thing> tempThings = new ArrayList<>();
+        tempThings.addAll(things);
 
         try {
 
             // Initialize BufferedWriter using stream from the given file
-            FileOutputStream stream = Ctx.get().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            FileOutputStream stream = Ctx.get().openFileOutput(filename, Context.MODE_PRIVATE);
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
 
             // Write the Json to the given file
             Gson gson = new Gson();
-
-            tempThings.addAll(myThings);
 
             gson.toJson(tempThings, writer);
             writer.flush();

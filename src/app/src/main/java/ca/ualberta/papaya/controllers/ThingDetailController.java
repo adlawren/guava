@@ -13,8 +13,11 @@ import ca.ualberta.papaya.DisplayLocationActivity;
 import ca.ualberta.papaya.EditThingActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.ViewPictureActivity;
+import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
 /**
@@ -84,16 +87,16 @@ public class ThingDetailController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            Thing.delete(new Observer<Thing>() {
+            Observable<Thing> thingObservable = new Observable<>();
+            thingObservable.setData(thing);
+            thingObservable.addObserver(new IObserver<Thing>() {
                 @Override
-                public void update(Thing thing) {
-
-                    // TODO: Remove; test
-                    // System.out.println("[EditThingController.delete] In update.");
+                public void update(Thing data) {
+                    transitionToActivity(context, ThingListActivity.class);
                 }
-            }, Thing.class, thing);
+            });
 
-            transitionToActivity(context, ThingListActivity.class);
+            MyThingsDataManager.getInstance().delete(thingObservable);
 
             return true;
         }

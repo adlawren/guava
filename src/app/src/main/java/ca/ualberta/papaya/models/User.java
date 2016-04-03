@@ -45,6 +45,7 @@ public class User extends ElasticModel {
     private String phone = "";
     private String address1 = "";
     private String address2 = "";
+    private String city = "";
     private String province = null;
     private String country = null;
     private String postal = "";
@@ -102,14 +103,21 @@ public class User extends ElasticModel {
 
     public String getAddress1(){ return address1; }
     public User setAddress1(String address){
-        this.address1 = address1;
+        this.address1 = address;
         changed();
         return this;
     }
 
     public String getAddress2(){ return address2; }
     public User setAddress2(String address){
-        this.address2 = address2;
+        this.address2 = address;
+        changed();
+        return this;
+    }
+
+    public String getCity(){ return city; }
+    public User setCity(String city){
+        this.city = city;
         changed();
         return this;
     }

@@ -1,7 +1,6 @@
 package ca.ualberta.papaya.models;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 
 import com.google.gson.JsonObject;
 
@@ -11,7 +10,6 @@ import org.json.JSONObject;
 import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.interfaces.IObserver;
@@ -54,22 +52,7 @@ public class Thing extends ElasticModel {
 
     private String description = "";
 
-    private Photo photo;
-    private Location location;
-
-    /*
-    public static List<Thing> getMyThings(){
-        return new ArrayList<Thing>();
-    }
-
-    public static List<Thing> getThings(){
-        return (List<Thing>) Thing.search(Thing.class, "{}", null);
-    }
-
-    public static List<Thing> getThings(List<String> keywords){
-        return new ArrayList<Thing>();
-    }
-    */
+    private Photo photo;      // todo: initialize with default blank photo.
 
     public Thing(User owner){
         super();
@@ -77,7 +60,22 @@ public class Thing extends ElasticModel {
         photo = new Photo();
 
         ownerId = owner.getId();
-        //id = UUID.randomUUID().toString();
+    }
+
+    public Thing(Thing otherThing) {
+        super();
+        id = otherThing.id;
+        kind = otherThing.kind;
+
+        ownerId = otherThing.ownerId;
+        borrowerId = otherThing.borrowerId;
+
+        status = otherThing.status;
+
+        title = otherThing.title;
+        description = otherThing.description;
+
+        photo = otherThing.photo;
     }
 
     public void getOwner(IObserver observer){
@@ -167,9 +165,11 @@ public class Thing extends ElasticModel {
             json.put("query", queryJson);
 
             JSONObject termJson = new JSONObject();
-            queryJson.put("term", termJson);
+            queryJson.put("match", termJson);
 
             termJson.put("thingId", getId());
+
+            System.err.println("(getBids) " + json.toString());
 
             Bid.search(observer, Bid.class, json.toString());
 
@@ -195,8 +195,4 @@ public class Thing extends ElasticModel {
     public void setPhoto(Photo newPhoto){
         this.photo = newPhoto;
     }
-
-    public Location getLocation(){return location;}
-    public void setLocation( Location location){this.location = location;}
-
 }

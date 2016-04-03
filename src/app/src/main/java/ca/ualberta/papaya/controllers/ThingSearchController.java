@@ -101,7 +101,7 @@ public class ThingSearchController {
 //                    "[ { \"match\" : { \"status\" : \"AVAILABLE\" } } ] } } }");
 
             // Alternatively:
-            Thing.search(thingListObserver, Thing.class, "{ \"size\" : \"100\", \"query\" : " +
+            Thing.search(thingListObserver, Thing.class, "{ \"size\" : \"500\", \"query\" : " +
                     "{ \"bool\" : { \"must_not\" : [ { \"match\" : { \"ownerId\" : \"" +
                     LocalUser.getId() + "\" } } ], \"must\" : [ { \"match\" : " +
                     "{ \"status\" : \"AVAILABLE\" } } ] } } }");

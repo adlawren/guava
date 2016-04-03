@@ -1,46 +1,31 @@
 package ca.ualberta.papaya;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v7.app.ActionBarActivity;
 
 
 import ca.ualberta.papaya.controllers.ThingListController;
-import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
-import ca.ualberta.papaya.dummy.DummyContent;
-import ca.ualberta.papaya.fixtures.Country;
-import ca.ualberta.papaya.fixtures.Province;
 import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Thing;
-import ca.ualberta.papaya.models.User;
-import ca.ualberta.papaya.data.ThrowawayDataManager;
-import ca.ualberta.papaya.util.Ctx;
 import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * An activity representin
@@ -67,6 +52,9 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
     private int FILTER; //0 all, 1 borrowed,2 bidded
 
+    // TODO: Determine if this is needed
+    private static ArrayList<Thing> thingList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +64,9 @@ public class ThingListActivity extends AbstractPapayaActivity {
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
 
-        View recyclerView = findViewById(R.id.thing_list);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        setupRecyclerView(recyclerView);
 
         ActionBar actionBar = getSupportActionBar();
 //        if (actionBar != null) {
@@ -95,38 +83,18 @@ public class ThingListActivity extends AbstractPapayaActivity {
 
         //updateView();
 
-        // TODO: Remove; test
-//        Observable<ArrayList<Thing>> observable = new Observable<>();
-//        observable.addObserver(new IObserver<ArrayList<Thing>>() {
-//            @Override
-//            public void update(ArrayList<Thing> data) {
-//                // ...
-//            }
-//        });
-//
-//        MyThingsDataManager.getInstance().getData(observable);
-        Observable<Vector<Thing>> observable = new Observable<>();
-        observable.addObserver(new IObserver<Vector<Thing>>() {
+        Observable<ArrayList<Thing>> observable = new Observable<>();
+        observable.addObserver(new IObserver<ArrayList<Thing>>() {
             @Override
-            public void update(Vector<Thing> data) {
-                // ...
+            public void update(ArrayList<Thing> data) {
+                thingList.clear();
+                thingList.addAll(data);
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
 
         MyThingsDataManager.getInstance().getData(observable);
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        // TODO: Remove; test
-//        System.out.println("I'm resuming!");
-//
-//        View recyclerView = findViewById(R.id.thing_list);
-//        assert recyclerView != null;
-//        setupRecyclerView((RecyclerView) recyclerView);
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -160,22 +128,28 @@ public class ThingListActivity extends AbstractPapayaActivity {
     }
 
     private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
-        SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
-        recyclerView.setAdapter(va);
-        Thing.search(new Observer<List<Thing>>() {
-            @Override
-            public void update(List<Thing> things) {
-                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
-                recyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.setAdapter(va);
-                    }
-                });
+        // SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
 
-            }
-        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"match\" : { \"ownerId\" : " +
-                "\"" + LocalUser.getId() + "\" } } }");
+        SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
+        recyclerView.setAdapter(va);
+
+//        Thing.search(new Observer<List<Thing>>() {
+//            @Override
+//            public void update(List<Thing> data) {
+////                thingList.clear();
+////                thingList.addAll(data);
+//
+//                // final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
+//                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
+//                recyclerView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        recyclerView.setAdapter(va);
+//                    }
+//                });
+//            }
+//        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"match\" : { \"ownerId\" : " +
+//                "\"" + LocalUser.getId() + "\" } } }");
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -282,6 +256,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
         }
 
         //Todo put the code to change items per filter here
-
+        // ...
     }
 }

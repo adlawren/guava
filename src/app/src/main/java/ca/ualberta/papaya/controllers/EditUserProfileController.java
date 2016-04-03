@@ -61,6 +61,7 @@ public class EditUserProfileController {
                     user.setPhone(editTexts.get("phone").getText().toString());
                     user.setAddress1(editTexts.get("address1").getText().toString());
                     user.setAddress2(editTexts.get("address2").getText().toString());
+                    user.setCity(editTexts.get("city").getText().toString());
                     user.setProvince(editTexts.get("province").getText().toString());
                     user.setCountry(editTexts.get("country").getText().toString());
                     user.setPostal(editTexts.get("postal").getText().toString());

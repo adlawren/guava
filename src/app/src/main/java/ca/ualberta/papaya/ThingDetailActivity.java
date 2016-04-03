@@ -4,23 +4,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.ualberta.papaya.controllers.ThingDetailController;
 import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
 import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.ElasticModel;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.util.Observable;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * An activity representing a single Thing detail screen. This
@@ -38,6 +47,7 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
     Intent intent = null;
     Thing thing = null;
     //public static final int PHOTO_RESULT = 10;
+    Bitmap picture = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +82,11 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         }
 
         toolbar.setNavigationIcon(R.drawable.ic_action_home);
+
+        View recyclerView = findViewById(R.id.bid_list);
+        assert recyclerView != null;
+        setupRecyclerView((RecyclerView) recyclerView);
+
 
 
 //        FloatingActionButton editItemButton = (FloatingActionButton) findViewById(R.id.editItem);
@@ -126,6 +141,92 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 
         return true;
     }
+
+
+
+
+    private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
+        SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Bid>());
+        recyclerView.setAdapter(va);
+        thing.getBids(new Observer<List<Bid>>() {
+            @Override
+            public void update(List<Bid> bids) {
+                System.err.println("GOT BIDS");
+                System.err.println(bids.size());
+                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(bids);
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(va);
+                    }
+                });
+
+            }
+        });
+    }
+
+    public class SimpleItemRecyclerViewAdapter
+            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+
+        private final List<Bid> mValues;
+
+        public SimpleItemRecyclerViewAdapter(List<Bid> bids) {
+            mValues = bids;
+        }
+
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.bid_list_content, parent, false);
+            return new ViewHolder(view);
+        }
+
+        // method that is called when a Thing in the list is selected.
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+            holder.mItem = mValues.get(position);
+            holder.mIdView.setText(mValues.get(position).toString());
+            holder.mContentView.setText(mValues.get(position).getBidderName());
+
+
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // do nothing on click for now
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mValues.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public final View mView;
+            public final TextView mIdView;
+            public final TextView mContentView;
+            public Bid mItem;
+
+            public ViewHolder(View view) {
+                super(view);
+                mView = view;
+                mIdView = (TextView) view.findViewById(R.id.bid);
+                mContentView = (TextView) view.findViewById(R.id.bidder);
+            }
+
+            @Override
+            public String toString() {
+                return super.toString() + " '" + mContentView.getText() + "'";
+            }
+        }
+    }
+
+
+
+
+
 
     /*
     @Override
