@@ -4,12 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
-import ca.ualberta.papaya.UserProfileActivity;
+import java.math.BigDecimal;
+
+
+import ca.ualberta.papaya.ThingSearchActivity;
+
 import ca.ualberta.papaya.ViewPictureActivity;
-import ca.ualberta.papaya.data.ThrowawayDataManager;
+
+import ca.ualberta.papaya.exceptions.ThingUnavailableException;
+import ca.ualberta.papaya.models.Bid;
+
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Ctx;
+import ca.ualberta.papaya.util.LocalUser;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 14/03/16.
@@ -27,6 +38,11 @@ public class ThingSearchDetailController {
         return ourInstance;
     }
 
+    private void transitionToActivity(Class activityClass) {
+        Intent intent = new Intent(Ctx.get(), activityClass);
+        Ctx.get().startActivity(intent);
+    }
+
     private ThingSearchDetailController() {
     }
 
@@ -35,21 +51,56 @@ public class ThingSearchDetailController {
 
 
         private Thing thing;
+        private EditText bidAmount;
 
-        public UserBidOnClickListener(Thing theThing) {
+        public UserBidOnClickListener(Thing theThing, EditText bidAmountText) {
             thing = theThing;
+            bidAmount = bidAmountText;
+        }
+
+        private BigDecimal parseCurrency(String value){
+            String numeric = value.replaceAll("[^\\d.]+", "");
+            BigDecimal money = BigDecimal.valueOf(Double.parseDouble(numeric))
+                    .setScale(2, BigDecimal.ROUND_HALF_UP);
+            return money;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
+            final BigDecimal money = parseCurrency(bidAmount.getText().toString());
+            LocalUser.getUser(new Observer<User>() {
+                @Override
+                public void update(User bidder) {
+                    BigDecimal cents = BigDecimal.valueOf(100);
+                    Bid bid = new Bid(thing, bidder, money.multiply(cents).intValue());
+
+                    try {
+                        thing.placeBid(bid);
+                        System.err.println("Bid Placed");
+                        bid.publish(new Observer<Bid>() {
+                            @Override
+                            public void update(Bid bidSent) {
+                                // todo: update bid list instead.
+                                System.err.println("Bid Published");
+                                transitionToActivity(ThingSearchActivity.class);
+                            }
+                        });
+
+                    } catch (ThingUnavailableException e){
+                        // todo: toaster
+                        e.printStackTrace();
+                    }
+                }
+            });
+
             return true;
         }
 
     }
 
     // return the onMenuItemListener for user bids
-    public UserBidOnClickListener getUserBidOnClickListener(Thing theThing) {
-        return new UserBidOnClickListener(theThing);
+    public UserBidOnClickListener getUserBidOnClickListener(Thing theThing, EditText bidAmount) {
+        return new UserBidOnClickListener(theThing, bidAmount);
     }
 
 
