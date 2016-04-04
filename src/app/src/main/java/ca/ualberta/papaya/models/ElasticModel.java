@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +37,15 @@ import io.searchbox.core.search.sort.Sort;
  */
 public abstract class ElasticModel extends Observable implements Serializable, IKind {
 
+    private Date lastModified = new Date();
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void resetLastModified() {
+        lastModified = new Date();
+    }
+
     private final String uuid = UUID.randomUUID().toString();
 
     public String getUuid() {
@@ -45,8 +55,8 @@ public abstract class ElasticModel extends Observable implements Serializable, I
     private static JestClient client = null;
 
     // Elastic Search url
-//    private static final String elasticUrl = "http://cmput301.softwareprocess.es:8080/";
-    private static final String elasticUrl = "http://adlawren-papayatest.rhcloud.com/";
+    private static final String elasticUrl = "http://cmput301.softwareprocess.es:8080/";
+//    private static final String elasticUrl = "http://adlawren-papayatest.rhcloud.com/";
 
     // Elastic search index.
     protected static final String index = "papaya";

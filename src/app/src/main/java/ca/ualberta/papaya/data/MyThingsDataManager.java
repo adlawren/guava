@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.util.Ctx;
 import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observable;
@@ -45,7 +46,8 @@ public class MyThingsDataManager {
     // TODO: Remove; used for debugging
     private void printThing(Thing thing) {
         System.out.println("Next thing: id: " + thing.getId() + ", title: " +
-                thing.getTitle() + ", description: " + thing.getDescription());
+                thing.getTitle() + ", description: " + thing.getDescription() + ", status: " +
+                thing.getStatus());
     }
 
     // TODO: Remove; used for debugging
@@ -85,9 +87,30 @@ public class MyThingsDataManager {
     public void update(final Observable<Thing> observable) {
         boolean found = false;
         for (Thing thing : myThings) {
+
+            User user = new User();
+            user.setId(LocalUser.getId());
+
+            Thing testThing = new Thing(user);
+            System.err.println("New thing uuid: " + testThing.getUuid());
+
+            if (thing.getUuid() == null) {
+                System.err.println("IT'S THE THING IN THE LIST");
+            }
+
+            if (observable.getData().getUuid() == null) {
+                System.err.println("It's the thing in the observable");
+            }
+
             if (thing.getUuid().equals(observable.getData().getUuid())) {
-                thing.setTitle(observable.getData().getTitle());
-                thing.setDescription(observable.getData().getDescription());
+                System.out.println("[MyThingsDataManager] Updating Thing with uuid: " + observable.getData().getUuid());
+
+//                thing.setTitle(observable.getData().getTitle());
+//                thing.setDescription(observable.getData().getDescription());
+//                thing.resetLastModified(); // Test
+//                thing.setStatus(observable.getData().getStatus());
+                thing.copyThing(observable.getData());
+                thing.resetLastModified();
 
                 found = true;
                 break;
@@ -139,7 +162,19 @@ public class MyThingsDataManager {
             }
 
             if (index != null) {
-                commonThings.add(uniqueLocalThings.get(index));
+                // commonThings.add(uniqueLocalThings.get(index));
+
+                // TODO: Filter based on last modified time
+                System.out.println("[MyThingsDataManager] Next common thing: ");
+                if (uniqueLocalThings.get(index).getLastModified().getTime() > remoteThing.getLastModified().getTime()) {
+                    printThing(uniqueLocalThings.get(index));
+                    commonThings.add(uniqueLocalThings.get(index));
+
+                } else {
+                    printThing(remoteThing);
+                    commonThings.add(remoteThing);
+                }
+
                 uniqueLocalThings.remove(index);
             } else {
                 int j;

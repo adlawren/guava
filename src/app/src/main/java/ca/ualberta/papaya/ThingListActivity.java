@@ -17,14 +17,19 @@ import android.widget.TextView;
 
 
 import ca.ualberta.papaya.controllers.ThingListController;
+import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.ElasticModel;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -91,11 +96,48 @@ public class ThingListActivity extends AbstractPapayaActivity {
             public void update(ArrayList<Thing> data) {
                 thingList.clear();
                 thingList.addAll(data);
+
+                // TODO: Add borrowed things - DON'T actually neeed this
+//                Observable<ArrayList<Thing>> allThingsObservable = new Observable<>();
+//                allThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+//                    @Override
+//                    public void update(ArrayList<Thing> data) {
+//                        ArrayList<Thing> borrowedThings = new ArrayList<Thing>();
+//
+//                        for (Thing thing : data) {
+//                            if (thing.getBorrowerId() == null) continue;
+//
+//                            if (thing.getBorrowerId().equals(LocalUser.getId())) {
+//                                borrowedThings.add(thing);
+//                            }
+//                        }
+//
+//                        thingList.addAll(borrowedThings);
+//                        recyclerView.getAdapter().notifyDataSetChanged();
+//                    }
+//                });
+//
+//                ThrowawayElasticSearchController.SearchThingTask searchThingTask =
+//                        new ThrowawayElasticSearchController.SearchThingTask(allThingsObservable);
+//                searchThingTask.execute("{ \"size\" : \"500\" }");
+
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
 
         MyThingsDataManager.getInstance().getData(observable);
+
+        // TODO: Remove; test
+        User user = new User();
+        user.setId(LocalUser.getId());
+
+        Thing thing = new Thing(user);
+        thing.getLastModified();
+
+        Date date = thing.getLastModified();
+
+        System.out.println("Date: " + date);
+        System.out.println("Time: " + thing.getLastModified().getTime());
     }
 
     @Override
