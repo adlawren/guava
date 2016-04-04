@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,7 +46,8 @@ public class EditThingActivity extends AbstractPapayaActivity {
         thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
 
         EditText itemNameEditText = (EditText) findViewById(R.id.itemName),
-                descriptionEditText = (EditText) findViewById(R.id.description);
+                descriptionEditText = (EditText) findViewById(R.id.description),
+                subAmountEditText = (EditText) findViewById(R.id.subAmount);
         imageButton = (ImageButton) findViewById(R.id.viewPicture);
 
 
@@ -79,6 +81,10 @@ public class EditThingActivity extends AbstractPapayaActivity {
 
             }
         });
+
+
+        Button subButton = (Button) findViewById(R.id.subButton);
+        //subButton.setOnClickListener(EditThingController.getInstance().getSubOnClickListener());
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -224,4 +225,28 @@ public class EditThingController {
             return true;
         }
     }
+
+//    private class SubOnClickListener implements View.OnClickListener { // implements View.OnClickListener {
+//
+//        private Context context;
+//
+//        private Thing thing;
+//
+//        public SubOnClickListener() {
+//        }
+//
+//        @Override
+//        // public void onClick(View view) {
+//        public boolean onMenuItemClick(MenuItem item) {
+//
+//
+//
+//            return true;
+//        }
+//    }
+//
+//    // return the onClickListener for available
+//    public SubOnClickListener getSubOnClickListener() {
+//        return new SubOnClickListener();
+//    }
 }
