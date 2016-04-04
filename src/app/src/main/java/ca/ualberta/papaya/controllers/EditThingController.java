@@ -265,13 +265,28 @@ public class EditThingController {
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(final View view) {
             BigDecimal amount = parseCurrency(subscriptionEditText.getText().toString());
             thing.addSubscription(amount.multiply(BigDecimal.valueOf(100)).intValue());
             subscriptionEditText.setText("");
-            Toast.makeText(context, "Your item now has a "
-                    + thing.getSubscriptionFormatted()
-                    + " boost!", Toast.LENGTH_SHORT).show();
+
+            Observable<Thing> observable = new Observable<>();
+            observable.setData(thing);
+            observable.addObserver(new IObserver<Thing>() {
+                @Override
+                public void update(Thing data) {
+                    view.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "Your item now has a "
+                                    + thing.getSubscriptionFormatted()
+                                    + " boost!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+            });
+            MyThingsDataManager.getInstance().update(observable);
 
         }
     }
