@@ -2,6 +2,7 @@ package ca.ualberta.papaya;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -166,12 +167,17 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
         // display the Thing that is clicked on in the list. start ThingSearchDetailActivity
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
-            holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
-            holder.mPictureView.setImageBitmap(mValues.get(position).getPhoto().getImage());
+            holder.mIdView.setText(holder.mItem.getTitle()); // .getId()
+            holder.mContentView.setText(holder.mItem .getDescription()); // .getTitle()
+            holder.mPictureView.setImageBitmap(holder.mItem .getPhoto().getImage());
             holder.mBidView.setText("Highest Bid: " );
-            holder.mOwnerView.setText("Owner: " + mValues.get(position).viewOwner());
+            holder.mOwnerView.setText("Owner: " + holder.mItem.viewOwner());
+
+            if(holder.mItem.getSubscription() > 0){
+                holder.mIdView.setTypeface(Typeface.DEFAULT_BOLD);
+            }
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
