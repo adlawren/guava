@@ -18,7 +18,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import ca.ualberta.papaya.controllers.AddThingController;
 
-
 /**
  * Created by bgodley on 27/03/16.
  *
@@ -37,12 +36,8 @@ public class AddPictureActivity extends AbstractPapayaActivity {
     private ImageView image;
     private int UNDO = 0;
 
-
-
-
     public static final String PICTURE_EXTRA = "ca.papaya.ualberta.edit.Picture";
     private static final int REQUEST_CAPTURING_IMAGE = 1234;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +45,6 @@ public class AddPictureActivity extends AbstractPapayaActivity {
         setContentView(R.layout.activity_add_picture);
 
         image = (ImageView) findViewById(R.id.picture);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -146,8 +140,6 @@ public class AddPictureActivity extends AbstractPapayaActivity {
 
             }
         });
-
-
 
         return true;
     }
