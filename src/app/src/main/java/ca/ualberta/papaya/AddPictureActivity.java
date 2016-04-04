@@ -123,25 +123,15 @@ public class AddPictureActivity extends AbstractPapayaActivity {
                 // EITHER CALL THE METHOD HERE OR DO THE FUNCTION DIRECTLY
                 takePic();
                 return true;
-
             case R.id.saveButton:
                 savePic();
                 return true;
-
             case R.id.deleteButton:
                 deletePic();
                 return true;
-
-<<<<<<< HEAD
             default:
                 return super.onOptionsItemSelected(item);
         }
-=======
-            }
-        });
-
-        return true;
->>>>>>> a0f0fcec4112b71cc597e4032b9e8c4ba179a478
     }
 
 //    @Override
