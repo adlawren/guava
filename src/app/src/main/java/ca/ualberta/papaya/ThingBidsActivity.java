@@ -146,10 +146,15 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
-            holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
-            holder.mPictureView.setImageBitmap(mValues.get(position).getPhoto().getImage());
+            holder.mIdView.setText(holder.mItem.getTitle()); // .getId()
+            holder.mContentView.setText(holder.mItem.getDescription()); // .getTitle()
+            holder.mPictureView.setImageBitmap(holder.mItem.getPhoto().getImage());
             holder.mMyBidView.setText("My Bid: ");
+
+
+            //LocalUser.getId();
+
+
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -24,8 +24,11 @@ import java.util.List;
 
 import ca.ualberta.papaya.controllers.ThingSearchController;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observer;
 
@@ -170,10 +173,51 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
 
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(holder.mItem.getTitle()); // .getId()
-            holder.mContentView.setText(holder.mItem .getDescription()); // .getTitle()
-            holder.mPictureView.setImageBitmap(holder.mItem .getPhoto().getImage());
-            holder.mBidView.setText("Highest Bid: " );
-            holder.mOwnerView.setText("Owner: " + holder.mItem.viewOwner());
+            holder.mContentView.setText(holder.mItem.getDescription()); // .getTitle()
+            holder.mPictureView.setImageBitmap(holder.mItem.getPhoto().getImage());
+
+            holder.mBidView.setText("Highest Bid: ");
+            holder.mItem.getBids(new Observer<List<Bid>>() {
+                @Override
+                public void update(List<Bid> bids) {
+                    if(bids.size() == 0){
+                        holder.mBidView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.mBidView.setText("Highest Bid: $0.00");
+                            }
+                        });
+                    } else {
+                        Bid maxBid = bids.get(0);
+                        for(Bid bid : bids){
+                            if(bid.getAmount() > maxBid.getAmount()){
+                                maxBid = bid;
+                            }
+                        }
+                        final Bid theMaxBid = maxBid;
+                        holder.mBidView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.mBidView.setText("Highest Bid: " + theMaxBid.toString());
+                            }
+                        });
+                    }
+                }
+            });
+
+            holder.mOwnerView.setText("Owner: ");
+            holder.mItem.getOwner(new Observer<User>() {
+                @Override
+                public void update(final User owner) {
+                    holder.mOwnerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            holder.mOwnerView.setText("Owner: " + owner.getFullName());
+                        }
+                    });
+                }
+            });
+
 
             if(holder.mItem.getSubscription() > 0){
                 holder.mIdView.setTypeface(Typeface.DEFAULT_BOLD);
