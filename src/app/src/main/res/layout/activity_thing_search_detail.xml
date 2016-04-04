@@ -48,8 +48,9 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/bid_list"
-            android:layout_height="272dp"
+            android:layout_height="265dp"
             android:layout_width="fill_parent"
+            android:layout_marginLeft="10dp"
             android:layout_gravity="left|bottom" />
     </FrameLayout>
 

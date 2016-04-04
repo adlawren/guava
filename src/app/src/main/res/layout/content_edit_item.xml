@@ -28,6 +28,7 @@
         android:layout_below="@+id/textItemName"
         android:textColor="#000000"
         android:background="@drawable/rectangle"
+        android:layout_marginTop="5dp"
         android:layout_alignParentLeft="true" />
 
     <TextView
@@ -37,6 +38,7 @@
         android:id="@+id/textDescription"
         android:layout_below="@+id/itemName"
         android:textColor="#000000"
+        android:layout_marginTop="5dp"
         android:text="Description:" />
 
     <EditText
@@ -47,6 +49,7 @@
         android:layout_below="@+id/textDescription"
         android:textColor="#000000"
         android:background="@drawable/rectangle"
+        android:layout_marginTop="5dp"
         android:layout_alignParentLeft="true" />
 
     <ImageButton

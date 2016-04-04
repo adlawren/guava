@@ -56,6 +56,12 @@
             android:textColor="#000000"
             android:textAppearance="?attr/textAppearanceListItem" />
 
+        <!--http://stackoverflow.com/questions/19115332/android-draw-a-horizontal-line-between-views-->
+        <View
+            android:layout_width="250dp"
+            android:layout_height="2dp"
+            android:background="#c0c0c0"/>
+
 
     </LinearLayout>
 </LinearLayout>
