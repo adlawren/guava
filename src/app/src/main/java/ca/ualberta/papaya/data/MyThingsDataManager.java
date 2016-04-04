@@ -199,6 +199,20 @@ public class MyThingsDataManager {
         deletedThingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
             @Override
             public void update(ArrayList<Thing> data) {
+                ArrayList<Thing> tempThings = new ArrayList<>();
+                tempThings.addAll(zombieThings);
+
+                for (Thing thing : data) {
+                    for (int i = 0; i < tempThings.size(); ++i) {
+                        if (tempThings.get(i).getUuid().equals(thing.getUuid())) {
+                            tempThings.remove(i);
+                            break;
+                        }
+                    }
+                }
+
+                zombieThings.clear();
+                zombieThings.addAll(tempThings);
             }
         });
 
@@ -220,16 +234,16 @@ public class MyThingsDataManager {
             myThings.addAll(savedThings);
         }
 
-//        ArrayList<Thing> deletedThings = loadArrayListFromFile(DELETED_FILENAME);
-//        if (deletedThings != null) {
-//            zombieThings.clear();
-//            zombieThings.addAll(deletedThings);
-//        }
+        ArrayList<Thing> deletedThings = loadArrayListFromFile(DELETED_FILENAME);
+        if (deletedThings != null) {
+            zombieThings.clear();
+            zombieThings.addAll(deletedThings);
+        }
     }
 
     private void saveToFile() {
         saveArrayListToFile(myThings, SAVED_FILENAME);
-        // saveArrayListToFile(zombieThings, DELETED_FILENAME);
+        saveArrayListToFile(zombieThings, DELETED_FILENAME);
     }
 
     // TODO: Use

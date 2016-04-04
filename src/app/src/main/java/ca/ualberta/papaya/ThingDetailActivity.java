@@ -189,8 +189,6 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).toString());
             holder.mContentView.setText(mValues.get(position).getBidderName());
-
-
             holder.mView.setOnClickListener(
                     ThingDetailController.getInstance()
                         .getBidOnClickListener(thing, holder.mItem)

@@ -166,8 +166,6 @@ public class ThingDetailController {
 
             context.startActivity(intent);
         }
-
-
     }
 
     // return the onMenuItemListener for user bids
