@@ -150,4 +150,8 @@ public class Bid extends ElasticModel {
         }
     }
 
+    protected void onDelete(){
+        // no op
+    }
+
 }

@@ -2,6 +2,7 @@ package ca.ualberta.papaya.models;
 
 import android.graphics.Bitmap;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -52,7 +53,25 @@ public class Thing extends ElasticModel {
 
     private String description = "";
 
-    private Photo photo;      // todo: initialize with default blank photo.
+
+    private transient LatLng location = null;
+
+    /*
+    public static List<Thing> getMyThings(){
+        return new ArrayList<Thing>();
+    }
+
+    public static List<Thing> getThings(){
+        return (List<Thing>) Thing.search(Thing.class, "{}", null);
+    }
+
+    public static List<Thing> getThings(List<String> keywords){
+        return new ArrayList<Thing>();
+    }
+    */
+
+    private Photo photo;
+
 
     public Thing(User owner){
         super();
@@ -88,18 +107,18 @@ public class Thing extends ElasticModel {
     }
 
     public Thing setOwner(User owner){
-        ownerId = owner.getId();
+        this.ownerId = owner.getId();
         this.owner = owner;
         changed();
         return this;
     }
 
     public void getBorrower(IObserver observer){
-        User.getById(observer, kind, borrowerId);
+        User.getById(observer, User.class, borrowerId);
         // TODO: memoize
     }
     public Thing setBorrower(User borrower){
-        borrowerId = borrower.getId();
+        this.borrowerId = borrower.getId();
         this.borrower = borrower;
         changed();
         return this;
@@ -195,4 +214,27 @@ public class Thing extends ElasticModel {
     public void setPhoto(Photo newPhoto){
         this.photo = newPhoto;
     }
+
+
+    public LatLng getLocation(){return location;}
+    public void setLocation( LatLng location){this.location = location;}
+
+
+    public void onDelete(){
+        getBids(new Observer<List<Bid>>() {
+            @Override
+            public void update(List<Bid> bids) {
+                for (final Bid bid : bids){
+                    Bid.delete(new Observer<Bid>() {
+                        @Override
+                        public void update(Bid deletedBid) {
+                            System.err.println("Deleted bid associated to thing: " + bid.getId());
+                        }
+                    }, Bid.class, bid);
+                }
+            }
+        });
+    }
+
+
 }

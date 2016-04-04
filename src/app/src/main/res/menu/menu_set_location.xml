@@ -2,25 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/editItem"
+        android:id="@+id/saveLocation"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="Save Changes">
+        android:title="Save" >
     </item>
 
     <item
-        android:id="@+id/available"
+        android:id="@+id/deleteLocation"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="Set to Available">
+        android:title="delete">
     </item>
 
-    <item
-        android:id="@+id/location"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom"
-        android:title="Set Location">
-    </item>
 
 
 </menu>

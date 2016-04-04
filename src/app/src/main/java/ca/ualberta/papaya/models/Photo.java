@@ -64,4 +64,8 @@ public class Photo extends ElasticModel {
         }
         return image;
     }
+
+    public void onDelete(){
+        // no op (for now, if split to seperate storage will have to remove references to it on things.)
+    }
 }

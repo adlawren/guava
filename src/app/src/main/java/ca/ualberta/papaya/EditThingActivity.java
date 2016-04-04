@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ca.ualberta.papaya.controllers.EditThingController;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
@@ -30,6 +32,7 @@ public class EditThingActivity extends AbstractPapayaActivity {
     Thing thing = null;
     public static final int PHOTO_RESULT = 10;
     Bitmap picture = null;
+    LatLng location = null;
 
     ImageButton imageButton;
 
@@ -97,12 +100,10 @@ public class EditThingActivity extends AbstractPapayaActivity {
 
 
         menu.findItem(R.id.editItem).setOnMenuItemClickListener(EditThingController.getInstance()
-                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, imageButton));
-        //menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
+                .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, imageButton, location));
+        menu.findItem(R.id.location).setOnMenuItemClickListener(EditThingController.getInstance()
+                .getSetLocationOnClickListener(this, thing ));
 
-                //bgodley: i still have to do fiddle with this
-                //.getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, picture));
-                //.getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText));
 
 
         return true;
@@ -153,7 +154,12 @@ public class EditThingActivity extends AbstractPapayaActivity {
                 thing.setPhoto(photo);
 
             }
+        } else if( requestCode == SetLocationActivity.LOCATION_RESULT){
+            if (resultCode == RESULT_OK) {
+                location = data.getParcelableExtra(SetLocationActivity.LATLNG_EXTRA);
+
+            }
         }
     }
-//Todo picture doesn't work
+
 }

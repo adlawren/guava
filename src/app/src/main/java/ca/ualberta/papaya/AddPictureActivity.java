@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ca.ualberta.papaya.controllers.AddThingController;
 
 
@@ -113,12 +115,7 @@ public class AddPictureActivity extends AbstractPapayaActivity {
         updateView();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_picture, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -177,7 +174,7 @@ public class AddPictureActivity extends AbstractPapayaActivity {
 
     //save the newly taken picture and update the view
     @Override
-    protected void onActivityResult( int requestCode, int resultCode, Intent intent){
+    protected void onActivityResult( int requestCode, int resultCode, Intent data){
         if(requestCode == REQUEST_CAPTURING_IMAGE && resultCode == RESULT_OK){
             Bundle extras  = intent.getExtras();
             picture = (Bitmap) extras.get("data");
@@ -186,11 +183,12 @@ public class AddPictureActivity extends AbstractPapayaActivity {
 
         }
     }
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+

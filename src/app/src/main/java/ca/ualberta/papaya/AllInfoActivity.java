@@ -1,0 +1,86 @@
+package ca.ualberta.papaya;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.widget.TextView;
+
+import ca.ualberta.papaya.controllers.AllInfoController;
+import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Observer;
+
+/**
+ * Created by Nfs91 on 2016-04-03.
+ */
+public class AllInfoActivity extends AbstractPapayaActivity {
+
+    public static final String THING_EXTRA = "ca.papaya.ualberta.thing.search.detail.thing.extra";
+
+    private Thing thing;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_all_info);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
+
+        Intent intent = getIntent();
+        thing = (Thing) intent.getSerializableExtra(THING_EXTRA);
+
+        if (thing != null) {
+
+            TextView itemInformationTextView = (TextView) findViewById(R.id.thing_detail);
+            itemInformationTextView.setText(thing.getDescription());
+
+            thing.getOwner(new Observer<User>() {
+                @Override
+                public void update(final User owner) {
+                    final TextView userInformationTextView = (TextView) findViewById(R.id.userInfo);
+                    userInformationTextView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            userInformationTextView.setText(owner.getFullName());
+                            userInformationTextView.setOnClickListener(AllInfoController.getInstance()
+                                    .getUserInfoOnClickListener(owner));
+                        }
+                    });
+                }
+            }); // todo: add proper search query
+
+        } else {
+            System.err.print("No thing specified!!? (AllInfoActivity)");
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_thing_search_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        
+        menu.findItem(R.id.searchPictureView).setOnMenuItemClickListener(AllInfoController.getInstance()
+                .getImageOnClickListener(this, thing));
+
+        return true;
+    }
+
+}

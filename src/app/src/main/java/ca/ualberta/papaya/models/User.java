@@ -198,5 +198,9 @@ public class User extends ElasticModel {
         return getFullName();
     }
 
+    public void onDelete() {
+        // no op. no way to delete a user right now.
+    }
+
 }
 

@@ -61,6 +61,8 @@ public class Tag extends ElasticModel {
         }
     }
 
-
+    public void onDelete(){
+        // no op (for now, will need to remove references from things if implemented)
+    }
 
 }

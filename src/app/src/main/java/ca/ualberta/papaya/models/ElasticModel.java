@@ -62,6 +62,10 @@ public abstract class ElasticModel extends Observable implements Serializable, I
 
     public abstract void setId(String newId);
 
+
+    // cleanup actions to run before this item is removed.
+    protected abstract void onDelete();
+
     // is this model supposed to be pushed to database?
 
     // TODO: Sort out
@@ -214,6 +218,8 @@ public abstract class ElasticModel extends Observable implements Serializable, I
             public void run() {
                 try {
                     System.out.println("[ElasticModel.delete] id: " + model.getId());
+
+                    model.onDelete();
 
                     Delete delete = new Delete.Builder(model.getId()).index(index)
                             .type(typeName(kind)).build();

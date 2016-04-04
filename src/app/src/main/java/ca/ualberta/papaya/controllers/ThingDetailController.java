@@ -2,9 +2,12 @@ package ca.ualberta.papaya.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -217,8 +220,9 @@ public class ThingDetailController {
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
             Intent intent = new Intent(context, DisplayLocationActivity.class);
-            //Todo put in the right data
-            //intent.putExtra(ViewPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
+            LatLng location = thing.getLocation();
+
+            intent.putExtra(DisplayLocationActivity.LATLNG_EXTRA, location);
 
             context.startActivity(intent);
 
