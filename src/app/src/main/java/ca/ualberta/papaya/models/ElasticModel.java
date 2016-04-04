@@ -232,6 +232,7 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                 "ERROR: REST delete unsuccessful.");
                     } else {
                         System.out.println("YAY!");
+                        observer.update(null);
                     }
                 } catch (IOException e){
                     // Todo: make more robust
