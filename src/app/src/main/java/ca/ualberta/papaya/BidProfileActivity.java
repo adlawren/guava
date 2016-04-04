@@ -64,22 +64,11 @@ public class BidProfileActivity extends AbstractPapayaActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        toolbar.setNavigationIcon(R.drawable.ic_action_home);
+
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        System.err.println("I AM THERE");
-        if(item.getItemId() == android.R.id.home){
 
-            System.err.println("I AM HERE");
-            Intent intent = NavUtils.getParentActivityIntent(this);
-            intent.putExtra(ThingDetailActivity.THING_EXTRA, thing);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            NavUtils.navigateUpTo(this, intent);
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,11 +83,11 @@ public class BidProfileActivity extends AbstractPapayaActivity {
 
         menu.findItem(R.id.accept).setOnMenuItemClickListener(
                 BidProfileController.getInstance()
-                    .getAcceptOnClickListener(this, bid));
+                        .getAcceptOnClickListener(this, bid));
 
         menu.findItem(R.id.decline).setOnMenuItemClickListener(
                 BidProfileController.getInstance()
-                    .getDeclineOnClickListener(this, bid));
+                        .getDeclineOnClickListener(this, bid));
 
 
         return true;
