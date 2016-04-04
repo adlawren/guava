@@ -73,7 +73,8 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
 
 
         TextView thingDetailTextView = (TextView) findViewById(R.id.thing_detail);
-        thingDetailTextView.setText("Detail: " + thing.getDescription());
+        thingDetailTextView.setText("Title: " + thing.getTitle() +"\n" + "Details: "
+                + thing.getDescription() + "\n" + "Status: " + thing.getStatus().toString());
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -107,18 +108,18 @@ public class ThingDetailActivity extends AbstractPapayaActivity {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(ThingDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ThingDetailFragment.ARG_ITEM_ID));
-            ThingDetailFragment fragment = new ThingDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.thing_detail_container, fragment)
-                    .commit();
-        }
+//        if (savedInstanceState == null) {
+//            // Create the detail fragment and add it to the activity
+//            // using a fragment transaction.
+//            Bundle arguments = new Bundle();
+//            arguments.putString(ThingDetailFragment.ARG_ITEM_ID,
+//                    getIntent().getStringExtra(ThingDetailFragment.ARG_ITEM_ID));
+//            ThingDetailFragment fragment = new ThingDetailFragment();
+//            fragment.setArguments(arguments);
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.thing_detail_container, fragment)
+//                    .commit();
+//        }
     }
 
     @Override
