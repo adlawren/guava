@@ -3,6 +3,7 @@ package ca.ualberta.papaya.models;
 import android.graphics.Bitmap;
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -55,7 +56,7 @@ public class Thing extends ElasticModel {
     private String description = "";
 
     private Photo photo;
-    private Location location;
+    private transient LatLng location = null;
 
     /*
     public static List<Thing> getMyThings(){
@@ -192,7 +193,7 @@ public class Thing extends ElasticModel {
         this.photo = newPhoto;
     }
 
-    public Location getLocation(){return location;}
-    public void setLocation( Location location){this.location = location;}
+    public LatLng getLocation(){return location;}
+    public void setLocation( LatLng location){this.location = location;}
 
 }

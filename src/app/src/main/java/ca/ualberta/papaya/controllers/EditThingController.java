@@ -5,13 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ca.ualberta.papaya.AddPictureActivity;
+import ca.ualberta.papaya.DisplayLocationActivity;
+import ca.ualberta.papaya.SetLocationActivity;
 import ca.ualberta.papaya.ThingListActivity;
+import ca.ualberta.papaya.ViewPictureActivity;
 import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
@@ -49,6 +55,7 @@ public class EditThingController {
         private Context context;
 
         private Thing thing;
+        private LatLng location;
 
 
         private EditText itemNameEditText, descriptionEditText;
@@ -58,10 +65,12 @@ public class EditThingController {
                                        Thing initialThing,
                                        EditText initialItemNameEditText,
                                        EditText initialDescriptionEditText,
-                                       ImageButton initialImageView ) {
+                                       ImageButton initialImageView,
+                                       LatLng initialLocation) {
             context = initialContext;
 
             thing = initialThing;
+            location = initialLocation;
 
             itemNameEditText = initialItemNameEditText;
             descriptionEditText = initialDescriptionEditText;
@@ -80,6 +89,7 @@ public class EditThingController {
             Photo photo = new Photo();
             photo.setImage(image);
             thing.setPhoto(photo);
+            thing.setLocation(location);
 
 
 
@@ -99,9 +109,9 @@ public class EditThingController {
                                                               Thing initialThing,
                                                               EditText initialItemNameEditText,
                                                               EditText initialDescriptionEditText,
-                                                              ImageButton initialImageView) {
+                                                              ImageButton initialImageView, LatLng initialLocation) {
         return new EditItemOnClickListener(initialContext, initialThing, initialItemNameEditText,
-                initialDescriptionEditText, initialImageView);
+                initialDescriptionEditText, initialImageView, initialLocation);
     }
 
     // Button to change a Thing back to available once it is no being borrowed anymore
@@ -132,6 +142,40 @@ public class EditThingController {
     // return the onClickListener for available
     public AvailableOnClickListener getAvailableOnClickListener(Context initialContext, Thing initialThing) {
         return new AvailableOnClickListener(initialContext, initialThing);
+    }
+
+
+    // Button to change a Thing back to available once it is no being borrowed anymore
+    private class SetLocationOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+
+        private Context context;
+
+        private Thing thing;
+
+        public SetLocationOnClickListener(Context initialContext, Thing initialThing) {
+            context = initialContext;
+            thing = initialThing;
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent intent = new Intent(context, SetLocationActivity.class);
+            LatLng location = thing.getLocation();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(SetLocationActivity.LATLNG_EXTRA, location);
+            intent.putExtras(bundle);
+
+
+            context.startActivity(intent);
+
+            return true;
+        }
+    }
+
+    // return the onClickListener for available
+    public SetLocationOnClickListener getSetLocationOnClickListener(Context initialContext, Thing initialThing) {
+        return new SetLocationOnClickListener(initialContext, initialThing);
     }
 
 

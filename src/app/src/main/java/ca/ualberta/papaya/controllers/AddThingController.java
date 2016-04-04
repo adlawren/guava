@@ -9,7 +9,10 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ca.ualberta.papaya.AddPictureActivity;
+import ca.ualberta.papaya.SetLocationActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
@@ -44,13 +47,16 @@ public class AddThingController {
         private Context context;
         private EditText itemNameEditText, descriptionEditText;
         private ImageView imageView;
+        private LatLng location;
 
         public SaveOnClickListener(Context initialContext, EditText initialItemNameEditText,
-                                   EditText initialDescriptionEditText, ImageView initialImageView) {
+                                   EditText initialDescriptionEditText, ImageView initialImageView,
+                                    LatLng initialLocation) {
             context = initialContext;
             itemNameEditText = initialItemNameEditText;
             descriptionEditText = initialDescriptionEditText;
             imageView = initialImageView;
+            location = initialLocation;
 
         }
 
@@ -77,6 +83,7 @@ public class AddThingController {
                     Photo photo = new Photo();
                     photo.setImage(image);
                     thing.setPhoto(photo);
+                    thing.setLocation(location);
 
                     thing.publish();
 
@@ -92,9 +99,9 @@ public class AddThingController {
     public SaveOnClickListener getSaveOnClickListener(Context initialContext,
                                                       EditText initialItemNameEditText,
                                                       EditText initialDescriptionEditText,
-                                                      ImageView imageView ) {
+                                                      ImageView imageView , LatLng initialLocation) {
         return new SaveOnClickListener(initialContext, initialItemNameEditText,
-                initialDescriptionEditText, imageView);
+                initialDescriptionEditText, imageView, initialLocation);
     }
 
     private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
@@ -124,5 +131,34 @@ public class AddThingController {
     // return the onClickListener for setPicture
     public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Bitmap initialImage) {
         return new SetPictureOnClickListener(initialContext, initialImage);
+    }
+
+    // Button to change a Thing back to available once it is no being borrowed anymore
+    private class SetLocationOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+
+        private Context context;
+
+        private LatLng location;
+
+        public SetLocationOnClickListener(Context initialContext, LatLng initialLocation) {
+            context = initialContext;
+            location = initialLocation;
+        }
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent intent = new Intent(context, SetLocationActivity.class);
+            intent.putExtra(SetLocationActivity.LATLNG_EXTRA, location);
+
+            context.startActivity(intent);
+
+            return true;
+        }
+    }
+
+    // return the onClickListener for available
+    public SetLocationOnClickListener getSetLocationOnClickListener(Context initialContext, LatLng initialLocation) {
+        return new SetLocationOnClickListener(initialContext, initialLocation);
     }
 }

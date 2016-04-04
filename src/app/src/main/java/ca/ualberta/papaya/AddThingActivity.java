@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ca.ualberta.papaya.controllers.AddThingController;
 import ca.ualberta.papaya.controllers.EditThingController;
 import ca.ualberta.papaya.controllers.ThingListController;
@@ -31,6 +33,7 @@ public class AddThingActivity extends AbstractPapayaActivity {
     private Bitmap picture = null;
     public static final int PHOTO_RESULT = 10;
     ImageView imageView;
+    private LatLng location = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,9 @@ public class AddThingActivity extends AbstractPapayaActivity {
                 descriptionEditText = (EditText) findViewById(R.id.description);
 
         menu.findItem(R.id.addItem).setOnMenuItemClickListener(AddThingController.getInstance()
-                .getSaveOnClickListener(this, itemNameEditText, descriptionEditText, imageView));
+                .getSaveOnClickListener(this, itemNameEditText, descriptionEditText, imageView, location));
+        menu.findItem(R.id.location).setOnMenuItemClickListener(AddThingController.getInstance()
+                .getSetLocationOnClickListener(this, location));
 
 
         return true;
@@ -93,6 +98,11 @@ public class AddThingActivity extends AbstractPapayaActivity {
                 picture = data.getParcelableExtra(AddPictureActivity.PICTURE_EXTRA);
                 ImageButton imageButton =(ImageButton) findViewById(R.id.viewPicture);
                 imageButton.setImageBitmap(picture);
+            }
+        } else if( requestCode == SetLocationActivity.LOCATION_RESULT){
+            if (resultCode == RESULT_OK) {
+                location = data.getParcelableExtra(SetLocationActivity.LATLNG_EXTRA);
+
             }
         }
     }
