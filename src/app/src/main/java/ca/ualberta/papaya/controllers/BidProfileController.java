@@ -9,9 +9,12 @@ import ca.ualberta.papaya.EditThingActivity;
 import ca.ualberta.papaya.ThingDetailActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.ViewPictureActivity;
+import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
 /**
@@ -57,12 +60,20 @@ public class BidProfileController {
         public boolean onMenuItemClick(MenuItem item) {
             bid.getThing(new Observer<Thing>() {
                 @Override
-                public void update(Thing thething) {
+                public void update(Thing theThing) {
                     try {
+                        System.err.println("[BidProfileController] Thing");
+                        System.out.println("Thing: id: " + theThing.getId() + ", uuid: " + theThing.getUuid()
+                                + ", title: " + theThing.getTitle() + ", description: " + theThing.getDescription());
+
                         thing.acceptBid(bid);
+
+                        // try { Thread.sleep(5); } catch ( InterruptedException e ){} // fix update on return
+
+                        // TODO: Send email
+                        // ...
+
                         transitionToActivity(context, ThingListActivity.class);
-
-
                     } catch (ThingUnavailableException e){
                         e.printStackTrace();
                     }
@@ -98,14 +109,15 @@ public class BidProfileController {
                 @Override
                 public void update(Bid deletedBid) {
                     try { Thread.sleep(1); } catch ( InterruptedException e ){} // fix update on return
+
+                    // TODO: Send email
+                    // ...
+
                     Intent intent = new Intent(context, ThingDetailActivity.class);
                     intent.putExtra(ThingDetailActivity.THING_EXTRA, thing);
                     context.startActivity(intent);
-
                 }
             }, Bid.class, bid);
-
-
 
             return true;
         }

@@ -148,7 +148,21 @@ public class EditThingController {
             // TODO: Implement
             System.err.println("TODO: Implement AvailableOnClickListener");
 
-            // ...
+            System.err.println("[EditThingController] Thing uuid: " + thing.getUuid());
+
+            thing.setStatus(Thing.Status.AVAILABLE);
+//            thing.setBorrowerId(null);
+
+            Observable<Thing> observable = new Observable<>();
+            observable.setData(thing);
+            observable.addObserver(new IObserver<Thing>() {
+                @Override
+                public void update(Thing data) {
+                    transitionToActivity(context, ThingListActivity.class);
+                }
+            });
+
+            MyThingsDataManager.getInstance().update(observable);
 
             return true;
         }

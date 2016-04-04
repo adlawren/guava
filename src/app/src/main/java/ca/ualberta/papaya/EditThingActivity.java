@@ -108,9 +108,9 @@ public class EditThingActivity extends AbstractPapayaActivity {
         menu.findItem(R.id.editItem).setOnMenuItemClickListener(EditThingController.getInstance()
                 .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, imageButton, location));
         menu.findItem(R.id.location).setOnMenuItemClickListener(EditThingController.getInstance()
-                .getSetLocationOnClickListener(this, thing ));
-
-
+                .getSetLocationOnClickListener(this, thing));
+        menu.findItem(R.id.available).setOnMenuItemClickListener(EditThingController.getInstance()
+                .getAvailableOnClickListener(this, thing));
 
         return true;
     }

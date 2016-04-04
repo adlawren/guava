@@ -32,8 +32,8 @@ public class ThrowawayElasticSearchController {
     private static void verifyConfiguration() {
         if (client == null) {
             DroidClientConfig.Builder builder = new DroidClientConfig.Builder(
-//                    "http://cmput301.softwareprocess.es:8080/");
-                    "http://adlawren-papayatest.rhcloud.com/");
+                    "http://cmput301.softwareprocess.es:8080/");
+//                    "http://adlawren-papayatest.rhcloud.com/");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
@@ -153,6 +153,13 @@ public class ThrowawayElasticSearchController {
         @Override
         public void onPostExecute(ArrayList<Thing> things) {
             super.onPostExecute(things);
+
+            System.out.println("[ThrowawayElasticSearchController] Retrieved things:");
+            for (Thing thing : things) {
+                System.out.println("Next thing: id: " + thing.getId() + ", uuid: " + thing.getUuid()
+                        + ", title: " + thing.getTitle() + ", description: " + thing.getDescription());
+            }
+
             observable.setData(things);
         }
     }
@@ -171,6 +178,9 @@ public class ThrowawayElasticSearchController {
 
             ArrayList<Thing> updated = new ArrayList<>();
             for (Thing toUpdate : things) {
+                System.out.println("[ThrowawayElasticSearchController] Next thing:");
+                System.out.println("Status: " + toUpdate.getStatus());
+
                 Index index = new Index.Builder(toUpdate).index(INDEX).id(toUpdate.getId()).type("thing").build();
                 try {
                     DocumentResult execute = client.execute(index);

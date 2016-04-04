@@ -12,8 +12,12 @@ import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
+import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.util.LocalUser;
+import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 import io.searchbox.annotations.JestId;
 
@@ -24,6 +28,11 @@ import io.searchbox.annotations.JestId;
  * @see ElasticModel
  */
 public class Thing extends ElasticModel {
+
+    public Thing getThing() {
+        return this;
+    }
+
     @JestId
     protected String id;
 
@@ -44,6 +53,14 @@ public class Thing extends ElasticModel {
 
     private String borrowerId;
     private transient User borrower;
+
+    public String getBorrowerId() {
+        return borrowerId;
+    }
+
+    public void setBorrowerId(String newId) {
+        id = newId;
+    }
 
     private String title = "";
 
@@ -97,6 +114,21 @@ public class Thing extends ElasticModel {
         photo = otherThing.photo;
     }
 
+    public void copyThing(Thing otherThing) {
+        id = otherThing.id;
+        kind = otherThing.kind;
+
+        ownerId = otherThing.ownerId;
+        borrowerId = otherThing.borrowerId;
+
+        status = otherThing.status;
+
+        title = otherThing.title;
+        description = otherThing.description;
+
+        photo = otherThing.photo;
+    }
+
     public void getOwner(IObserver observer){
         User.getById(observer, User.class, ownerId);
         // TODO: memoize
@@ -133,6 +165,10 @@ public class Thing extends ElasticModel {
 
     public Status getStatus(){ return this.status; }
 
+    public void setStatus(Status newStatus) {
+        status = newStatus;
+    }
+
     /*
     public List<Tag> getTags(){ return new ArrayList<>(this.tags); }
     public Thing addTag(Tag tag){
@@ -159,13 +195,63 @@ public class Thing extends ElasticModel {
     }
 
     public Thing acceptBid(Bid bid) throws ThingUnavailableException {
+        final Thing toUpdate = this;
+
         if (status == Status.AVAILABLE) {
             bid.getBidder(new Observer<User>() {
                 @Override
                 public void update(User bidder) {
+
+                    System.out.println("[Thing] Bidder: id: " + bidder.getId() + ", name: " +
+                            bidder.getName());
+
                     setBorrower(bidder);
                     status = Status.BORROWED;
-                    changed();
+
+                    // Needed?
+                    // toUpdate.setBorrower(bidder);
+                    toUpdate.borrowerId = bidder.getId();
+                    toUpdate.status = Status.BORROWED;
+
+                    resetLastModified();
+
+                    // changed();
+                    // publish(); // test
+
+//                    Observable<ArrayList<Thing>> observable = new Observable<>();
+//                    observable.addObserver(new IObserver<ArrayList<Thing>>() {
+//                        @Override
+//                        public void update(ArrayList<Thing> data) {
+//                            System.out.println("[Thing] Updated thing:");
+//                            for (Thing updated :data) {
+//                                System.out.println("Thing: id: " + updated.getId() + ", uuid: " +
+//                                        updated.getUuid() + ", title: " + updated.getTitle() +
+//                                        ", description: " + updated.getDescription() +
+//                                        ", status: " + updated.getStatus());
+//
+//                                // ASSUMPTION: There is at least one item
+//                                // status = updated.getStatus();
+//                                // ...
+//                            }
+//                        }
+//                    });
+//
+//                    ThrowawayElasticSearchController.UpdateThingTask updateThingTask =
+//                            new ThrowawayElasticSearchController.UpdateThingTask(observable);
+//                    updateThingTask.execute(getThing());
+
+                    System.err.println("toUpdate status: " + toUpdate.status);
+
+                    Observable<Thing> observable = new Observable<>();
+                    observable.setData(toUpdate);
+                    observable.addObserver(new IObserver<Thing>() {
+                        @Override
+                        public void update(Thing data) {
+                            System.err.println("data status: " + data.status);
+                        }
+                    });
+
+                    MyThingsDataManager.getInstance().update(observable);
                 }
             });
             return this;
