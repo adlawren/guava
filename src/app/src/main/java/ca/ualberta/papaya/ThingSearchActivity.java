@@ -2,6 +2,7 @@ package ca.ualberta.papaya;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -23,8 +24,11 @@ import java.util.List;
 
 import ca.ualberta.papaya.controllers.ThingSearchController;
 import ca.ualberta.papaya.data.ThrowawayDataManager;
+import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observer;
 
@@ -141,7 +145,8 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
                     }
                 });
             }
-        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"bool\" : { \"must_not\" : " +
+        }, Thing.class, "{ \"size\" : \"500\", \"sort\" : { \"subscription\" : {\"order\" : \"desc\"} }, " +
+                "\"query\" : { \"bool\" : { \"must_not\" : " +
                 "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ], \"must\" : " +
                 "[ { \"match\" : { \"status\" : \"AVAILABLE\" } } ] } } }");
     }
@@ -165,12 +170,58 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
         // display the Thing that is clicked on in the list. start ThingSearchDetailActivity
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
-            holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
-            holder.mPictureView.setImageBitmap(mValues.get(position).getPhoto().getImage());
-            holder.mBidView.setText("Highest Bid: " );
-            holder.mOwnerView.setText("Owner: " + mValues.get(position).viewOwner());
+            holder.mIdView.setText(holder.mItem.getTitle()); // .getId()
+            holder.mContentView.setText(holder.mItem.getDescription()); // .getTitle()
+            holder.mPictureView.setImageBitmap(holder.mItem.getPhoto().getImage());
+
+            holder.mBidView.setText("Highest Bid: ");
+            holder.mItem.getBids(new Observer<List<Bid>>() {
+                @Override
+                public void update(List<Bid> bids) {
+                    if(bids.size() == 0){
+                        holder.mBidView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.mBidView.setText("Highest Bid: $0.00");
+                            }
+                        });
+                    } else {
+                        Bid maxBid = bids.get(0);
+                        for(Bid bid : bids){
+                            if(bid.getAmount() > maxBid.getAmount()){
+                                maxBid = bid;
+                            }
+                        }
+                        final Bid theMaxBid = maxBid;
+                        holder.mBidView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.mBidView.setText("Highest Bid: " + theMaxBid.toString());
+                            }
+                        });
+                    }
+                }
+            });
+
+            holder.mOwnerView.setText("Owner: ");
+            holder.mItem.getOwner(new Observer<User>() {
+                @Override
+                public void update(final User owner) {
+                    holder.mOwnerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            holder.mOwnerView.setText("Owner: " + owner.getFullName());
+                        }
+                    });
+                }
+            });
+
+
+            if(holder.mItem.getSubscription() > 0){
+                holder.mIdView.setTypeface(Typeface.DEFAULT_BOLD);
+            }
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
