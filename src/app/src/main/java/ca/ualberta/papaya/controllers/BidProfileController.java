@@ -82,7 +82,7 @@ public class BidProfileController {
                                 Intent i = new Intent(Intent.ACTION_SEND);
                                 i.setType("message/rfc822");
                                 i.putExtra(Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
-                                i.putExtra(Intent.EXTRA_SUBJECT, "Someone has accepted your bid!!!");
+                                i.putExtra(Intent.EXTRA_SUBJECT, "Your bid has been accepted!!!");
                                 i.putExtra(Intent.EXTRA_TEXT, "Congratulations! " +
                                         "Your bid for the " + thing.getTitle() + " item, with a " +
                                         "value of " + bid.getAmount() + " has been accepted!");
@@ -132,7 +132,25 @@ public class BidProfileController {
                     try { Thread.sleep(1); } catch ( InterruptedException e ){} // fix update on return
 
                     // TODO: Send email
-                    // ...
+                    bid.getBidder(new IObserver() {
+                        @Override
+                        public void update(Object data) {
+                            User user = (User) data;
+
+                            // Taken from http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application
+                            Intent i = new Intent(Intent.ACTION_SEND);
+                            i.setType("message/rfc822");
+                            i.putExtra(Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
+                            i.putExtra(Intent.EXTRA_SUBJECT, "Your bid has been rejected!!!");
+                            i.putExtra(Intent.EXTRA_TEXT, "Your bid for the " + thing.getTitle() + " item, with a " +
+                                    "value of " + bid.getAmount() + " has been rejected!");
+                            try {
+                                context.startActivity(Intent.createChooser(i, "Send mail..."));
+                            } catch (android.content.ActivityNotFoundException ex) {
+                                Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
                     Intent intent = new Intent(context, ThingDetailActivity.class);
                     intent.putExtra(ThingDetailActivity.THING_EXTRA, thing);
