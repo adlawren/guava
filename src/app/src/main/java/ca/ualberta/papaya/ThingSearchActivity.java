@@ -132,7 +132,7 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
                 // TODO: Find a more efficient way to filter by keywords
                 thingList.clear();
                 for (Thing thing : data) {
-                    if (thing.getTitle().contains(keywordsEditText.getText())) {
+                    if (thing.getDescription().contains(keywordsEditText.getText())) {
                         thingList.add(thing);
                     }
                 }

@@ -327,6 +327,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
             public void update(List<Thing> data) {
                 final ArrayList<Thing> tempThings = new ArrayList<>();
 
+                thingList.clear();
                 for (Thing thing : data) {
                         final Thing nextThing = thing;
 
@@ -341,14 +342,26 @@ public class ThingListActivity extends AbstractPapayaActivity {
                                 System.out.println("[ThingListActivity] bid count: " + bids.size());
 
                                 if (bids.size() > 0) {
-                                    tempThings.add(nextThing);
+//                                    tempThings.add(nextThing);
+                                    thingList.add(nextThing);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            recyclerView.getAdapter().notifyDataSetChanged();
+                                        }
+                                    });
                                 }
                             }
                         });
                 }
 
-                thingList.clear();
-                thingList.addAll(tempThings);
+                System.out.println("[ThingListActivity] Temp things: size: " + tempThings.size() + ", contents:");
+                for (Thing thing : tempThings) {
+                   System.out.println("Next thing: id: " + thing.getId() + ", title: " + thing.getTitle() + ", description: " + thing.getDescription());
+                }
+
+//                thingList.clear();
+//                thingList.addAll(tempThings);
 
                 final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
                 recyclerView.post(new Runnable() {
