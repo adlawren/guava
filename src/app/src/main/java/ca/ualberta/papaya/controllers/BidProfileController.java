@@ -102,9 +102,9 @@ public class BidProfileController {
                             context.startActivity(intent);
                         }
                     });
-                    
+
                 }
-            }, Thing.class, bid);
+            }, Bid.class, bid);
 
 
 
