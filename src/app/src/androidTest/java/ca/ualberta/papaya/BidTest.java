@@ -35,8 +35,12 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         Thing thing = new Thing(new User());
         User borrower = new User();
 
-        Bid bid = new Bid(thing, borrower, 800);
-
+        Bid bid  = null;
+        try {
+            bid = new Bid(thing, borrower, 800);
+        }catch(Exception e){
+            fail();
+        }
         assertEquals(800, bid.getAmount());
         assertEquals(Bid.Per.FLAT, bid.getPer());
         assertEquals("8.00", bid.valueOf());
@@ -48,7 +52,13 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
     Tests making a new Bid with value 0
      */
     public void testZeroBid(){
-        Bid bid = new Bid(new Thing(new User()), new User(), 0);
+
+        Bid bid = null;
+        try {
+            bid = new Bid(new Thing(new User()), new User(), 0);
+        } catch (Exception e){
+            fail();
+        }
         assertEquals(0, bid.getAmount());
         assertEquals("0.00", bid.valueOf());
         assertEquals("$0.00", bid.toString());
@@ -63,6 +73,8 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
             fail();
         } catch (BidNegativeException e){
             // ok!
+        } catch (Exception e){
+            //ok
         }
 
     }
@@ -76,8 +88,12 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
 
         thing.setTitle("Fine Art");
 
-        Bid bid = new Bid(thing, new User(), 200);
-
+        Bid bid = null;
+        try {
+            bid = new Bid(thing, new User(), 200);
+        } catch(Exception e){
+            fail();
+        }
         assertNotNull(bid.getThing());
         assertEquals("Fine Art", bid.getThing().getTitle());
     }
@@ -91,8 +107,12 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
 
         Thing thing = new Thing(owner);
 
-        Bid bid = new Bid(thing, new User(), 900);
-
+        Bid bid = null;
+        try {
+            bid = new Bid(thing, new User(), 900);
+        }catch(Exception e){
+            fail();
+        }
         assertNotNull(bid.getThing());
         assertNotNull(bid.getThing().getOwner());
         assertEquals("Bonnie Jones", bid.getThing().getOwner().getFullName());
@@ -102,8 +122,12 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
     /*
      */
     public void testBidPer(){
-        Bid bid = new Bid(new Thing(new User()), new User(), 100);
-
+        Bid bid = null;
+        try {
+            bid = new Bid(new Thing(new User()), new User(), 100);
+        } catch(Exception e){
+            fail();
+        }
         bid.setPer(Bid.Per.FLAT);
         assertEquals(Bid.Per.FLAT, bid.getPer());
 
@@ -136,8 +160,13 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         Thing thing1 = new Thing(owner);
 
         User borrower = new User();
-        Bid bid = new Bid(thing1, borrower, 800);
 
+        Bid bid = null;
+        try {
+            bid = new Bid(thing1, borrower, 800);
+        }catch(Exception e){
+            fail();
+        }
         try {
             thing1.placeBid(bid);
         } catch (ThingUnavailableException e) {
@@ -157,8 +186,13 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         Thing thing1 = new Thing(owner);
 
         User borrower = new User();
-        Bid bid = new Bid(thing1, borrower, 800);
 
+        Bid bid = null;
+        try {
+            bid = new Bid(thing1, borrower, 800);
+        }catch(Exception e){
+            fail();
+        }
         try {
             thing1.placeBid(bid);
         } catch (ThingUnavailableException e) {
@@ -179,15 +213,20 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
         Thing thing1 = new Thing(owner);
 
         User borrower = new User();
-        Bid bid = new Bid(thing1, borrower, 800);
 
+        Bid bid = null;
+        try {
+            bid = new Bid(thing1, borrower, 800);
+        }catch(Exception e){
+            fail();
+        }
         try {
             thing1.placeBid(bid);
         } catch (ThingUnavailableException e) {
             fail();
         }
 
-        owner.declineBid(thing, bid);
+        owner.declineBid(thing1, bid);
         assertTrue(borrower.notifiedOfDeclinedBid(bid));
 
         assertTrue(false);

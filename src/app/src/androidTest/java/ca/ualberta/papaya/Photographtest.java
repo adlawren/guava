@@ -22,7 +22,7 @@ public class Photographtest extends ActivityInstrumentationTestCase2 {
 
     public void testAddPicture() {
         Thing thing = new Thing(new User());
-        Bitmap testpic = ;//Todo initialize bitmap
+        Bitmap testpic = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 
         Photo photo = new Photo();
         photo.setImage(testpic);
@@ -33,7 +33,7 @@ public class Photographtest extends ActivityInstrumentationTestCase2 {
 
     public void testDeletePic() {
         Thing thing = new Thing(new User());
-        Bitmap testpic = ;//Todo initialize bitmap
+        Bitmap testpic = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 
         Photo photo = new Photo();
         photo.setImage(testpic);
@@ -47,10 +47,10 @@ public class Photographtest extends ActivityInstrumentationTestCase2 {
 
     public void testViewPic() {
         Thing thing = new Thing(new User());
-        Bitmap testpic = ;//Todo initialize bitmap
+        Bitmap testpic = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 
 
-        ImageView screen = (ImageView) findViewById(R.id.imageView);
+        ImageView screen = new ImageView( getInstrumentation().getContext());
         screen.setImageBitmap(testpic);
         Bitmap onScreen = screen.getDrawingCache();
         assertEquals(testpic, onScreen);
@@ -60,16 +60,16 @@ public class Photographtest extends ActivityInstrumentationTestCase2 {
     public void testPicSize() {
         // check to see if picture that is too big gets declined
         Thing thing = new Thing(new User());
-        Bitmap testpic = ;//Todo initialize bitmap
+        Bitmap testpic = Bitmap.createBitmap(1000000000, 1000000000, Bitmap.Config.ARGB_8888);
 
         Photo photo = new Photo();
         photo.setImage(testpic);
 
 
         try {
-            thing.setPhoto(testpic);
+            thing.setPhoto(photo);
             assertTrue(false);
-        } catch (exeption e) {
+        } catch (Exception e) {
             assertTrue(true);
         }
 

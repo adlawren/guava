@@ -61,8 +61,15 @@ public class ThingTest extends ActivityInstrumentationTestCase2 {
         Thing thing = new Thing(owner);
         thing.setTitle(title).setDescription(description);
 
-        Bid bid1 = new Bid(thing, borrower, 800);
-        Bid bid2 = new Bid(thing, borrower2, 1000);
+        Bid bid1 = null;
+        Bid bid2 = null;
+        try {
+            bid1 = new Bid(thing, borrower, 800);
+            bid2 = new Bid(thing, borrower2, 1000);
+        }catch(Exception e) {
+            fail();
+        }
+
 
         try {
             thing.placeBid(bid1);

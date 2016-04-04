@@ -131,28 +131,15 @@ public class SetLocationActivity extends AbstractPapayaActivity {
         bundle.putParcelable(SetLocationActivity.LATLNG_EXTRA, location);
         returnIntent.putExtras(bundle);
         setResult(Activity.RESULT_OK, returnIntent);
-        if(location != null){
-            finish();
-        }
+
     }
 
     //delete location
     private void delete(){
-        if (UNDO == 0) {
-            //delete
-            undoLatLng = location;
-            location = null;
 
-            UNDO = 1;
-            deleteLoc.setTitle("Undo");
-        } else {
-            //redo
-            location = undoLatLng;
-            undoLatLng = null;
-            UNDO = 0;
-            deleteLoc.setTitle("Delete");
-        }
-        //picture = null;
+        location = null;
+
+
         updateView();
     }
 

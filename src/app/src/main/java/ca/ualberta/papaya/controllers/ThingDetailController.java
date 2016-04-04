@@ -3,6 +3,7 @@ package ca.ualberta.papaya.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -221,9 +222,10 @@ public class ThingDetailController {
         public boolean onMenuItemClick(MenuItem item) {
             Intent intent = new Intent(context, DisplayLocationActivity.class);
             LatLng location = thing.getLocation();
+            Bundle bundle = new Bundle();
 
-            intent.putExtra(DisplayLocationActivity.LATLNG_EXTRA, location);
-
+            bundle.putParcelable(DisplayLocationActivity.LATLNG_EXTRA, location);
+            intent.putExtras(bundle);
             context.startActivity(intent);
 
             return true;
