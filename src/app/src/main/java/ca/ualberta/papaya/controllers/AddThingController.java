@@ -73,7 +73,8 @@ public class AddThingController {
             final String itemName = itemNameEditText.getText().toString();
             final String description = descriptionEditText.getText().toString();
 
-<<<<<<< HEAD
+
+                    /*Merge
             LocalUser.getUser(new Observer<User>() {
                 @Override
                 public void update(User user) {
@@ -94,7 +95,8 @@ public class AddThingController {
             });
 
             return true;
-=======
+            */
+
             BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
             final Bitmap image = (bitmapDrawable == null) ? null : bitmapDrawable.getBitmap();
 
@@ -142,7 +144,7 @@ public class AddThingController {
         MyThingsDataManager.getInstance().update(observable);
 
         return true;
->>>>>>> 306940ff05a2c79ed1aebef2602165fc28c144f0
+
         }
     }
 
