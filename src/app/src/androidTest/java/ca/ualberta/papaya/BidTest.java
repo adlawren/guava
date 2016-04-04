@@ -4,6 +4,7 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import ca.ualberta.papaya.exceptions.BidNegativeException;
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
@@ -95,7 +96,12 @@ public class BidTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
         assertNotNull(bid.getThing());
-        assertEquals("Fine Art", bid.getThing().getTitle());
+        assertEquals("Fine Art", bid.getThing(new IObserver() {
+            @Override
+            public void update(Object data) {
+                Thing thing = (Thing) data;
+            }
+        }).getTitle());
     }
 
     /*
