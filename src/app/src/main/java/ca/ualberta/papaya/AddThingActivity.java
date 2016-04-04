@@ -53,7 +53,6 @@ public class AddThingActivity extends AbstractPapayaActivity {
         toolbar.setNavigationIcon(R.drawable.ic_action_home);
 
         imageView = (ImageButton) findViewById(R.id.viewPicture);
-        imageView.setImageBitmap(picture);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +64,6 @@ public class AddThingActivity extends AbstractPapayaActivity {
             }
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

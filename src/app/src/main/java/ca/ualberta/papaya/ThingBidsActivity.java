@@ -18,7 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.ualberta.papaya.controllers.ThingBidsController;
+import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
+import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.LocalUser;
+import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
 /**
@@ -40,7 +46,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
         //toolbar.setTitle(getTitle());
 
 
-        View recyclerView = findViewById(R.id.thing_list);
+        View recyclerView = findViewById(R.id.bidded_thing_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
@@ -80,22 +86,37 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
     }
 
     private void setupRecyclerView(@NonNull final RecyclerView recyclerView) {
-        SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(new ArrayList<Thing>());
-        recyclerView.setAdapter(va);
-        Thing.search(new Observer<List<Thing>>() {
+        LocalUser.getUser(new Observer() {
             @Override
-            public void update(List<Thing> things) {
-                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(things);
-                recyclerView.post(new Runnable() {
+            public void update(Object data) {
+                User user = (User) data;
+                user.getBids(new IObserver() {
                     @Override
-                    public void run() {
-                        recyclerView.setAdapter(va);
+                    public void update(Object data) {
+                        ArrayList<Bid> bids = (ArrayList<Bid>) data;
+
+                        String[] ids = new String[ bids.size() ];
+                        for (int i = 0; i < ids.length; ++i) {
+                            ids[i] = bids.get(i).getThingId();
+                        }
+
+                        Observable<ArrayList<Thing>> thingsObservable = new Observable<>();
+                        thingsObservable.addObserver(new IObserver<ArrayList<Thing>>() {
+                            @Override
+                            public void update(ArrayList<Thing> data) {
+                                SimpleItemRecyclerViewAdapter va =
+                                        new SimpleItemRecyclerViewAdapter(data);
+                                recyclerView.setAdapter(va);
+                            }
+                        });
+
+                        ThrowawayElasticSearchController.GetThingTask getThingTask =
+                                new ThrowawayElasticSearchController.GetThingTask(thingsObservable);
+                        getThingTask.execute(ids);
                     }
                 });
-
             }
-        }, Thing.class, "{}"); // todo: add proper search query
-
+        });
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -111,7 +132,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.thing_list_content, parent, false);
+                    .inflate(R.layout.bidded_thing_list_content, parent, false);
             return new ViewHolder(view);
         }
 
@@ -122,6 +143,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
             holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
             holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
             holder.mPictureView.setImageBitmap(mValues.get(position).getPhoto().getImage());
+            holder.mMyBidView.setText("My Bid: ");
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -158,6 +180,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
             public final TextView mIdView;
             public final TextView mContentView;
             public final ImageView mPictureView;
+            public final TextView mMyBidView;
             public Thing mItem;
 
             public ViewHolder(View view) {
@@ -166,6 +189,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
                 mPictureView = (ImageView) view.findViewById(R.id.picture);
+                mMyBidView = (TextView) view.findViewById(R.id.myBid);
             }
 
             @Override

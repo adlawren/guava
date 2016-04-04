@@ -14,6 +14,8 @@ import com.google.android.gms.maps.model.LatLng;
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.SetLocationActivity;
 import ca.ualberta.papaya.ThingListActivity;
+import ca.ualberta.papaya.data.MyThingsDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
@@ -70,8 +72,8 @@ public class AddThingController {
         public boolean onMenuItemClick(MenuItem item) {
             final String itemName = itemNameEditText.getText().toString();
             final String description = descriptionEditText.getText().toString();
-            final Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
+<<<<<<< HEAD
             LocalUser.getUser(new Observer<User>() {
                 @Override
                 public void update(User user) {
@@ -81,7 +83,7 @@ public class AddThingController {
                     thing.setDescription(description);
 
                     Photo photo = new Photo();
-                    photo.setImage(image);
+                    //photo.setImage(image);
                     thing.setPhoto(photo);
                     thing.setLocation(location);
 
@@ -92,6 +94,55 @@ public class AddThingController {
             });
 
             return true;
+=======
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+            final Bitmap image = (bitmapDrawable == null) ? null : bitmapDrawable.getBitmap();
+
+//            LocalUser.getUser(new Observer() {
+//                @Override
+//                public void update(Object data) {
+//                    Thing thing = new Thing((User) data);
+//                    thing.setTitle(itemName);
+//                    thing.setDescription(description);
+//
+//                    Observable<Thing> observable = new Observable<>();
+//                    observable.setData(thing);
+//                    observable.addObserver(new IObserver<Thing>() {
+//                        @Override
+//                        public void update(Thing data) {
+//                            transitionToActivity(context, ThingListActivity.class);
+//                        }
+//                    });
+//
+//                    MyThingsDataManager.getInstance().update(observable);
+//                }
+//            });
+
+	    User user = new User();
+        user.setId(LocalUser.getId());
+
+        Thing thing = new Thing(user);
+        thing.setTitle(itemName);
+        thing.setDescription(description);
+
+        Photo photo = new Photo();
+        photo.setImage(image);
+        thing.setPhoto(photo);
+
+
+	    Observable<Thing> observable = new Observable<>();
+        observable.setData(thing);
+        observable.addObserver(new IObserver<Thing>() {
+            @Override
+            public void update(Thing data) {
+                transitionToActivity(context, ThingListActivity.class);
+            }
+        });
+
+        MyThingsDataManager.getInstance().update(observable);
+
+        return true;
+>>>>>>> 306940ff05a2c79ed1aebef2602165fc28c144f0
         }
     }
 

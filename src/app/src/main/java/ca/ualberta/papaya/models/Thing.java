@@ -1,7 +1,6 @@
 package ca.ualberta.papaya.models;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonObject;
@@ -12,7 +11,6 @@ import org.json.JSONObject;
 import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.interfaces.IObserver;
@@ -55,7 +53,7 @@ public class Thing extends ElasticModel {
 
     private String description = "";
 
-    private Photo photo;
+
     private transient LatLng location = null;
 
     /*
@@ -72,19 +70,41 @@ public class Thing extends ElasticModel {
     }
     */
 
+    private Photo photo;
+
+
     public Thing(User owner){
         super();
         kind = Thing.class;
         photo = new Photo();
 
         ownerId = owner.getId();
-        //id = UUID.randomUUID().toString();
+    }
+
+    public Thing(Thing otherThing) {
+        super();
+        id = otherThing.id;
+        kind = otherThing.kind;
+
+        ownerId = otherThing.ownerId;
+        borrowerId = otherThing.borrowerId;
+
+        status = otherThing.status;
+
+        title = otherThing.title;
+        description = otherThing.description;
+
+        photo = otherThing.photo;
     }
 
     public void getOwner(IObserver observer){
         User.getById(observer, User.class, ownerId);
         // TODO: memoize
 	}
+
+    public String viewOwner(){
+        return ownerId;
+    }
 
     public Thing setOwner(User owner){
         ownerId = owner.getId();
@@ -164,9 +184,11 @@ public class Thing extends ElasticModel {
             json.put("query", queryJson);
 
             JSONObject termJson = new JSONObject();
-            queryJson.put("term", termJson);
+            queryJson.put("match", termJson);
 
             termJson.put("thingId", getId());
+
+            System.err.println("(getBids) " + json.toString());
 
             Bid.search(observer, Bid.class, json.toString());
 
@@ -193,7 +215,9 @@ public class Thing extends ElasticModel {
         this.photo = newPhoto;
     }
 
+
     public LatLng getLocation(){return location;}
     public void setLocation( LatLng location){this.location = location;}
+
 
 }

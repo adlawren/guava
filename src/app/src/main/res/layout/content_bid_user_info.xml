@@ -29,29 +29,14 @@
         android:textColor="#000000"
         android:layout_below="@+id/textUser" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textContactInfo"
-        android:layout_below="@+id/user"
-        android:textColor="#000000"
-        android:text="Contact info : " />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:id="@+id/contactInfo"
-        android:textColor="#000000"
-        android:layout_below="@+id/textContactInfo" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:id="@+id/textBid"
-        android:layout_below="@+id/contactInfo"
+        android:layout_below="@+id/user"
         android:textColor="#000000"
         android:text="Bid : " />
 
@@ -63,5 +48,21 @@
         android:textColor="#000000"
         android:layout_below="@+id/textBid" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textContactInfo"
+        android:layout_below="@+id/bid"
+        android:textColor="#000000"
+        android:text="Contact info : " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/contactInfo"
+        android:textColor="#000000"
+        android:layout_below="@+id/textContactInfo" />
 
 </RelativeLayout>

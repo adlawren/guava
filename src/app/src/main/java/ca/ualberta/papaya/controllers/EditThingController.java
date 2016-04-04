@@ -19,9 +19,12 @@ import ca.ualberta.papaya.SetLocationActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.ViewPictureActivity;
 import ca.ualberta.papaya.data.MyThingsDataManager;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Photo;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Observable;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 13/03/16.
@@ -55,11 +58,15 @@ public class EditThingController {
         private Context context;
 
         private Thing thing;
+
         private LatLng location;
 
 
-        private EditText itemNameEditText, descriptionEditText;
+        // private Bitmap image;
         private ImageView imageView;
+
+
+        private EditText itemNameEditText, descriptionEditText;
 
         public EditItemOnClickListener(Context initialContext,
                                        Thing initialThing,
@@ -72,12 +79,16 @@ public class EditThingController {
             thing = initialThing;
             location = initialLocation;
 
-            itemNameEditText = initialItemNameEditText;
-            descriptionEditText = initialDescriptionEditText;
+
+            context = initialContext;
+
+            thing = initialThing;
+            // image = initialImage;
             imageView = initialImageView;
 
+            itemNameEditText = initialItemNameEditText;
+            descriptionEditText = initialDescriptionEditText;
         }
-
 
         @Override
         // public void onClick(View view) {
@@ -91,14 +102,16 @@ public class EditThingController {
             thing.setPhoto(photo);
             thing.setLocation(location);
 
+            Observable<Thing> thingObservable = new Observable<>();
+            thingObservable.setData(thing);
+            thingObservable.addObserver(new IObserver<Thing>() {
+                @Override
+                public void update(Thing data) {
+                    transitionToActivity(context, ThingListActivity.class);
+                }
+            });
 
-
-
-            thing.publish();
-
-            transitionToActivity(context, ThingListActivity.class);
-
-            MyThingsDataManager.getInstance().update(thing);
+            MyThingsDataManager.getInstance().update(thingObservable);
 
             return true;
         }
@@ -112,6 +125,7 @@ public class EditThingController {
                                                               ImageButton initialImageView, LatLng initialLocation) {
         return new EditItemOnClickListener(initialContext, initialThing, initialItemNameEditText,
                 initialDescriptionEditText, initialImageView, initialLocation);
+
     }
 
     // Button to change a Thing back to available once it is no being borrowed anymore
@@ -145,14 +159,12 @@ public class EditThingController {
     }
 
 
-    // Button to change a Thing back to available once it is no being borrowed anymore
-    private class SetLocationOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+    private class SetPictureOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
         private Context context;
-
         private Thing thing;
 
-        public SetLocationOnClickListener(Context initialContext, Thing initialThing) {
+        public SetPictureOnClickListener(Context initialContext, Thing initialThing) {
             context = initialContext;
             thing = initialThing;
         }
@@ -160,6 +172,47 @@ public class EditThingController {
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
+
+            Intent intent = new Intent(context, AddPictureActivity.class);
+            intent.putExtra(AddPictureActivity.PICTURE_EXTRA, thing.getPhoto().getImage());
+
+            ((Activity) context).startActivityForResult(intent, PHOTO_RESULT);
+
+
+            return true;
+        }
+
+        // return the onClickListener for setPicture
+        public SetPictureOnClickListener getSetPictureOnClickListener(Context initialContext, Thing initialThing) {
+            return new SetPictureOnClickListener(initialContext, initialThing);
+        }
+
+    }
+
+
+    // return the onClickListener for available
+    public SetLocationOnClickListener getSetLocationOnClickListener(Context initialContext, Thing initialThing) {
+        return new SetLocationOnClickListener(initialContext, initialThing);
+    }
+
+
+
+
+    private class SetLocationOnClickListener implements MenuItem.OnMenuItemClickListener {
+        private Context context;
+        private Thing thing;
+
+
+        public SetLocationOnClickListener(Context initialContext, Thing initialThing) {
+            context = initialContext;
+            thing = initialThing;
+        }
+
+
+        @Override
+        // public void onClick(View view) {
+        public boolean onMenuItemClick(MenuItem item) {
+
             Intent intent = new Intent(context, SetLocationActivity.class);
             LatLng location = thing.getLocation();
             Bundle bundle = new Bundle();
@@ -168,15 +221,7 @@ public class EditThingController {
 
 
             context.startActivity(intent);
-
             return true;
         }
     }
-
-    // return the onClickListener for available
-    public SetLocationOnClickListener getSetLocationOnClickListener(Context initialContext, Thing initialThing) {
-        return new SetLocationOnClickListener(initialContext, initialThing);
-    }
-
-
 }

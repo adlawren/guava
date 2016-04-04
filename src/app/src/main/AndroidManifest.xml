@@ -55,6 +55,14 @@
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
         <activity
+            android:name=".BidProfileActivity"
+            android:parentActivityName=".ThingListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+        <activity
             android:name=".EditUserProfileActivity"
             android:parentActivityName=".ThingListActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -146,10 +154,12 @@
         <activity
             android:name=".DisplayLocationActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
 
         <activity

@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import ca.ualberta.papaya.interfaces.IKind;
 import ca.ualberta.papaya.interfaces.IObserver;
@@ -35,10 +36,17 @@ import io.searchbox.core.search.sort.Sort;
  */
 public abstract class ElasticModel extends Observable implements Serializable, IKind {
 
+    private final String uuid = UUID.randomUUID().toString();
+
+    public String getUuid() {
+        return uuid;
+    }
+
     private static JestClient client = null;
 
     // Elastic Search url
-    private static final String elasticUrl = "http://cmput301.softwareprocess.es:8080/";
+    //private static final String elasticUrl = "http://cmput301.softwareprocess.es:8080/";
+    private static final String elasticUrl = "http://adlawren-papayatest.rhcloud.com/";
 
     // Elastic search index.
     protected static final String index = "papaya";
@@ -46,18 +54,11 @@ public abstract class ElasticModel extends Observable implements Serializable, I
     // The java class representing the child objects. Implement in subclasses
     // protected transient Class<?> kind;
 
-    // the id of this object.
-//    @JestId
-//    protected String id;
-
     /**
      * Return the id of this object.
      * @return this object's unique id. Null if not yet committed.
      */
     public abstract String getId();
-//    {
-//        return id;
-//    }
 
     public abstract void setId(String newId);
 
@@ -188,6 +189,11 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                 try {
                     Search search = new Search.Builder(query).addIndex(index).addType(typeName(kind)).build();
                     List models = getClient().execute(search).getSourceAsObjectList(kind);
+
+		    // Needed?
+                    // for (ElasticModel model : models) {
+                    //     model.published = true;
+                    // }
 
                     observer.update(models);
                 } catch (IOException e) {

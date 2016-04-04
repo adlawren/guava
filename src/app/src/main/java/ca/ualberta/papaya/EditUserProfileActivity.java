@@ -88,6 +88,14 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
                         }
                     });
 
+                    final EditText userCityEditText = (EditText) findViewById(R.id.city);
+                    userCityEditText.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            userCityEditText.setText(user.getCity());
+                        }
+                    });
+
                     final EditText userProvinceEditText = (EditText) findViewById(R.id.province);
                     userProvinceEditText.post(new Runnable() {
                         @Override
@@ -129,7 +137,12 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
                         }
                     });
 
-                    toolbar.setNavigationIcon(R.drawable.ic_action_home);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            toolbar.setNavigationIcon(R.drawable.ic_action_home);
+                        }
+                    });
                 }
             }
         });
@@ -154,6 +167,7 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
         profile.put("phone", findViewById(R.id.phone));
         profile.put("address1", findViewById(R.id.address1));
         profile.put("address2", findViewById(R.id.address2));
+        profile.put("city", findViewById(R.id.city));
         profile.put("province", findViewById(R.id.province));
         profile.put("country", findViewById(R.id.country));
         profile.put("postal", findViewById(R.id.postal));
