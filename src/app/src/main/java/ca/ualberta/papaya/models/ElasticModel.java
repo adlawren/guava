@@ -45,7 +45,7 @@ public abstract class ElasticModel extends Observable implements Serializable, I
     private static JestClient client = null;
 
     // Elastic Search url
-    //private static final String elasticUrl = "http://cmput301.softwareprocess.es:8080/";
+//    private static final String elasticUrl = "http://cmput301.softwareprocess.es:8080/";
     private static final String elasticUrl = "http://adlawren-papayatest.rhcloud.com/";
 
     // Elastic search index.
@@ -232,6 +232,7 @@ public abstract class ElasticModel extends Observable implements Serializable, I
                                 "ERROR: REST delete unsuccessful.");
                     } else {
                         System.out.println("YAY!");
+                        observer.update(null);
                     }
                 } catch (IOException e){
                     // Todo: make more robust

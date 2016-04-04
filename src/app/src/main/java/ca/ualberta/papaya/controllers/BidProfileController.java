@@ -44,10 +44,12 @@ public class BidProfileController {
         private Context context;
 
         private Bid bid;
+        private Thing thing;
 
-        public AcceptOnClickListener(Context initialContext, Bid theBid) {
+        public AcceptOnClickListener(Context initialContext, Bid theBid, Thing theThing) {
             context = initialContext;
             bid = theBid;
+            thing = theThing;
         }
 
         @Override
@@ -72,19 +74,21 @@ public class BidProfileController {
     }
 
     // return the onClickListener for accept
-    public AcceptOnClickListener getAcceptOnClickListener(Context initialContext, Bid theBid) {
-        return new AcceptOnClickListener(initialContext, theBid);
+    public AcceptOnClickListener getAcceptOnClickListener(Context initialContext, Bid theBid, Thing theThing) {
+        return new AcceptOnClickListener(initialContext, theBid, theThing);
     }
 
-    // Button for Declinig the bid
+    // Button for Declining the bid
     private class DeclineOnClickListener implements MenuItem.OnMenuItemClickListener {
 
         private Context context;
         private Bid bid;
+        private Thing thing;
 
-        public DeclineOnClickListener(Context initialContext, Bid theBid) {
+        public DeclineOnClickListener(Context initialContext, Bid theBid, Thing theThing) {
             context = initialContext;
             bid = theBid;
+            thing = theThing;
         }
 
         @Override
@@ -92,16 +96,11 @@ public class BidProfileController {
         public boolean onMenuItemClick(MenuItem item) {
             Bid.delete(new Observer<Bid>() {
                 @Override
-                public void update(Bid bid) {
-
-                    bid.getThing(new Observer<Thing>() {
-                        @Override
-                        public void update(Thing thing) {
-                            Intent intent = new Intent(context, ThingDetailActivity.class);
-                            intent.putExtra(EditThingActivity.THING_EXTRA, thing);
-                            context.startActivity(intent);
-                        }
-                    });
+                public void update(Bid deletedBid) {
+                    try { Thread.sleep(1); } catch ( InterruptedException e ){} // fix update on return
+                    Intent intent = new Intent(context, ThingDetailActivity.class);
+                    intent.putExtra(ThingDetailActivity.THING_EXTRA, thing);
+                    context.startActivity(intent);
 
                 }
             }, Bid.class, bid);
@@ -114,8 +113,8 @@ public class BidProfileController {
 
     // return the onClickListener for decline
     public DeclineOnClickListener getDeclineOnClickListener(Context initialContext,
-                                                                  Bid theBid) {
-        return new DeclineOnClickListener(initialContext, theBid);
+                                                                  Bid theBid, Thing theThing) {
+        return new DeclineOnClickListener(initialContext, theBid, theThing);
     }
 
 
