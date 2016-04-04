@@ -32,8 +32,8 @@ public class ThrowawayElasticSearchController {
     private static void verifyConfiguration() {
         if (client == null) {
             DroidClientConfig.Builder builder = new DroidClientConfig.Builder(
-                    //"http://cmput301.softwareprocess.es:8080/");
-                    "http://adlawren-papayatest.rhcloud.com/");
+                    "http://cmput301.softwareprocess.es:8080/");
+//                    "http://adlawren-papayatest.rhcloud.com/");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
