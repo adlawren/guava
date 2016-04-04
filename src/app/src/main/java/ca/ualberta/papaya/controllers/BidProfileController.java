@@ -6,8 +6,11 @@ import android.view.MenuItem;
 
 import ca.ualberta.papaya.DisplayLocationActivity;
 import ca.ualberta.papaya.EditThingActivity;
+import ca.ualberta.papaya.ThingDetailActivity;
 import ca.ualberta.papaya.ThingListActivity;
 import ca.ualberta.papaya.ViewPictureActivity;
+import ca.ualberta.papaya.exceptions.ThingUnavailableException;
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.util.Observer;
 
@@ -36,58 +39,74 @@ public class BidProfileController {
     }
 
     // button for editing the item
-    private class AcceptOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+    private class AcceptOnClickListener implements MenuItem.OnMenuItemClickListener {
 
         private Context context;
 
-        private Thing thing;
+        private Bid bid;
 
-        public AcceptOnClickListener(Context initialContext, Thing initialThing) {
+        public AcceptOnClickListener(Context initialContext, Bid theBid) {
             context = initialContext;
-            thing = initialThing;
+            bid = theBid;
         }
 
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            Intent intent = new Intent(context, EditThingActivity.class);
-            intent.putExtra(EditThingActivity.THING_EXTRA, thing);
+            bid.getThing(new Observer<Thing>() {
+                @Override
+                public void update(Thing thing) {
+                    try {
+                        thing.acceptBid(bid);
+                        transitionToActivity(context, ThingListActivity.class);
 
-            context.startActivity(intent);
+
+                    } catch (ThingUnavailableException e){
+                        e.printStackTrace();
+                    }
+                }
+            });
 
             return true;
         }
     }
 
     // return the onClickListener for accept
-    public AcceptOnClickListener getAcceptOnClickListener(Context initialContext, Thing initialThing) {
-        return new AcceptOnClickListener(initialContext, initialThing);
+    public AcceptOnClickListener getAcceptOnClickListener(Context initialContext, Bid theBid) {
+        return new AcceptOnClickListener(initialContext, theBid);
     }
 
     // Button for Declinig the bid
-    private class DeclineOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
+    private class DeclineOnClickListener implements MenuItem.OnMenuItemClickListener {
 
         private Context context;
-        private Thing thing;
+        private Bid bid;
 
-        public DeclineOnClickListener(Context initialContext, Thing initialThing) {
+        public DeclineOnClickListener(Context initialContext, Bid theBid) {
             context = initialContext;
-            thing = initialThing;
+            bid = theBid;
         }
 
         @Override
         // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            Thing.delete(new Observer<Thing>() {
+            Bid.delete(new Observer<Bid>() {
                 @Override
-                public void update(Thing thing) {
+                public void update(Bid bid) {
 
-                    // TODO: Remove; test
-                    // System.out.println("[EditThingController.delete] In update.");
+                    bid.getThing(new Observer<Thing>() {
+                        @Override
+                        public void update(Thing thing) {
+                            Intent intent = new Intent(context, ThingDetailActivity.class);
+                            intent.putExtra(EditThingActivity.THING_EXTRA, thing);
+                            context.startActivity(intent);
+                        }
+                    });
+
                 }
-            }, Thing.class, thing);
+            }, Bid.class, bid);
 
-            transitionToActivity(context, ThingListActivity.class);
+
 
             return true;
         }
@@ -95,8 +114,8 @@ public class BidProfileController {
 
     // return the onClickListener for decline
     public DeclineOnClickListener getDeclineOnClickListener(Context initialContext,
-                                                                  Thing initialThing) {
-        return new DeclineOnClickListener(initialContext, initialThing);
+                                                                  Bid theBid) {
+        return new DeclineOnClickListener(initialContext, theBid);
     }
 
 
