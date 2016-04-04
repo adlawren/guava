@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 
@@ -14,6 +15,7 @@ import ca.ualberta.papaya.ThingSearchActivity;
 import ca.ualberta.papaya.ViewPictureActivity;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
+import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Bid;
 
 import ca.ualberta.papaya.models.Thing;
@@ -79,10 +81,32 @@ public class ThingSearchDetailController {
                         System.err.println("Bid Placed");
                         bid.publish(new Observer<Bid>() {
                             @Override
-                            public void update(Bid bidSent) {
+                            public void update(final Bid bidSent) {
                                 // todo: update bid list instead.
                                 System.err.println("Bid Published");
                                 transitionToActivity(context, ThingSearchActivity.class);
+
+                                // TODO: Send email to owner of the thing
+                                thing.getOwner(new IObserver() {
+                                    @Override
+                                    public void update(Object data) {
+                                        User user = (User) data;
+
+                                        // Taken from http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application
+                                        Intent i = new Intent(Intent.ACTION_SEND);
+                                        i.setType("message/rfc822");
+                                        i.putExtra(Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
+                                        i.putExtra(Intent.EXTRA_SUBJECT, "Someone has bidded on one of your things!!!");
+                                        i.putExtra(Intent.EXTRA_TEXT, "Congratulations! " +
+                                                "You've received a bid for the " + thing.getTitle() + " item " +
+                                                "from " + bidSent.getBidderName() + " with a value of " + bidSent.getAmount());
+                                        try {
+                                            context.startActivity(Intent.createChooser(i, "Send mail..."));
+                                        } catch (android.content.ActivityNotFoundException ex) {
+                                            Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             }
                         });
 
