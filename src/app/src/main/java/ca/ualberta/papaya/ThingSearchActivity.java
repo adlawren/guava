@@ -84,7 +84,7 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
         super.onPrepareOptionsMenu(menu);
 
         EditText searchValue = (EditText) findViewById(R.id.keywords);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.search_thing_list);
 
         Observer<ArrayList<Thing>> thingListObserver = new Observer<ArrayList<Thing>>() {
             @Override
@@ -101,7 +101,7 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
                             }
                         }
 
-                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
+                        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.search_thing_list);
                         recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 });
