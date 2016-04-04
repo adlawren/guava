@@ -83,11 +83,11 @@ public class BidProfileActivity extends AbstractPapayaActivity {
 
         menu.findItem(R.id.accept).setOnMenuItemClickListener(
                 BidProfileController.getInstance()
-                        .getAcceptOnClickListener(this, bid));
+                        .getAcceptOnClickListener(this, bid, thing));
 
         menu.findItem(R.id.decline).setOnMenuItemClickListener(
                 BidProfileController.getInstance()
-                        .getDeclineOnClickListener(this, bid));
+                        .getDeclineOnClickListener(this, bid, thing));
 
 
         return true;
