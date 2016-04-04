@@ -131,8 +131,10 @@ public class Thing extends ElasticModel {
 
         photo = otherThing.photo;
 
-
         subscription = otherThing.subscription;
+
+        location = otherThing.location;
+
     }
 
     public void getOwner(IObserver observer){
