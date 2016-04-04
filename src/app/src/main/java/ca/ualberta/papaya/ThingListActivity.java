@@ -270,8 +270,9 @@ public class ThingListActivity extends AbstractPapayaActivity {
         Thing.search(new Observer<List<Thing>>() {
             @Override
             public void update(List<Thing> data) {
-
                 thingList.clear();
+                thingList.addAll(data);
+
                 final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
                 recyclerView.post(new Runnable() {
                     @Override
@@ -287,8 +288,9 @@ public class ThingListActivity extends AbstractPapayaActivity {
         Thing.search(new Observer<List<Thing>>() {
             @Override
             public void update(List<Thing> data) {
-
                 thingList.clear();
+                thingList.addAll(data);
+
                 final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
                 recyclerView.post(new Runnable() {
                     @Override
@@ -305,8 +307,9 @@ public class ThingListActivity extends AbstractPapayaActivity {
         Thing.search(new Observer<List<Thing>>() {
             @Override
             public void update(List<Thing> data) {
-
                 thingList.clear();
+                thingList.addAll(data);
+
                 final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
                 recyclerView.post(new Runnable() {
                     @Override
