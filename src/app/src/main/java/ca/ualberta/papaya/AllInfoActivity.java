@@ -43,7 +43,8 @@ public class AllInfoActivity extends AbstractPapayaActivity {
         if (thing != null) {
 
             TextView itemInformationTextView = (TextView) findViewById(R.id.thing_detail);
-            itemInformationTextView.setText(thing.getDescription());
+            itemInformationTextView.setText("Title: " + thing.getTitle() +"\n" + "Details: "
+                    + thing.getDescription() + "\n" + "My Bid: ");
 
             thing.getOwner(new Observer<User>() {
                 @Override
@@ -53,8 +54,6 @@ public class AllInfoActivity extends AbstractPapayaActivity {
                         @Override
                         public void run() {
                             userInformationTextView.setText(owner.getFullName());
-                            userInformationTextView.setOnClickListener(AllInfoController.getInstance()
-                                    .getUserInfoOnClickListener(owner));
                         }
                     });
                 }
@@ -69,16 +68,19 @@ public class AllInfoActivity extends AbstractPapayaActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_thing_search_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_all_info, menu);
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        
-        menu.findItem(R.id.searchPictureView).setOnMenuItemClickListener(AllInfoController.getInstance()
+
+        menu.findItem(R.id.image).setOnMenuItemClickListener(AllInfoController.getInstance()
                 .getImageOnClickListener(this, thing));
+
+        menu.findItem(R.id.display_location).setOnMenuItemClickListener(AllInfoController.getInstance()
+                .getDisplayLocationOnClickListener(this, thing));
 
         return true;
     }

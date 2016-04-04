@@ -143,6 +143,14 @@
                 android:value="ca.ualberta.papaya.ThingListActivity" />
         </activity>
         <activity
+            android:name=".AllInfoActivity"
+            android:parentActivityName=".ThingListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ca.ualberta.papaya.ThingListActivity" />
+        </activity>
+        <activity
             android:name=".LogInActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -6,8 +6,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.math.BigDecimal;
 
+import ca.ualberta.papaya.DisplayLocationActivity;
 import ca.ualberta.papaya.ThingSearchActivity;
 import ca.ualberta.papaya.ViewPictureActivity;
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
@@ -41,83 +44,34 @@ public class AllInfoController {
     private AllInfoController() {
     }
 
-    // The onClickMenuItem for placing a bid
-    private class UserBidOnClickListener implements MenuItem.OnMenuItemClickListener {
+    private class DisplayLocationOnClickListener implements MenuItem.OnMenuItemClickListener { // implements View.OnClickListener {
 
-
-        private Thing thing;
-        private EditText bidAmount;
         private Context context;
 
-        public UserBidOnClickListener(Thing theThing, EditText bidAmountText, Context theContext) {
-            thing = theThing;
-            bidAmount = bidAmountText;
-            context = theContext;
-        }
+        private Thing thing;
 
-        private BigDecimal parseCurrency(String value){
-            String numeric = value.replaceAll("[^\\d.]+", "");
-            BigDecimal money = BigDecimal.valueOf(Double.parseDouble(numeric))
-                    .setScale(2, BigDecimal.ROUND_HALF_UP);
-            return money;
+        public DisplayLocationOnClickListener(Context initialContext, Thing initialThing) {
+            context = initialContext;
+            thing = initialThing;
         }
 
         @Override
+        // public void onClick(View view) {
         public boolean onMenuItemClick(MenuItem item) {
-            final BigDecimal money = parseCurrency(bidAmount.getText().toString());
-            LocalUser.getUser(new Observer<User>() {
-                @Override
-                public void update(User bidder) {
-                    try {
-                        BigDecimal cents = BigDecimal.valueOf(100);
-                        Bid bid = new Bid(thing, bidder, money.multiply(cents).intValue());
-                        System.err.println("Bid Placed");
-                        bid.publish(new Observer<Bid>() {
-                            @Override
-                            public void update(Bid bidSent) {
-                                // todo: update bid list instead.
-                                System.err.println("Bid Published");
-                                transitionToActivity(context, ThingSearchActivity.class);
-                            }
-                        });
+            Intent intent = new Intent(context, DisplayLocationActivity.class);
+            LatLng location = thing.getLocation();
 
-                    } catch (ThingUnavailableException e){
-                        // todo: toaster
-                        e.printStackTrace();
-                    }
-                }
-            });
+            intent.putExtra(DisplayLocationActivity.LATLNG_EXTRA, location);
+
+            context.startActivity(intent);
 
             return true;
         }
-
     }
 
-    // return the onMenuItemListener for user bids
-    public UserBidOnClickListener getUserBidOnClickListener(Thing theThing, EditText bidAmount, Context theContext) {
-        return new UserBidOnClickListener(theThing, bidAmount, theContext);
-    }
-
-
-    // The onClick listener for user info
-    private class UserInfoOnClickListener implements View.OnClickListener {
-
-        private User user;
-
-        public UserInfoOnClickListener(User theUser) {
-            user = theUser;
-        }
-
-        @Override
-        public void onClick(View view) {
-
-        }
-
-    }
-
-    // return the onClickListener for user bids
-    public UserInfoOnClickListener getUserInfoOnClickListener(User theUser) {
-        return new UserInfoOnClickListener(theUser);
+    // return the onClickListener for getPicture
+    public DisplayLocationOnClickListener getDisplayLocationOnClickListener(Context initialContext, Thing initialThing) {
+        return new DisplayLocationOnClickListener(initialContext, initialThing);
     }
 
     // The onClickMenuItem for placing a bid

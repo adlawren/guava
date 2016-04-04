@@ -33,6 +33,7 @@ public class EditUserProfileActivity extends AbstractPapayaActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+
         LocalUser.getUser(new Observer<User>() {
             @Override
             public void update(final User user) {
