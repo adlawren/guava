@@ -192,8 +192,8 @@ public class EditThingController {
 
 
     // return the onClickListener for available
-    public SetLocationOnClickListener getSetLocationOnClickListener(Context initialContext, Thing initialThing) {
-        return new SetLocationOnClickListener(initialContext, initialThing);
+    public SetLocationOnClickListener getSetLocationOnClickListener(Context initialContext, Thing initialThing, LatLng initialLocation) {
+        return new SetLocationOnClickListener(initialContext, initialThing, initialLocation);
     }
 
 
@@ -202,11 +202,14 @@ public class EditThingController {
     private class SetLocationOnClickListener implements MenuItem.OnMenuItemClickListener {
         private Context context;
         private Thing thing;
+        private LatLng location;
 
 
-        public SetLocationOnClickListener(Context initialContext, Thing initialThing) {
+        public SetLocationOnClickListener(Context initialContext, Thing initialThing, LatLng initialLocation) {
             context = initialContext;
             thing = initialThing;
+            location = initialLocation;
+
         }
 
 
@@ -215,10 +218,9 @@ public class EditThingController {
         public boolean onMenuItemClick(MenuItem item) {
 
             Intent intent = new Intent(context, SetLocationActivity.class);
-            LatLng location = thing.getLocation();
             Bundle bundle = new Bundle();
             bundle.putParcelable(SetLocationActivity.LATLNG_EXTRA, location);
-            intent.putExtras(bundle);
+            intent.putExtra("bundle", bundle);
 
 
             context.startActivity(intent);

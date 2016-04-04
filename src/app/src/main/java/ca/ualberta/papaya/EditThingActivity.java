@@ -108,7 +108,7 @@ public class EditThingActivity extends AbstractPapayaActivity {
         menu.findItem(R.id.editItem).setOnMenuItemClickListener(EditThingController.getInstance()
                 .getEditItemOnClickListener(this, thing, itemNameEditText, descriptionEditText, imageButton, location));
         menu.findItem(R.id.location).setOnMenuItemClickListener(EditThingController.getInstance()
-                .getSetLocationOnClickListener(this, thing ));
+                .getSetLocationOnClickListener(this, thing, location ));
 
 
 
@@ -162,7 +162,10 @@ public class EditThingActivity extends AbstractPapayaActivity {
             }
         } else if( requestCode == SetLocationActivity.LOCATION_RESULT){
             if (resultCode == RESULT_OK) {
-                location = data.getParcelableExtra(SetLocationActivity.LATLNG_EXTRA);
+                Bundle bundle = data.getBundleExtra("bundle");
+                location = bundle.getParcelable(SetLocationActivity.LATLNG_EXTRA);
+
+                thing.setLocation(location);
 
             }
         }

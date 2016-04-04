@@ -50,9 +50,10 @@ public class SetLocationActivity extends AbstractPapayaActivity {
         }
 
         Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("bundle");
 
-
-        location = intent.getParcelableExtra(LATLNG_EXTRA);
+        location = bundle.getParcelable(LATLNG_EXTRA);
+        //location = new LatLng(13,12);
 
 
         mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapView)).getMap();
@@ -129,8 +130,9 @@ public class SetLocationActivity extends AbstractPapayaActivity {
         Intent returnIntent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetLocationActivity.LATLNG_EXTRA, location);
-        returnIntent.putExtras(bundle);
+        returnIntent.putExtra("bundle",bundle);
         setResult(Activity.RESULT_OK, returnIntent);
+        finish();
 
     }
 
@@ -145,6 +147,7 @@ public class SetLocationActivity extends AbstractPapayaActivity {
 
     private void updateView(){
         if(location != null) {
+            mMap.clear();
             CameraUpdate update = CameraUpdateFactory.newLatLngZoom(location, 15);
             mMap.moveCamera(update);
             mMap.addMarker(new MarkerOptions().position(location));
