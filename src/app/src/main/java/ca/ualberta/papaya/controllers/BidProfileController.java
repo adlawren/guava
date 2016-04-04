@@ -3,6 +3,7 @@ package ca.ualberta.papaya.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import ca.ualberta.papaya.DisplayLocationActivity;
 import ca.ualberta.papaya.EditThingActivity;
@@ -14,6 +15,7 @@ import ca.ualberta.papaya.exceptions.ThingUnavailableException;
 import ca.ualberta.papaya.interfaces.IObserver;
 import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
+import ca.ualberta.papaya.models.User;
 import ca.ualberta.papaya.util.Observable;
 import ca.ualberta.papaya.util.Observer;
 
@@ -71,7 +73,26 @@ public class BidProfileController {
                         // try { Thread.sleep(5); } catch ( InterruptedException e ){} // fix update on return
 
                         // TODO: Send email
-                        // ...
+                        bid.getBidder(new IObserver() {
+                            @Override
+                            public void update(Object data) {
+                                User user = (User) data;
+
+                                // Taken from http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application
+                                Intent i = new Intent(Intent.ACTION_SEND);
+                                i.setType("message/rfc822");
+                                i.putExtra(Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
+                                i.putExtra(Intent.EXTRA_SUBJECT, "Someone has accepted your bid!!!");
+                                i.putExtra(Intent.EXTRA_TEXT, "Congratulations! " +
+                                        "Your bid for the " + thing.getTitle() + " item, with a " +
+                                        "value of " + bid.getAmount() + " has been accepted!");
+                                try {
+                                    context.startActivity(Intent.createChooser(i, "Send mail..."));
+                                } catch (android.content.ActivityNotFoundException ex) {
+                                    Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
                         transitionToActivity(context, ThingListActivity.class);
                     } catch (ThingUnavailableException e){
