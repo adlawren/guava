@@ -142,7 +142,7 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
             return new ViewHolder(view);
         }
 
-        // method that is called when a Thing in the list is selected.
+
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
@@ -151,11 +151,41 @@ public class ThingBidsActivity extends AbstractPapayaActivity {
             holder.mPictureView.setImageBitmap(holder.mItem.getPhoto().getImage());
             holder.mMyBidView.setText("My Bid: ");
 
+            Bid.search(new Observer<List<Bid>>() {
+                @Override
+                public void update(List<Bid> bids) {
+                    if (bids.size() == 0) {
+                        holder.mMyBidView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.mMyBidView.setText("My Bid: $0.00");
+                            }
+                        });
+                    } else {
+                        Bid maxBid = bids.get(0);
+                        for (Bid bid : bids) {
+                            if (bid.getAmount() > maxBid.getAmount()) {
+                                maxBid = bid;
+                            }
+                        }
+                        final Bid theMaxBid = maxBid;
+                        holder.mMyBidView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.mMyBidView.setText("My Bid: " + theMaxBid.toString());
+                            }
+                        });
+                    }
+                }
+            }, Bid.class, "{\"query\": {\"bool\": {\"must\": [" +
+                    "{\"match\": {\"bidderId\": \"" + LocalUser.getId() + "\"}}," +
+                    "{\"match\": {\"thingId\": \"" + holder.mItem.getId() + "\"}}" +
+                    "]}}}");
 
-            //LocalUser.getId();
 
 
 
+            // method that is called when a Thing in the list is selected.
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

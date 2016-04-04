@@ -7,9 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 
+import java.util.List;
+
 import ca.ualberta.papaya.controllers.AllInfoController;
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.LocalUser;
 import ca.ualberta.papaya.util.Observer;
 
 /**
@@ -44,7 +48,7 @@ public class AllInfoActivity extends AbstractPapayaActivity {
 
         if (thing != null) {
 
-            TextView itemInformationTextView = (TextView) findViewById(R.id.thing_detail);
+            final TextView itemInformationTextView = (TextView) findViewById(R.id.thing_detail);
             itemInformationTextView.setText("Title: " + thing.getTitle() +"\n" + "Details: "
                     + thing.getDescription() + "\n" + "My Bid: ");
 
@@ -53,6 +57,43 @@ public class AllInfoActivity extends AbstractPapayaActivity {
                 public void update(final User owner) {
                     final TextView userNameTextView = (TextView) findViewById(R.id.userName);
                     final TextView userInformationTextView = (TextView) findViewById(R.id.userInfo);
+
+
+                    Bid.search(new Observer<List<Bid>>() {
+                        @Override
+                        public void update(List<Bid> bids) {
+                            if (bids.size() == 0) {
+                                itemInformationTextView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        itemInformationTextView.setText("Title: " + thing.getTitle() +"\n" + "Details: "
+                                                + thing.getDescription() + "\n" + "My Bid: $0.00");
+                                    }
+                                });
+                            } else {
+                                Bid maxBid = bids.get(0);
+                                for (Bid bid : bids) {
+                                    if (bid.getAmount() > maxBid.getAmount()) {
+                                        maxBid = bid;
+                                    }
+                                }
+                                final Bid theMaxBid = maxBid;
+                                itemInformationTextView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        itemInformationTextView.setText("Title: " + thing.getTitle() +"\n" + "Details: "
+                                                + thing.getDescription() + "\n" + "My Bid: " + theMaxBid.toString());
+                                    }
+                                });
+                            }
+                        }
+                    }, Bid.class, "{\"query\": {\"bool\": {\"must\": [" +
+                            "{\"match\": {\"bidderId\": \"" + LocalUser.getId() + "\"}}," +
+                            "{\"match\": {\"thingId\": \"" + thing.getId() + "\"}}" +
+                            "]}}}");
+
+
+
                     userInformationTextView.post(new Runnable() {
                         @Override
                         public void run() {

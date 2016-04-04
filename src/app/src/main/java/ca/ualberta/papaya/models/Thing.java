@@ -55,6 +55,9 @@ public class Thing extends ElasticModel {
     private String borrowerId;
     private transient User borrower;
 
+    private String bidId;
+    private transient Bid bid;
+
     public String getBorrowerId() {
         return borrowerId;
     }
@@ -123,6 +126,7 @@ public class Thing extends ElasticModel {
 
         ownerId = otherThing.ownerId;
         borrowerId = otherThing.borrowerId;
+        bidId = otherThing.bidId;
 
         status = otherThing.status;
 
@@ -160,6 +164,21 @@ public class Thing extends ElasticModel {
     public Thing setBorrower(User borrower){
         this.borrowerId = borrower.getId();
         this.borrower = borrower;
+        changed();
+        return this;
+    }
+
+    public void getBid(IObserver observer){
+        if(bidId == null){
+            observer.update(null);
+        } else {
+            Bid.getById(observer, Bid.class, bidId);
+        }
+        // TODO: memoize
+    }
+    public Thing setBid(Bid bid){
+        this.bidId = bid.getId();
+        this.bid = bid;
         changed();
         return this;
     }
@@ -213,7 +232,7 @@ public class Thing extends ElasticModel {
 
     }
 
-    public Thing acceptBid(Bid bid) throws ThingUnavailableException {
+    public Thing acceptBid(final Bid bid) throws ThingUnavailableException {
         final Thing toUpdate = this;
 
         if (status == Status.AVAILABLE) {
@@ -224,6 +243,7 @@ public class Thing extends ElasticModel {
                     System.out.println("[Thing] Bidder: id: " + bidder.getId() + ", name: " +
                             bidder.getName());
 
+                    setBid(bid);
                     setBorrower(bidder);
                     status = Status.BORROWED;
 
