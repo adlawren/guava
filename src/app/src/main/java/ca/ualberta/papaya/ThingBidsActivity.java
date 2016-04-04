@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ualberta.papaya.controllers.AddThingController;
 import ca.ualberta.papaya.controllers.ThingBidsController;
 import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.interfaces.IObserver;
@@ -29,6 +30,11 @@ import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by hsbarker on 3/29/16.
+ *
+ * Main activity for displaying Things that a user has bid on
+ *
+ * Calls ThingBidsController for all of the button implementations.
+ * @see ThingBidsController
  */
 
 

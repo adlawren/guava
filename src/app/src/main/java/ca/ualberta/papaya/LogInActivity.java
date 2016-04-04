@@ -13,6 +13,11 @@ import ca.ualberta.papaya.controllers.LogInController;
 import ca.ualberta.papaya.util.Ctx;
 import ca.ualberta.papaya.util.LocalUser;
 
+/**
+ *
+ * Main activity for logging into a user
+ */
+
 public class LogInActivity extends AppCompatActivity {
 
     @Override

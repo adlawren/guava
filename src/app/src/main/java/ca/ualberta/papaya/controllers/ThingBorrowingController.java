@@ -8,6 +8,11 @@ import ca.ualberta.papaya.ThingBidsActivity;
 
 /**
  * Created by hsbarker on 3/29/16.
+ *
+ * Main controller for displaying Thing objects that a user is currently borrowing. It is a singleton that contains the instance and
+ * methods for the ThingBorrowingActivity
+ *
+ * @see ca.ualberta.papaya.ThingBorrowingActivity
  */
 public class ThingBorrowingController {
     private static ThingBorrowingController ourInstance = new ThingBorrowingController();

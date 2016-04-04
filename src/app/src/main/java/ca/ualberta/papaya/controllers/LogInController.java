@@ -23,6 +23,12 @@ import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by adlawren on 31/03/16.
+ *
+ * Main controller for logging into a user. It is a singleton that contains the instance and
+ * methods for the LogInActivity
+ *
+ * @see ca.ualberta.papaya.LogInActivity
+ *
  */
 public class LogInController {
     private static LogInController ourInstance = new LogInController();

@@ -7,6 +7,8 @@ import ca.ualberta.papaya.models.User;
 
 /**
  * Created by mghumphr on 3/31/16.
+ *
+ * Singleton for managing the local user on the device
  */
 public class LocalUser {
 
