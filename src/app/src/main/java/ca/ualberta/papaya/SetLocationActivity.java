@@ -79,31 +79,48 @@ public class SetLocationActivity extends AbstractPapayaActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.saveLocation:
+                // EITHER CALL THE METHOD HERE OR DO THE FUNCTION DIRECTLY
+                save();
+                return true;
 
-        menu.findItem(R.id.saveLocation)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        save();
-                        return true;
-                    }
-                });
-        deleteLoc = menu.findItem(R.id.deleteLocation);
-        menu.findItem(R.id.deleteLocation)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+            case R.id.deleteLocation:
                 delete();
                 return true;
-            }
-        });
 
-
-
-        return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        super.onPrepareOptionsMenu(menu);
+//
+//        menu.findItem(R.id.saveLocation)
+//                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        save();
+//                        return true;
+//                    }
+//                });
+//        deleteLoc = menu.findItem(R.id.deleteLocation);
+//        menu.findItem(R.id.deleteLocation)
+//                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                delete();
+//                return true;
+//            }
+//        });
+//
+//
+//
+//        return true;
+//    }
 
 
 
