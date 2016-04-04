@@ -20,6 +20,7 @@ import ca.ualberta.papaya.controllers.ThingListController;
 import ca.ualberta.papaya.controllers.ThrowawayElasticSearchController;
 import ca.ualberta.papaya.data.MyThingsDataManager;
 import ca.ualberta.papaya.interfaces.IObserver;
+import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.ElasticModel;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
@@ -282,7 +283,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 });
             }
         }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"bool\" : { \"must\" : " +
-                "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ]} } }");
+                "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ] } } }");
     }
     public void setFilterBorrowed(){
         Thing.search(new Observer<List<Thing>>() {
@@ -304,11 +305,50 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 "[ { \"match\" : { \"status\" : \"BORROWED\" } } ] } } }");
     }
     public void setFilterBidded(){
+//        Thing.search(new Observer<List<Thing>>() {
+//            @Override
+//            public void update(List<Thing> data) {
+//                thingList.clear();
+//                thingList.addAll(data);
+//
+//                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
+//                recyclerView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        recyclerView.setAdapter(va);
+//                    }
+//                });
+//            }
+//        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"bool\" : { \"must\" : " +
+//                "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ], \"must\" : " +
+//                "[ { \"match\" : { \"status\" : \"BIDDED\" } } ] } } }");
         Thing.search(new Observer<List<Thing>>() {
             @Override
             public void update(List<Thing> data) {
+                final ArrayList<Thing> tempThings = new ArrayList<>();
+
+                for (Thing thing : data) {
+                        final Thing nextThing = thing;
+
+                        System.out.println("[ThingListActivity] Next thing: id: " + nextThing.getId() +
+                                ", title: " + nextThing.getTitle() + ", description: " + nextThing.getDescription());
+
+                        nextThing.getBids(new Observer() {
+                            @Override
+                            public void update(Object data) {
+                                ArrayList<Bid> bids = (ArrayList<Bid>) data;
+
+                                System.out.println("[ThingListActivity] bid count: " + bids.size());
+
+                                if (bids.size() > 0) {
+                                    tempThings.add(nextThing);
+                                }
+                            }
+                        });
+                }
+
                 thingList.clear();
-                thingList.addAll(data);
+                thingList.addAll(tempThings);
 
                 final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
                 recyclerView.post(new Runnable() {
@@ -319,7 +359,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 });
             }
         }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"bool\" : { \"must\" : " +
-                "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ], \"must\" : " +
-                "[ { \"match\" : { \"status\" : \"BIDDED\" } } ] } } }");
+                "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ] } } }");
     }
 }
