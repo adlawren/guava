@@ -88,18 +88,18 @@ public class Thing extends ElasticModel {
     }
 
     public Thing setOwner(User owner){
-        ownerId = owner.getId();
+        this.ownerId = owner.getId();
         this.owner = owner;
         changed();
         return this;
     }
 
     public void getBorrower(IObserver observer){
-        User.getById(observer, kind, borrowerId);
+        User.getById(observer, User.class, borrowerId);
         // TODO: memoize
     }
     public Thing setBorrower(User borrower){
-        borrowerId = borrower.getId();
+        this.borrowerId = borrower.getId();
         this.borrower = borrower;
         changed();
         return this;
@@ -195,4 +195,22 @@ public class Thing extends ElasticModel {
     public void setPhoto(Photo newPhoto){
         this.photo = newPhoto;
     }
+
+
+    public void onDelete(){
+        getBids(new Observer<List<Bid>>() {
+            @Override
+            public void update(List<Bid> bids) {
+                for (final Bid bid : bids){
+                    Bid.delete(new Observer<Bid>() {
+                        @Override
+                        public void update(Bid deletedBid) {
+                            System.err.println("Deleted bid associated to thing: " + bid.getId());
+                        }
+                    }, Bid.class, bid);
+                }
+            }
+        });
+    }
+
 }
