@@ -57,12 +57,17 @@ public class BidProfileController {
         public boolean onMenuItemClick(MenuItem item) {
             bid.getThing(new Observer<Thing>() {
                 @Override
-                public void update(Thing thething) {
+                public void update(Thing theThing) {
                     try {
-                        thing.acceptBid(bid);
-                        transitionToActivity(context, ThingListActivity.class);
-
-
+                        theThing.acceptBid(bid);
+                        theThing.publish(new Observer<Thing>() {
+                            @Override
+                            public void update(Thing borrowedThing) {
+                                System.err.println("PUBLISH: " + borrowedThing.isPublished());
+                                System.err.println("STATUS: " + borrowedThing.getStatus().toString());
+                                transitionToActivity(context, ThingListActivity.class);
+                            }
+                        });
                     } catch (ThingUnavailableException e){
                         e.printStackTrace();
                     }
