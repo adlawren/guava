@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.acl.Owner;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +66,8 @@ public class Thing extends ElasticModel {
     private String title = "";
 
     private Thing.Status status = Status.AVAILABLE;
+
+    private int subscription = 0;  // Amount of the subscription to boost placement (in cents)
 
     //private ArrayList<Tag> tags = new ArrayList<Tag>();
 
@@ -127,6 +130,9 @@ public class Thing extends ElasticModel {
         description = otherThing.description;
 
         photo = otherThing.photo;
+
+
+        subscription = otherThing.subscription;
     }
 
     public void getOwner(IObserver observer){
@@ -176,6 +182,17 @@ public class Thing extends ElasticModel {
         return this;
     }
     */
+
+    public String getSubscriptionFormatted(){
+        DecimalFormat formatter = new DecimalFormat("0.00");
+        return "$" + formatter.format(((double)getSubscription())/100);
+    }
+    public int getSubscription(){ return subscription; }
+    public Thing addSubscription(int subscription){
+        this.subscription += subscription;
+        changed();
+        return this;
+    }
 
     public String getDescription(){ return description; }
     public Thing setDescription(String description){

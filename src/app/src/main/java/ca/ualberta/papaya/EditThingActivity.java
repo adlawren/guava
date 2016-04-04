@@ -84,7 +84,8 @@ public class EditThingActivity extends AbstractPapayaActivity {
 
 
         Button subButton = (Button) findViewById(R.id.subButton);
-        //subButton.setOnClickListener(EditThingController.getInstance().getSubOnClickListener());
+        subButton.setOnClickListener(EditThingController.getInstance()
+                .getSubOnClickListener(getApplicationContext(), thing, (EditText) findViewById(R.id.subAmount)));
     }
 
     @Override

@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import java.math.BigDecimal;
 
 import ca.ualberta.papaya.AddPictureActivity;
 import ca.ualberta.papaya.DisplayLocationActivity;
@@ -242,27 +245,39 @@ public class EditThingController {
         }
     }
 
-//    private class SubOnClickListener implements View.OnClickListener { // implements View.OnClickListener {
-//
-//        private Context context;
-//
-//        private Thing thing;
-//
-//        public SubOnClickListener() {
-//        }
-//
-//        @Override
-//        // public void onClick(View view) {
-//        public boolean onMenuItemClick(MenuItem item) {
-//
-//
-//
-//            return true;
-//        }
-//    }
-//
-//    // return the onClickListener for available
-//    public SubOnClickListener getSubOnClickListener() {
-//        return new SubOnClickListener();
-//    }
+    private class SubOnClickListener implements View.OnClickListener {
+
+        private Context context;
+        private Thing thing;
+        private EditText subscriptionEditText;
+
+        public SubOnClickListener(Context initialContext, Thing initialThing, EditText initialSubscriptionEditText) {
+            context = initialContext;
+            thing = initialThing;
+            subscriptionEditText = initialSubscriptionEditText;
+        }
+
+        private BigDecimal parseCurrency(String value){
+            String numeric = value.replaceAll("[^\\d.]+", "");
+            BigDecimal money = BigDecimal.valueOf(Double.parseDouble(numeric))
+                    .setScale(2, BigDecimal.ROUND_HALF_UP);
+            return money;
+        }
+
+        @Override
+        public void onClick(View view) {
+            BigDecimal amount = parseCurrency(subscriptionEditText.getText().toString());
+            thing.addSubscription(amount.multiply(BigDecimal.valueOf(100)).intValue());
+            subscriptionEditText.setText("");
+            Toast.makeText(context, "Your item now has a "
+                    + thing.getSubscriptionFormatted()
+                    + " boost!", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    // return the onClickListener for available
+    public SubOnClickListener getSubOnClickListener(Context initialContext, Thing initialThing, EditText initialSubscriptionEditText) {
+        return new SubOnClickListener(initialContext, initialThing, initialSubscriptionEditText);
+    }
 }

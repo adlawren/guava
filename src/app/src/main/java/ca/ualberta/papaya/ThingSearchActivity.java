@@ -141,7 +141,8 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
                     }
                 });
             }
-        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"bool\" : { \"must_not\" : " +
+        }, Thing.class, "{ \"size\" : \"500\", \"sort\" : { \"subscription\" : {\"order\" : \"desc\"} }, " +
+                "\"query\" : { \"bool\" : { \"must_not\" : " +
                 "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ], \"must\" : " +
                 "[ { \"match\" : { \"status\" : \"AVAILABLE\" } } ] } } }");
     }
