@@ -24,6 +24,13 @@ import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by hsbarker on 3/29/16.
+ *
+ * Main activity for displaying objects that a user is currently borrowing
+ *
+ * Calls ThingBorrowingController for the method calls
+ * @see ThingBorrowingController
+ *
+ *
  */
 public class ThingBorrowingActivity extends AbstractPapayaActivity{
     private boolean mTwoPane;

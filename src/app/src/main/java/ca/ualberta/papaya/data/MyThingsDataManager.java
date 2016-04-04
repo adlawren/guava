@@ -103,6 +103,8 @@ public class MyThingsDataManager {
             }
 
             if (thing.getUuid().equals(observable.getData().getUuid())) {
+                System.out.println("[MyThingsDataManager] Updating Thing with uuid: " + observable.getData().getUuid());
+
 //                thing.setTitle(observable.getData().getTitle());
 //                thing.setDescription(observable.getData().getDescription());
 //                thing.resetLastModified(); // Test

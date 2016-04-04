@@ -14,6 +14,8 @@ import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by Nfs91 on 2016-04-03.
+ *
+ *  Main activity for displaying the user info of a user.
  */
 public class AllInfoActivity extends AbstractPapayaActivity {
 

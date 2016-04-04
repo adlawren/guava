@@ -90,7 +90,7 @@ public class AddThingActivity extends AbstractPapayaActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == EditThingController.PHOTO_RESULT) {
+        if (requestCode == AddThingController.PHOTO_RESULT) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 picture = data.getParcelableExtra(AddPictureActivity.PICTURE_EXTRA);

@@ -59,7 +59,7 @@ public class Thing extends ElasticModel {
     }
 
     public void setBorrowerId(String newId) {
-        id = newId;
+        borrowerId = newId;
     }
 
     private String title = "";

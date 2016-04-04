@@ -116,8 +116,11 @@ public class BidProfileController {
                     Intent intent = new Intent(context, ThingDetailActivity.class);
                     intent.putExtra(ThingDetailActivity.THING_EXTRA, thing);
                     context.startActivity(intent);
+
                 }
             }, Bid.class, bid);
+
+
 
             return true;
         }

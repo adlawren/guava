@@ -151,7 +151,7 @@ public class EditThingController {
             System.err.println("[EditThingController] Thing uuid: " + thing.getUuid());
 
             thing.setStatus(Thing.Status.AVAILABLE);
-//            thing.setBorrowerId(null);
+            thing.setBorrowerId(null);
 
             Observable<Thing> observable = new Observable<>();
             observable.setData(thing);

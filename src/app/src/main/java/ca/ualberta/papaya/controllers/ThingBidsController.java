@@ -8,6 +8,12 @@ import ca.ualberta.papaya.ThingBorrowingActivity;
 
 /**
  * Created by hsbarker on 3/29/16.
+ *
+ * Main controller for creating Displaying Thing objects that a user is bidding on.
+ * It is a singleton that contains the instance and
+ * methods for the ThingBidsActivity
+ *
+ * @see ca.ualberta.papaya.ThingBidsActivity
  */
 public class ThingBidsController {
     private static ThingBidsController ourInstance = new ThingBidsController();

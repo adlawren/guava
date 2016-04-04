@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by bgodley on 02/04/16.
+ *
+ * Main activity for setting a pickup location to a thing.
  */
 public class SetLocationActivity extends AbstractPapayaActivity {
     //some code taken from https://www.youtube.com/watch?v=5UsaP8JmTRg
@@ -49,11 +51,9 @@ public class SetLocationActivity extends AbstractPapayaActivity {
 
         Intent intent = getIntent();
 
-        //try {
-            location = intent.getParcelableExtra(LATLNG_EXTRA);
-        //}catch(Exception e){
-            location = null;
-       // }
+
+        location = intent.getParcelableExtra(LATLNG_EXTRA);
+
 
         mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapView)).getMap();
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
