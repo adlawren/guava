@@ -19,11 +19,25 @@ public class ReturnTest extends ActivityInstrumentationTestCase2{
     Use Case: US 07.01.01 - SetAvailable
      */
     public void testSetAvailable() {
-        Thing thing = getCurrentThing();
-        assertEquals(thing.getStatus(), Thing.Status.RETURNED);
+        User user = new User();
+        Thing thing = new Thing(user);
+        User borrower = new User();
+        Bid bid = null;
+        try {
+            bid = new Bid(thing, borrower, 800);
+        }catch(Exception e){
+            fail();
+        }
+
+        try {
+            thing.acceptBid(bid);
+        }catch( Exception e){
+            fail();
+        }
+
+        assertEquals(thing.getStatus(), Thing.Status.BORROWED);
 
         thing.setAvailable();
-        status = thing.getStatus();
         assertEquals(thing.getStatus() , Thing.Status.AVAILABLE);
     }
 }

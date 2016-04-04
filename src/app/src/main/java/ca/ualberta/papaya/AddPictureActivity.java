@@ -60,9 +60,11 @@ public class AddPictureActivity extends AbstractPapayaActivity {
         intent = getIntent();
 
         picture = intent.getParcelableExtra(PICTURE_EXTRA);
-
-
         updateView();
+
+
+
+
     }
 
 
@@ -79,7 +81,6 @@ public class AddPictureActivity extends AbstractPapayaActivity {
 
     // Button for taking a new picture
     void takePic() {
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, REQUEST_CAPTURING_IMAGE);
@@ -90,22 +91,8 @@ public class AddPictureActivity extends AbstractPapayaActivity {
     // button for deleting the picture
     // may put in a undo feature
     void deletePic() {
-        if (UNDO == 0) {
-            //delete
-            undoPicture = picture;
-            picture = null;
-            //updateView();
-            UNDO = 1;
-            delete.setTitle("Undo");
-        } else {
-            //redo
-            picture = undoPicture;
-            undoPicture = null;
-            //updateView();
-            UNDO = 0;
-            delete.setTitle("Delete");
-        }
-        //picture = null;
+
+        picture = null;
         updateView();
     }
 
@@ -113,11 +100,16 @@ public class AddPictureActivity extends AbstractPapayaActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_add_picture, menu);
+
+
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+
         switch (item.getItemId()) {
             case R.id.takePicture:
                 // EITHER CALL THE METHOD HERE OR DO THE FUNCTION DIRECTLY
@@ -134,41 +126,7 @@ public class AddPictureActivity extends AbstractPapayaActivity {
         }
     }
 
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//
-//        takePicture = menu.findItem(R.id.takePicture);
-//        takePicture.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                takePic();
-//                return true;
-//            }
-//        });
-//
-//        save = menu.findItem(R.id.saveButton);
-//        save.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                savePic();
-//                return true;
-//            }
-//        });
-//        delete = menu.findItem(R.id.deleteButton);
-//        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                deletePic();
-//                return true;
-//
-//            }
-//        });
 
-
-//
-//        return true;
-//    }
 
     @Override
     protected void onStart() {
@@ -186,7 +144,7 @@ public class AddPictureActivity extends AbstractPapayaActivity {
             image.setImageBitmap(picture);
         } else {
             image.setImageResource(android.R.color.transparent);
-        }
+       }
     }
 
 
@@ -194,13 +152,15 @@ public class AddPictureActivity extends AbstractPapayaActivity {
     @Override
     protected void onActivityResult( int requestCode, int resultCode, Intent data){
         if(requestCode == REQUEST_CAPTURING_IMAGE && resultCode == RESULT_OK){
-            Bundle extras  = intent.getExtras();
+            Bundle extras  = data.getExtras();
             picture = (Bitmap) extras.get("data");
 
             updateView();
 
         }
     }
+
+
 }
 
 

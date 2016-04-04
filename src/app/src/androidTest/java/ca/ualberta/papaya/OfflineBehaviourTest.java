@@ -1,6 +1,11 @@
 package ca.ualberta.papaya;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.test.ActivityInstrumentationTestCase2;
+
+import java.security.acl.Owner;
 
 import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
@@ -20,7 +25,7 @@ public class OfflineBehaviourTest extends ActivityInstrumentationTestCase2 {
      */
     public void testAddOffline() {
         ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) getInstrumentation().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
@@ -28,15 +33,19 @@ public class OfflineBehaviourTest extends ActivityInstrumentationTestCase2 {
 
         assertEquals(isConnected, false);
 
+        String title = "title";
+        String description = "description";
+
         int count = getItemCount();
 
+        User owner = new User();
         Thing thing = new Thing(owner);
         thing.setTitle(title).setDescription(description);
 
         assertEquals(Thing.Status.AVAILABLE, thing.getStatus());
         assertEquals(title, thing.getTitle());
         assertEquals(description, thing.getDescription());
-        assertEquals(owner.getName(), thing.getOwnerName());
+        assertEquals(owner.getName(), thing.getOwner());
 
         setConnectionOnline();
         isConnected = activeNetwork!= null &&

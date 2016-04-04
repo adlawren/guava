@@ -4,6 +4,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.test.ActivityInstrumentationTestCase2;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
 
@@ -21,9 +23,8 @@ public class LocationTest extends ActivityInstrumentationTestCase2{
     public void testSetLocation(){
         Thing thing = new Thing(new User());
 
-        Location location = new Location("service");
-        location.setLatitude(-113.43473);
-        location.setLongitude(53.45358);
+        LatLng location = new LatLng(24,59);
+
 
         thing.setLocation(location);
 
@@ -34,9 +35,7 @@ public class LocationTest extends ActivityInstrumentationTestCase2{
     public void testGetLocation(){
         Thing thing = new Thing(new User());
 
-        Location location = new Location("service");
-        location.setLatitude(-113.43473);
-        location.setLongitude(53.45358);
+        LatLng location = new LatLng(24,59);
 
         thing.setLocation(location);
 

@@ -12,6 +12,7 @@ import ca.ualberta.papaya.fixtures.Province;
 import ca.ualberta.papaya.models.Bid;
 import ca.ualberta.papaya.models.Thing;
 import ca.ualberta.papaya.models.User;
+import ca.ualberta.papaya.util.Observer;
 
 /**
  * Created by martin on 10/02/16.
@@ -50,23 +51,23 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         user.setAddress2("Penthouse Suite");
         assertEquals("Penthouse Suite", user.getAddress2());
 
-        user.setCountry(Country.CANADA);
+        user.setCountry(Country.CANADA.toString());
         assertEquals(Country.CANADA, user.getCountry());
 
-        user.setProvince(Province.ALBERTA);
+        user.setProvince(Province.ALBERTA.toString());
         assertEquals(Province.ALBERTA, user.getProvince());
 
         try {
             user.setPostal("T8A 5H8");
             assertEquals("T8A 5H8", user.getPostal());
-        } catch (UserInvalidPostalException e){
+        } catch (Exception e){
             fail();
         }
 
-        user.setCountry(Country.CANADA);
+        user.setCountry(Country.CANADA.toString());
         assertEquals(Country.CANADA, user.getCountry());
 
-        user.setProvince(Province.ONTARIO);
+        user.setProvince(Province.ONTARIO.toString());
         assertEquals(Province.ONTARIO, user.getProvince());
     }
 
@@ -88,16 +89,16 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         user.setAddress2("Penthouse Suite");
         assertEquals("Penthouse Suite", user.getAddress2());
 
-        user.setCountry(Country.CANADA);
+        user.setCountry(Country.CANADA.toString());
         assertEquals(Country.CANADA, user.getCountry());
 
-        user.setProvince(Province.ALBERTA);
+        user.setProvince(Province.ALBERTA.toString());
         assertEquals(Province.ALBERTA, user.getProvince());
 
         try {
             user.setPostal("T8A 5H8");
             assertEquals("T8A 5H8", user.getPostal());
-        } catch (UserInvalidPostalException e){
+        } catch (Exception e){
             fail();
         }
 
@@ -113,7 +114,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         try {
             user.setPostal("T8A 5H9");
             assertEquals("T8A 5H9", user.getPostal());
-        } catch (UserInvalidPostalException e){
+        } catch (Exception e){
             fail();
         }
     }
@@ -124,7 +125,15 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
     public void testViewUserInfo(){
         User user = new User();
         Thing thing = new Thing(user);
-        User retrivedUser = thing.getOwner();
+
+        User owner = new User();
+
+        thing.getOwner(new Observer<User>() {
+            @Override
+            public void update(User owner) {
+
+            }
+        });
 
         user.setFirstName("Daddy").setLastName("Cool");
         assertEquals(retrivedUser.getFullName(), user.getFullName());
@@ -138,10 +147,10 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         user.setAddress2("Penthouse Suite");
         assertEquals(retrivedUser.getAddress2(), user.getAddress2());
 
-        user.setCountry(Country.CANADA);
+        user.setCountry(Country.CANADA.toString());
         assertEquals(retrivedUser.getCountry(), user.getCountry());
 
-        user.setProvince(Province.ALBERTA);
+        user.setProvince(Province.ALBERTA.toString());
         assertEquals(retrivedUser.getProvince(), user.getProvince());
     }
 
@@ -153,7 +162,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         try {
             user.setPostal("BAD POSTAL CODE");
             fail();
-        } catch (UserInvalidPostalException e) {
+        } catch (Exception e) {
             // ok!
         }
     }
@@ -188,7 +197,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         assertEquals(Thing.Status.AVAILABLE, things.get(0).getStatus());
         assertEquals(title, things.get(0).getTitle());
         assertEquals(description, things.get(0).getDescription());
-        assertEquals(owner.getName(), things.get(0).getOwnerName());
+        assertEquals(owner.getName(), things.get(0).getOwner().getUserName());
     }
 
     /*
@@ -242,8 +251,12 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
         assertEquals(0, borrower.getBids().size());
 
-        Bid bid = new Bid(thing, borrower, 800);
-
+        Bid bid = null;
+        try {
+            bid = new Bid(thing, borrower, 800);
+        }catch(Exception e){
+            fail();
+        }
         try {
             thing.placeBid(bid);
         } catch (ThingUnavailableException e) {
@@ -268,9 +281,13 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
 
         assertEquals(2, owner.getThings().size());
 
+        Bid bid = null;
         User borrower = new User();
-        Bid bid = new Bid(thing1, borrower, 800);
-
+        try {
+            bid = new Bid(thing1, borrower, 800);
+        } catch( Exception e){
+            fail();
+        }
         try {
             thing1.placeBid(bid);
         } catch (ThingUnavailableException e) {
@@ -289,8 +306,12 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         Thing thing1 = new Thing(owner);
 
         User borrower = new User();
-        Bid bid = new Bid(thing1, borrower, 800);
-
+        Bid bid = null;
+        try {
+            bid = new Bid(thing1, borrower, 800);
+        } catch(Exception e){
+            fail();
+        }
         try {
             thing1.placeBid(bid);
         } catch (ThingUnavailableException e) {
@@ -311,10 +332,17 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
         User owner = new User();
         Thing thing1 = new Thing(owner);
 
-        User borrower = new User();
-        Bid bid1 = new Bid(thing1, borrower, 800);
-        User borrower2 = new User();
-        Bid bid2 = new Bid(thing1, borrower2, 700);
+        Bid bid1 = null;
+        Bid bid2 = null;
+
+        try {
+            User borrower = new User();
+            bid1 = new Bid(thing1, borrower, 800);
+            User borrower2 = new User();
+            bid2 = new Bid(thing1, borrower2, 700);
+        } catch(ThingUnavailableException e){
+            assertTrue(true);
+        }
 
         try {
             thing1.placeBid(bid1);
@@ -327,7 +355,7 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
             fail();
         }
 
-        owner.acceptBid(thing1, bid);
+        owner.acceptBid(thing1, bid1);
 
         assertEquals(Thing.Status.BORROWED, bid1.getThing().getStatus());
         assertEquals(Thing.Status.AVAILABLE, bid2.getThing().getStatus());
@@ -340,11 +368,16 @@ public class UserTest extends ActivityInstrumentationTestCase2 {
     {
         User owner = new User();
         Thing thing1 = new Thing(owner);
-
-        User borrower = new User();
-        Bid bid = new Bid(thing1, borrower, 800);
-        User borrower2 = new User();
-        Bid bid2 = new Bid(thing1, borrower2, 700);
+        Bid bid = null;
+        Bid bid2 = null;
+        try{
+            User borrower = new User();
+            bid = new Bid(thing1, borrower, 800);
+            User borrower2 = new User();
+            bid2 = new Bid(thing1, borrower2, 700);
+        } catch(ThingUnavailableException e){
+            assertTrue(true);
+        }
 
         try {
             thing1.placeBid(bid);
