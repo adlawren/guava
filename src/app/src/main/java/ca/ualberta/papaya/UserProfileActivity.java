@@ -19,14 +19,18 @@ public class UserProfileActivity extends AbstractPapayaActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_info);
+        setContentView(R.layout.activity_user_info);
 
         User user = (User) getIntent().getSerializableExtra(USER_EXTRA);
 
-        TextView userNameTextView = (TextView) findViewById(R.id.userName);
+        TextView userNameTextView = (TextView) findViewById(R.id.user);
         userNameTextView.setText(user.getName());
 
-        TextView userEmailTextView = (TextView) findViewById(R.id.userInfo);
-        userEmailTextView.setText(user.getEmail());
+        TextView userInfoTextView = (TextView) findViewById(R.id.contactInfo);
+        userInfoTextView.setText("Email: " + user.getEmail() + "\n" + "Phone: "
+                + user.getPhone() + "\n" + "Address: " + user.getAddress1()
+                + "\n" + "City: " + user.getCity() + "\n" + "Province/State: " + user.getProvince()
+                + "\n" + "Country: " + user.getCountry() + "\n" + "Postal Code: "
+                + user.getPostal());
     }
 }

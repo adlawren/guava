@@ -49,11 +49,18 @@ public class AllInfoActivity extends AbstractPapayaActivity {
             thing.getOwner(new Observer<User>() {
                 @Override
                 public void update(final User owner) {
+                    final TextView userNameTextView = (TextView) findViewById(R.id.userName);
                     final TextView userInformationTextView = (TextView) findViewById(R.id.userInfo);
                     userInformationTextView.post(new Runnable() {
                         @Override
                         public void run() {
-                            userInformationTextView.setText(owner.getFullName());
+                            userNameTextView.setText(owner.getFullName());
+                            userInformationTextView.setText("Email: " + owner.getEmail() + "\n"
+                                    + "Phone: " + owner.getPhone() + "\n" + "Address: "
+                                    + owner.getAddress1() + "\n" + "City: " + owner.getCity()
+                                    + "\n" + "Province/State: " + owner.getProvince() + "\n"
+                                    + "Country: " + owner.getCountry() + "\n" + "Postal Code: "
+                                    + owner.getPostal());
                         }
                     });
                 }

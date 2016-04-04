@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 
 import ca.ualberta.papaya.ThingSearchActivity;
 
+import ca.ualberta.papaya.UserProfileActivity;
 import ca.ualberta.papaya.ViewPictureActivity;
 
 import ca.ualberta.papaya.exceptions.ThingUnavailableException;
@@ -179,22 +180,28 @@ public class ThingSearchDetailController {
     // The onClick listener for user info
     private class UserInfoOnClickListener implements View.OnClickListener {
 
+        private Context context;
+
         private User user;
 
-        public UserInfoOnClickListener(User theUser) {
+        public UserInfoOnClickListener(Context thisContext, User theUser) {
+            context = thisContext;
             user = theUser;
         }
 
         @Override
         public void onClick(View view) {
+            Intent intent = new Intent(context, UserProfileActivity.class);
+            intent.putExtra(UserProfileActivity.USER_EXTRA, user);
 
+            context.startActivity(intent);
         }
 
     }
 
     // return the onClickListener for user bids
-    public UserInfoOnClickListener getUserInfoOnClickListener(User theUser) {
-        return new UserInfoOnClickListener(theUser);
+    public UserInfoOnClickListener getUserInfoOnClickListener(Context thisContext, User theUser) {
+        return new UserInfoOnClickListener(thisContext, theUser);
     }
 
     // The onClickMenuItem for placing a bid

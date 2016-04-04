@@ -40,6 +40,7 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
 
     private Thing thing;
 
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
                         public void run() {
                             userInformationTextView.setText(owner.getFullName());
                             userInformationTextView.setOnClickListener(ThingSearchDetailController.getInstance()
-                                    .getUserInfoOnClickListener(owner));
+                                    .getUserInfoOnClickListener(context, owner));
                         }
                     });
                 }
@@ -100,7 +101,7 @@ public class ThingSearchDetailActivity extends AbstractPapayaActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-
+            context = this;
 
             EditText bidAmount = (EditText) findViewById(R.id.bidAmount);
             bidAmount.setText("0");

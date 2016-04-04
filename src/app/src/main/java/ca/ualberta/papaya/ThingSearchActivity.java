@@ -169,7 +169,7 @@ public class ThingSearchActivity extends AbstractPapayaActivity {
             holder.mIdView.setText(mValues.get(position).getTitle()); // .getId()
             holder.mContentView.setText(mValues.get(position).getDescription()); // .getTitle()
             holder.mPictureView.setImageBitmap(mValues.get(position).getPhoto().getImage());
-            holder.mBidView.setText("Highest Bid: ");
+            holder.mBidView.setText("Highest Bid: " );
             holder.mOwnerView.setText("Owner: " + mValues.get(position).viewOwner());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {

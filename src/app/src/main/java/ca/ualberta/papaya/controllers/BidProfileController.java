@@ -57,7 +57,7 @@ public class BidProfileController {
         public boolean onMenuItemClick(MenuItem item) {
             bid.getThing(new Observer<Thing>() {
                 @Override
-                public void update(Thing thing) {
+                public void update(Thing thething) {
                     try {
                         thing.acceptBid(bid);
                         transitionToActivity(context, ThingListActivity.class);

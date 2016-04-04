@@ -55,6 +55,8 @@ public class ThingListActivity extends AbstractPapayaActivity {
     // TODO: Determine if this is needed
     private static ArrayList<Thing> thingList = new ArrayList<>();
 
+    public RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +66,7 @@ public class ThingListActivity extends AbstractPapayaActivity {
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
 
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.thing_list);
+        recyclerView = (RecyclerView) findViewById(R.id.thing_list);
         assert recyclerView != null;
         setupRecyclerView(recyclerView);
 
@@ -115,14 +117,6 @@ public class ThingListActivity extends AbstractPapayaActivity {
                 .getProfileOnClickListener(this));
         menu.findItem(R.id.search).setOnMenuItemClickListener(ThingListController.getInstance()
                 .getSearchOnClickListener(this));
-
-        //menu.findItem(R.id.all).setOnMenuItemClickListener(ThingListController.getInstance()
-              //  .getAllFilterOnClickListener(this));
-        //menu.findItem(R.id.borrowed).setOnMenuItemClickListener(ThingListController.getInstance()
-              // .getBorrewedFilterOnClickListener(this));
-        //menu.findItem(R.id.bidded).setOnMenuItemClickListener(ThingListController.getInstance()
-              // .getBiddidFilterOnClickListener(this));
-
 
         return true;
     }
@@ -212,30 +206,75 @@ public class ThingListActivity extends AbstractPapayaActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.all:
+                // EITHER CALL THE METHOD HERE OR DO THE FUNCTION DIRECTLY
+                setFilterAll();
+                return true;
+            case R.id.borrowed:
+                setFilterBorrowed();
+                return true;
+            case R.id.bidded:
+                setFilterBidded();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void setFilterAll(){
-        FILTER = 0;
-        updateView();
+        Thing.search(new Observer<List<Thing>>() {
+            @Override
+            public void update(List<Thing> data) {
+
+                thingList.clear();
+                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(va);
+                    }
+                });
+            }
+        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"bool\" : { \"must\" : " +
+                "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ]} } }");
     }
     public void setFilterBorrowed(){
-        FILTER = 1;
-        updateView();
+        Thing.search(new Observer<List<Thing>>() {
+            @Override
+            public void update(List<Thing> data) {
+
+                thingList.clear();
+                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(va);
+                    }
+                });
+            }
+        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"bool\" : { \"must\" : " +
+                "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ], \"must\" : " +
+                "[ { \"match\" : { \"status\" : \"BORROWED\" } } ] } } }");
     }
     public void setFilterBidded(){
-        FILTER = 2;
-        updateView();
-    }
+        Thing.search(new Observer<List<Thing>>() {
+            @Override
+            public void update(List<Thing> data) {
 
-    public void updateView(){
-        MenuItem filterButton =(MenuItem) findViewById(R.id.filter);
-        if( FILTER == 0){
-            filterButton.setTitle("All Item");
-        } else if(FILTER == 1){
-            filterButton.setTitle("Borrowed");
-        } else{
-            filterButton.setTitle("Bidded");
-        }
-
-        //Todo put the code to change items per filter here
-        // ...
+                thingList.clear();
+                final SimpleItemRecyclerViewAdapter va = new SimpleItemRecyclerViewAdapter(thingList);
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(va);
+                    }
+                });
+            }
+        }, Thing.class, "{ \"size\" : \"500\", \"query\" : { \"bool\" : { \"must\" : " +
+                "[ { \"match\" : { \"ownerId\" : \"" + LocalUser.getId() + "\" } } ], \"must\" : " +
+                "[ { \"match\" : { \"status\" : \"BIDDED\" } } ] } } }");
     }
 }
