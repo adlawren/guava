@@ -12,7 +12,7 @@ Borrowers
 ---------
 Type in some keywords and papaya will find in your area what you are looking for. See a picture of it so you know what you are getting. Place a bid, and soon you will have an affordible item in your hands to use.
 
-For more information, please see the wiki: https://github.com/CMPUT301W16T03/papaya/wiki
+For more information, please see the [wiki](https://github.com/CMPUT301W16T03/papaya/wiki).
 
 ### Credits to...
 
